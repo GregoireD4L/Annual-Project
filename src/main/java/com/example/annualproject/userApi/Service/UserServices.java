@@ -24,14 +24,12 @@ public class UserServices {
 
 
     final UserRepository userRepository;
-    final BCryptPasswordEncoder passwordEncoder;
 
 
 
     @Autowired
-    public UserServices(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, DataSource dataSource, EntityManager entityManager) {
+    public UserServices(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional(readOnly = true)
@@ -68,7 +66,7 @@ public class UserServices {
             User user = User.builder()
                     .pseudo(pseudo)
                     .email(email)
-                    .password(passwordEncoder.encode(password))
+                    .password(password)
                     .role(role)
                     .token(token)
                     .build();
@@ -117,7 +115,7 @@ public class UserServices {
         Optional<User> user = userRepository.findByPseudo(pseudo);
         if(!user.isPresent()) {
             return false;
-        }else if(!passwordEncoder.matches(password, user.get().getPassword())){
+        }else if(!password.equals(user.get().getPassword())){
             return false;
         }
         return true;

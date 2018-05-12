@@ -17,13 +17,11 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class LoginController {
 
     private final UserServices userServices;
-    private final SecurityService securityService;
     private final UserValidator userValidator;
 
     @Autowired
-    public LoginController(UserServices userServices, SecurityService securityService, UserValidator userValidator) {
+    public LoginController(UserServices userServices,  UserValidator userValidator) {
         this.userServices = userServices;
-        this.securityService = securityService;
         this.userValidator = userValidator;
     }
 
@@ -73,7 +71,6 @@ public class LoginController {
                 userForm.getEmail(),
                 userForm.getPassword(),
                 Role.USER);
-        securityService.autoLogin(userForm.getPseudo(), userForm.getPassword());
         return "redirect:welcome";
     }
 }
