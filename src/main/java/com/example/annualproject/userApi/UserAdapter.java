@@ -1,7 +1,11 @@
 package com.example.annualproject.userApi;
 
-public class UserAdapter {
+import com.example.annualproject.userApi.Service.UserServices;
+import org.springframework.beans.factory.annotation.Autowired;
 
+public class UserAdapter {
+    @Autowired
+    static UserServices userServices;
     public static UserDTO toDto(User user){
         return UserDTO.builder()
                 .email(user.getEmail())
@@ -11,11 +15,6 @@ public class UserAdapter {
     }
 
     public static User toUser(UserDTO dto){
-        return User.builder()
-                .pseudo(dto.getPseudo())
-                .email(dto.getEmail())
-                .password(dto.getPassword())
-                .token(dto.getToken())
-                .build();
+        return userServices.getUserByPseudo(dto.getPseudo());
     }
 }
