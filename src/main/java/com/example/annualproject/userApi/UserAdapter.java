@@ -1,6 +1,6 @@
 package com.example.annualproject.userApi;
 
-import com.example.annualproject.userApi.Service.UserServices;
+import com.example.annualproject.userApi.service.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class UserAdapter {

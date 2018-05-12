@@ -1,4 +1,4 @@
-package com.example.annualproject.userApi.Service;
+package com.example.annualproject.userApi.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -7,12 +7,9 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.annualproject.userApi.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.sql.DataSource;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +21,6 @@ public class UserServices {
 
 
     final UserRepository userRepository;
-
 
 
     @Autowired
@@ -40,7 +36,7 @@ public class UserServices {
                 .collect(toList());
     }
 
-    public String createToken(String pseudo, String password ){
+    public String createToken(String pseudo, String password) {
         String token = "";
         try {
             Algorithm algorithm = Algorithm.HMAC256("secret");
@@ -59,9 +55,9 @@ public class UserServices {
 
     @Transactional
     public UserDTO createUser(String pseudo, String email, String password, Role role) {
-        if(userRepository.findByPseudo(pseudo).isPresent()){
+        if (userRepository.findByPseudo(pseudo).isPresent()) {
             return null;
-        }else {
+        } else {
             String token = createToken(pseudo, password);
             User user = User.builder()
                     .pseudo(pseudo)
@@ -88,43 +84,43 @@ public class UserServices {
     @Transactional(readOnly = true)
     public User getUserByPseudo(String pseudo) {
         Optional<User> user = userRepository.findByPseudo(pseudo);
-        if(user.isPresent()) {
+        if (user.isPresent()) {
             return user.get();
-        }else{
+        } else {
             return null;
         }
     }
 
     @Transactional(readOnly = true)
     public boolean verifyToken(String token) {
-        try{
+        try {
             DecodedJWT decodedJWT = JWT.decode(token);
             String pseudo = decodedJWT.getClaim("username").asString();
             String password = decodedJWT.getClaim("password").asString();
-            if(!verifyUser(pseudo, password)){
+            if (!verifyUser(pseudo, password)) {
                 return false;
             }
-        }catch(JWTDecodeException e){
+        } catch (JWTDecodeException e) {
             e.printStackTrace();
         }
         return true;
     }
 
     @Transactional(readOnly = true)
-    public boolean verifyUser(String pseudo, String password){
+    public boolean verifyUser(String pseudo, String password) {
         Optional<User> user = userRepository.findByPseudo(pseudo);
-        if(!user.isPresent()) {
+        if (!user.isPresent()) {
             return false;
-        }else if(!password.equals(user.get().getPassword())){
+        } else if (!password.equals(user.get().getPassword())) {
             return false;
         }
         return true;
     }
 
     @Transactional
-    public void removeUser(Long id){
+    public void removeUser(Long id) {
         Optional<User> u = userRepository.findById(id);
-        if(u.isPresent()){
+        if (u.isPresent()) {
             userRepository.delete(u.get());
         }
     }

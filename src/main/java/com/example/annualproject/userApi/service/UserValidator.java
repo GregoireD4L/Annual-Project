@@ -1,4 +1,4 @@
-package com.example.annualproject.userApi.Service;
+package com.example.annualproject.userApi.service;
 
 import com.example.annualproject.userApi.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ public class UserValidator implements Validator {
     private UserServices userServices;
 
     @Override
-    public boolean supports(Class<?> aClass){
+    public boolean supports(Class<?> aClass) {
         return User.class.equals(aClass);
     }
 
@@ -23,14 +23,14 @@ public class UserValidator implements Validator {
         User user = (User) target;
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "pseudo", "NotEmpty");
-        if(user.getPseudo().length()<6 || user.getPseudo().length()>32){
+        if (user.getPseudo().length() < 6 || user.getPseudo().length() > 32) {
             errors.rejectValue("pseudo", "Size.userForm.pseudo");
         }
-        if(userServices.getUserByPseudo(user.getPseudo()) != null) {
+        if (userServices.getUserByPseudo(user.getPseudo()) != null) {
             errors.rejectValue("pseudo", "Duplicate.userForm.pseudo");
         }
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
-        if(user.getPassword().length()<8 || user.getPassword().length()>32){
+        if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
             errors.rejectValue("password", "Size.userForm.password");
         }
     }
