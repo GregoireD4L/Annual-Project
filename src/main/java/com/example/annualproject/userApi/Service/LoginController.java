@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-/**
- * Created by bench on 27/03/2017.
- */
+
 @CrossOrigin
 @Controller
 public class LoginController {

@@ -11,9 +11,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 
-/**
- * Created by bench on 07/03/2017.
- */
+
 @Retention(RUNTIME)
 @Target(value = TYPE)
 @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:user-init.sql")

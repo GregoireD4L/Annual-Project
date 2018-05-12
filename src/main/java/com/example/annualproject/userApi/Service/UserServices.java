@@ -3,6 +3,8 @@ package com.example.annualproject.userApi.Service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.annualproject.userApi.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,6 +15,7 @@ import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -78,7 +81,7 @@ public class UserServices {
     }
 
     @Transactional
-    public UserDto saveUser(User user) {
+    public UserDTO saveUser(User user) {
         user.setToken(createToken(user.getPseudo(), user.getPassword()));
         userRepository.save(user);
         return UserAdapter.toDto(user);
