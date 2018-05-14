@@ -6,7 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class UserAdapter {
     @Autowired
     static UserServices userServices;
-    public static UserDTO toDto(User user){
+
+    public static UserDTO toDto(User user) {
         return UserDTO.builder()
                 .email(user.getEmail())
                 .pseudo(user.getPseudo())
@@ -14,7 +15,7 @@ public class UserAdapter {
                 .build();
     }
 
-    public static User toUser(UserDTO dto){
+    public static User toUser(UserDTO dto) {
         return userServices.getUserByPseudo(dto.getPseudo());
     }
 }

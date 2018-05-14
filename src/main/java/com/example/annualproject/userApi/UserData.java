@@ -2,7 +2,6 @@ package com.example.annualproject.userApi;
 
 import org.springframework.test.context.jdbc.Sql;
 
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
