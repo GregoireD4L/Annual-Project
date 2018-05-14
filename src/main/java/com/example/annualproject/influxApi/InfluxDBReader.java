@@ -25,13 +25,13 @@ public class InfluxDBReader {
     public List<Ecg1Point> readECGChannel1BeetweenTime(String id, Instant beginning, Instant ending) {
         InfluxDB influxDB = InfluxDBSingleton.getInstance();
         String dbName = "dataforlifeDB";
-        //String query ="SELECT * FROM ecgChannelOne where idUser='" + id + "' and time>='" + beginning+"' and time<='"+ending+"'";
-        String query ="SELECT * FROM ecgChannelOne";/*WHERE idUser=\"1\" and time>='2018-01-01T00:00:00Z' and time<='2019-01-01T00:00:00Z'";*/
+        String query ="SELECT * FROM ecgChannelOne where idUser='" + id + "' and time>='" + beginning+"' and time<='"+ending+"'";
         System.out.println(query);
         QueryResult queryResult = influxDB.query(new Query(query, dbName));
 
         InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
         List<Ecg1Point> ecgChannelOnePoints = resultMapper.toPOJO(queryResult, Ecg1Point.class);
+        System.out.println(ecgChannelOnePoints.size());
         return ecgChannelOnePoints;
     }
 }
