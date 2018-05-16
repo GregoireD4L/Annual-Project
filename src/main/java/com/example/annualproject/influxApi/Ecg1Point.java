@@ -5,8 +5,9 @@ import org.influxdb.annotation.Measurement;
 
 import java.time.Instant;
 
-@Measurement(name="EcgChannelOnePoint")
-public class EcgChannelOnePoint {
+@Measurement(name = "ecgChannelOne")
+public class Ecg1Point {
+
     @Column(name = "idUser")
     private String idUser;
     @Column(name = "p1")
@@ -37,5 +38,4 @@ public class EcgChannelOnePoint {
     public void setTime(Instant time) {
         this.time = time;
     }
-
 }

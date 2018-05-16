@@ -1,6 +1,6 @@
 package com.example.annualproject.influxApi.service;
 
-import com.example.annualproject.influxApi.EcgChannelOnePoint;
+import com.example.annualproject.influxApi.Ecg1Point;
 import com.example.annualproject.influxApi.InfluxDBReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,22 +15,22 @@ import java.util.List;
 @RestController
 public class InfluxController {
 
-        private final InfluxDBReader influxDBReader;
+    private final InfluxDBReader influxDBReader;
 
-        @Autowired
-        public InfluxController(InfluxDBReader influxDBReader) {
-            this.influxDBReader=influxDBReader;
-        }
+    @Autowired
+    public InfluxController(InfluxDBReader influxDBReader) {
+        this.influxDBReader=influxDBReader;
+    }
 
-        @GetMapping(value = "/getECG1Past")
-        public List<EcgChannelOnePoint> getPointsBetweenTime(@RequestParam String id, @RequestParam Instant beginning, @RequestParam Instant ending ) throws Exception {
-            return influxDBReader.readECGChannel1BeetweenTime(id, beginning,ending);
+    @GetMapping(value = "/getECG1Past")
+    public List<Ecg1Point> getPointsBetweenTime(@RequestParam String id, @RequestParam Instant beginning, @RequestParam Instant ending ) throws Exception {
+        return influxDBReader.readECGChannel1BeetweenTime(id, beginning,ending);
 
-            //  return "redirect:/fichier";
+        //  return "redirect:/fichier";
 
-        }
+    }
     @GetMapping(value = "/getECG1")
-    public List<EcgChannelOnePoint> getPoints(@RequestParam String id) throws Exception {
+    public List<Ecg1Point> getPoints(@RequestParam String id) throws Exception {
         return influxDBReader.readECGChannel1(id);
 
         //  return "redirect:/fichier";
@@ -38,4 +38,4 @@ public class InfluxController {
     }
 
 
-    }
+}
