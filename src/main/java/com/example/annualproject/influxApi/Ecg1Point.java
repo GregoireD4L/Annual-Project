@@ -15,6 +15,16 @@ public class Ecg1Point {
     @Column(name = "time")
     private Instant time;
 
+    private Long longtime;
+
+    public Long getLongtime() {
+        return longtime;
+    }
+
+    public void setLongtime(Long longtime) {
+        this.longtime = longtime;
+    }
+
     public String getIdUser() {
         return idUser;
     }

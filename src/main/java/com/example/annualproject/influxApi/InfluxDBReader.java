@@ -19,6 +19,8 @@ public class InfluxDBReader {
 
         InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
         List<Ecg1Point> ecgChannelOnePoints = resultMapper.toPOJO(queryResult, Ecg1Point.class);
+        for(Ecg1Point point : ecgChannelOnePoints)
+            point.setLongtime(point.getTime().toEpochMilli());
         return ecgChannelOnePoints;
     }
 
@@ -31,7 +33,24 @@ public class InfluxDBReader {
 
         InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
         List<Ecg1Point> ecgChannelOnePoints = resultMapper.toPOJO(queryResult, Ecg1Point.class);
-        System.out.println(ecgChannelOnePoints.size());
+        for(Ecg1Point point : ecgChannelOnePoints)
+            point.setLongtime(point.getTime().toEpochMilli());
+        return ecgChannelOnePoints;
+    }
+
+    public List<Ecg1Point> readECGChannel1BeetweenTime(String id, long beginning, long ending) {
+        InfluxDB influxDB = InfluxDBSingleton.getInstance();
+        Instant beginningTime= Instant.ofEpochMilli(beginning);
+        Instant endingTime= Instant.ofEpochMilli(ending);
+        String dbName = "dataforlifeDB";
+        String query ="SELECT * FROM ecgChannelOne where idUser='" + id + "' and time>='" + beginningTime+"' and time<='"+endingTime+"'";
+        System.out.println(query);
+        QueryResult queryResult = influxDB.query(new Query(query, dbName));
+
+        InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
+        List<Ecg1Point> ecgChannelOnePoints = resultMapper.toPOJO(queryResult, Ecg1Point.class);
+        for(Ecg1Point point : ecgChannelOnePoints)
+            point.setLongtime(point.getTime().toEpochMilli());
         return ecgChannelOnePoints;
     }
 }
