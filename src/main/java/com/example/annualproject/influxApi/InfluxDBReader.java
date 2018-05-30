@@ -14,43 +14,41 @@ public class InfluxDBReader {
     public List<Ecg1Point> readECGChannel1(String id) {
         InfluxDB influxDB = InfluxDBSingleton.getInstance();
         String dbName = "dataforlifeDB";
-        Instant instant = Instant.now().minusSeconds(1);
-        QueryResult queryResult = influxDB.query(new Query("SELECT * FROM ecgChannelOne where idUser=" + id + " and time>='" + instant+"'", dbName));
+        long instant = Instant.now().minusSeconds(1).toEpochMilli();
+        QueryResult queryResult = influxDB.query(new Query("SELECT * FROM allPoints where ID=" + id + "' and timestamp>=" + instant, dbName));
 
         InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
         List<Ecg1Point> ecgChannelOnePoints = resultMapper.toPOJO(queryResult, Ecg1Point.class);
         for(Ecg1Point point : ecgChannelOnePoints)
-            point.setLongtime(point.getTime().toEpochMilli());
+            point.setLongtime(point.getTime());
         return ecgChannelOnePoints;
     }
 
     public List<Ecg1Point> readECGChannel1BeetweenTime(String id, Instant beginning, Instant ending) {
         InfluxDB influxDB = InfluxDBSingleton.getInstance();
         String dbName = "dataforlifeDB";
-        String query ="SELECT * FROM ecgChannelOne where idUser='" + id + "' and time>='" + beginning+"' and time<='"+ending+"'";
+        String query ="SELECT * FROM allPoints where ID='" + id + "' and timestamp>=" + beginning+" and timestamp<="+ending;
         System.out.println(query);
         QueryResult queryResult = influxDB.query(new Query(query, dbName));
 
         InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
         List<Ecg1Point> ecgChannelOnePoints = resultMapper.toPOJO(queryResult, Ecg1Point.class);
         for(Ecg1Point point : ecgChannelOnePoints)
-            point.setLongtime(point.getTime().toEpochMilli());
+            point.setLongtime(point.getTime());
         return ecgChannelOnePoints;
     }
 
     public List<Ecg1Point> readECGChannel1BeetweenTime(String id, long beginning, long ending) {
         InfluxDB influxDB = InfluxDBSingleton.getInstance();
-        Instant beginningTime= Instant.ofEpochMilli(beginning);
-        Instant endingTime= Instant.ofEpochMilli(ending);
         String dbName = "dataforlifeDB";
-        String query ="SELECT * FROM ecgChannelOne where idUser='" + id + "' and time>='" + beginningTime+"' and time<='"+endingTime+"'";
+        String query ="SELECT * FROM allPoints where ID='" + id + "' and timestamp>=" + beginning+" and timestamp<="+ending;
         System.out.println(query);
         QueryResult queryResult = influxDB.query(new Query(query, dbName));
 
         InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
         List<Ecg1Point> ecgChannelOnePoints = resultMapper.toPOJO(queryResult, Ecg1Point.class);
         for(Ecg1Point point : ecgChannelOnePoints)
-            point.setLongtime(point.getTime().toEpochMilli());
+            point.setLongtime(point.getTime());
         return ecgChannelOnePoints;
     }
 }
