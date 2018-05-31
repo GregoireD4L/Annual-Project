@@ -29,6 +29,13 @@ public class InfluxController {
         //  return "redirect:/fichier";
 
     }
+    @GetMapping(value = "/getECG1PastMilli")
+    public List<Ecg1Point> getPointsBetweenTimeMilli(@RequestParam String id, @RequestParam long beginning, @RequestParam long ending ) throws Exception {
+        return influxDBReader.readECGChannel1BeetweenTime(id, beginning,ending);
+
+        //  return "redirect:/fichier";
+
+    }
     @GetMapping(value = "/getECG1")
     public List<Ecg1Point> getPoints(@RequestParam String id) throws Exception {
         return influxDBReader.readECGChannel1(id);
