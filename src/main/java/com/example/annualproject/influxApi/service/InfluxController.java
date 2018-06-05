@@ -1,6 +1,6 @@
 package com.example.annualproject.influxApi.service;
 
-import com.example.annualproject.influxApi.Ecg1Point;
+import com.example.annualproject.influxApi.InfluxPoint;
 import com.example.annualproject.influxApi.InfluxDBReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,23 +22,23 @@ public class InfluxController {
         this.influxDBReader=influxDBReader;
     }
 
-    @GetMapping(value = "/getECG1Past")
-    public List<Ecg1Point> getPointsBetweenTime(@RequestParam String id, @RequestParam Instant beginning, @RequestParam Instant ending ) throws Exception {
-        return influxDBReader.readECGChannel1BeetweenTime(id, beginning,ending);
+    @GetMapping(value = "/getPointsPast")
+    public List<InfluxPoint> getPointsBetweenTime(@RequestParam String id, @RequestParam Instant beginning, @RequestParam Instant ending ) throws Exception {
+        return influxDBReader.readPointsBeetweenTime(id, beginning,ending);
 
         //  return "redirect:/fichier";
 
     }
-    @GetMapping(value = "/getECG1PastMilli")
-    public List<Ecg1Point> getPointsBetweenTimeMilli(@RequestParam String id, @RequestParam long beginning, @RequestParam long ending ) throws Exception {
-        return influxDBReader.readECGChannel1BeetweenTime(id, beginning,ending);
+    @GetMapping(value = "/getPointsPastMilli")
+    public List<InfluxPoint> getPointsBetweenTimeMilli(@RequestParam String id, @RequestParam long beginning, @RequestParam long ending ) throws Exception {
+        return influxDBReader.readPointsBeetweenTime(id, beginning,ending);
 
         //  return "redirect:/fichier";
 
     }
-    @GetMapping(value = "/getECG1")
-    public List<Ecg1Point> getPoints(@RequestParam String id) throws Exception {
-        return influxDBReader.readECGChannel1(id);
+    @GetMapping(value = "/getPoints")
+    public List<InfluxPoint> getPoints(@RequestParam String id) throws Exception {
+        return influxDBReader.readPoints(id);
 
         //  return "redirect:/fichier";
 
