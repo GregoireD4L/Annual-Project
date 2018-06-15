@@ -7,10 +7,10 @@ class App extends Component {
 	componentDidMount() {
 		let dataPoints = [];
 		let dpsLength = 0;
-		let linkurl="http://localhost:8888/data/getECG1PastMilli?id=1&beginning=";
+		let linkurl="http://localhost:8888/data/getECG1PastMilli?id=1sO8tRhll9TtWzmxB0fmuWM0dal2&beginning=";
 		let linkurlmiddle="&ending=";
-		let beginning=1527590793043 ;
-		let tmplink=linkurl+beginning+linkurlmiddle+(beginning+1000);
+		let beginning=1529064000000000;
+		let tmplink=linkurl+beginning+linkurlmiddle+(beginning+1000000);
 		let chart = new CanvasJS.Chart("chartContainer",{
  		        exportEnabled: true,
 			title:{
@@ -45,8 +45,8 @@ class App extends Component {
  
 		});
 		
-		$.getJSON(linkurl+beginning+linkurlmiddle+(beginning+1000), function(data) {  
-		beginning+=1000;
+		$.getJSON(linkurl+beginning+linkurlmiddle+(beginning+100000), function(data) {  
+		beginning+=100000;
 			$.each(data, function(key, value){
 				let date =new Date(parseInt(value.longtime));
 				dataPoints.push({x:  parseInt(value.longtime), y: parseFloat(value.ecg1)});
@@ -57,20 +57,20 @@ class App extends Component {
 			updateChart();
 		});
 		function updateChart() {	
-		beginning+=1000;
-		$.getJSON(linkurl+beginning+linkurlmiddle+(beginning+1000), function(data) {
+		
+		$.getJSON(linkurl+beginning+linkurlmiddle+(beginning+100000), function(data) {
 			$.each(data, function(key, value) {
 				let date =new Date(parseInt(value.longtime));
 				dataPoints.push({x: parseInt(value.longtime), y: parseFloat(value.ecg1)});
 				});
-				 beginning+=1000;
 			
 			
-			while (dataPoints.length >  500 ) {
+			while (dataPoints.length >  7500 ) {
 				dataPoints.shift();				
 			}
 			chart.render();
-			setTimeout(function(){updateChart()}, 1000);
+			beginning+=100000;
+			setTimeout(function(){updateChart()}, 100);
 		});
 	}
 }

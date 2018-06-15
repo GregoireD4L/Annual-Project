@@ -15,7 +15,7 @@ public class InfluxDBReader {
         InfluxDB influxDB = InfluxDBSingleton.getInstance();
         String dbName = "dataforlifeDB";
         long instant = Instant.now().minusSeconds(1).toEpochMilli();
-        QueryResult queryResult = influxDB.query(new Query("SELECT * FROM allPoints where ID=" + id + "' and timestamp>=" + instant, dbName));
+        QueryResult queryResult = influxDB.query(new Query("SELECT * FROM allPoints where ID=" + id + "' and time" + instant, dbName));
 
         InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
         List<Ecg1Point> ecgChannelOnePoints = resultMapper.toPOJO(queryResult, Ecg1Point.class);
@@ -27,7 +27,7 @@ public class InfluxDBReader {
     public List<Ecg1Point> readECGChannel1BeetweenTime(String id, Instant beginning, Instant ending) {
         InfluxDB influxDB = InfluxDBSingleton.getInstance();
         String dbName = "dataforlifeDB";
-        String query ="SELECT * FROM allPoints where ID='" + id + "' and timestamp>=" + beginning+" and timestamp<="+ending;
+        String query ="SELECT * FROM allPoints where ID='" + id + "' and timestamp>=" + beginning+" and time<"+ending;
         System.out.println(query);
         QueryResult queryResult = influxDB.query(new Query(query, dbName));
 
@@ -41,7 +41,7 @@ public class InfluxDBReader {
     public List<Ecg1Point> readECGChannel1BeetweenTime(String id, long beginning, long ending) {
         InfluxDB influxDB = InfluxDBSingleton.getInstance();
         String dbName = "dataforlifeDB";
-        String query ="SELECT * FROM allPoints where ID='" + id + "' and timestamp>=" + beginning+" and timestamp<="+ending;
+        String query ="SELECT * FROM allPoints where ID='" + id + "' and time>=" + beginning+" and time<"+ending;
         System.out.println(query);
         QueryResult queryResult = influxDB.query(new Query(query, dbName));
 
