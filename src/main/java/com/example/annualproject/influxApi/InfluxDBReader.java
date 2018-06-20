@@ -1,5 +1,6 @@
 package com.example.annualproject.influxApi;
 
+import com.example.annualproject.security.Decrypter;
 import org.influxdb.InfluxDB;
 import org.influxdb.dto.Query;
 import org.influxdb.dto.QueryResult;
@@ -33,8 +34,14 @@ public class InfluxDBReader {
 
         InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
         List<Ecg1Point> ecgChannelOnePoints = resultMapper.toPOJO(queryResult, Ecg1Point.class);
-        for(Ecg1Point point : ecgChannelOnePoints)
+        for(Ecg1Point point : ecgChannelOnePoints) {
             point.setLongtime(point.getTime());
+            try {
+                point.setIdUser(Decrypter.decrypt(point.getIdUser().getBytes()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         return ecgChannelOnePoints;
     }
 
