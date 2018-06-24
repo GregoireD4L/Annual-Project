@@ -37,8 +37,8 @@ public class InfluxController {
 
     }
     @GetMapping(value = "/getECG1")
-    public List<Ecg1Point> getPoints(@RequestParam String id) throws Exception {
-        return influxDBReader.readECGChannel1(id);
+    public List<Ecg1Point> getPoints(@RequestParam String id, @RequestParam long time) throws Exception {
+        return influxDBReader.readECGChannel1(id,time);
 
         //  return "redirect:/fichier";
 

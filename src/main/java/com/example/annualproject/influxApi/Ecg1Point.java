@@ -14,8 +14,18 @@ public class Ecg1Point {
     private double ecg1;
     @Column(name = "timestamp")
     private long time;
+    @Column(name = "acceleroX1")
+    private long acceleroX1;
 
     private Long longtime;
+
+    public long getAcceleroX1() {
+        return acceleroX1;
+    }
+
+    public void setAcceleroX1(long acceleroX1) {
+        this.acceleroX1 = acceleroX1;
+    }
 
     public Long getLongtime() {
         return longtime;
