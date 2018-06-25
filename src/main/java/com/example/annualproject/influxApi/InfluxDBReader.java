@@ -20,8 +20,9 @@ public class InfluxDBReader {
         QueryResult queryResult = null;
 
         try {
-            String query="SELECT ecg1, timestamp FROM allPoints where ID='" +  Decrypter.encrypt(id) + "' and timestamp>=" + instant+" and timestamp<"+(instant+time);
+            String query="SELECT ecg1, timestamp FROM allPoints where ID='" +  Decrypter.encrypt(id) + "' and timestamp>" + instant+" and timestamp<"+(instant+time);
             System.out.println(query);
+            System.out.println(time);
             //queryResult = influxDB.query(new Query("SELECT * FROM allPoints where ID=" +  Decrypter.decrypt(id.getBytes()) + "' and time" + instant, dbName));
             queryResult = influxDB.query(new Query(query, dbName));
         } catch (Exception e) {
@@ -47,7 +48,7 @@ public class InfluxDBReader {
         String query = null;
         try {
         //    query = "SELECT * FROM allPoints where ID='" + Decrypter.decrypt(id.getBytes()) + "' and timestamp>=" + beginning+" and time<"+ending;
-            query = "SELECT * FROM allPoints where ID='" + Decrypter.encrypt(id) + "' and timestamp>=" + beginning+" and timestamp<"+ending;
+            query = "SELECT * FROM allPoints where ID='" + Decrypter.encrypt(id) + "' and timestamp>" + beginning+" and timestamp<"+ending;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -73,7 +74,7 @@ public class InfluxDBReader {
         String query = null;
         try {
         //    query = "SELECT * FROM allPoints where ID='" +  Decrypter.decrypt(id.getBytes())+ "' and time>=" + beginning+" and time<"+ending;
-            query = "SELECT ecg1,timestamp FROM allPoints where ID='" +  Decrypter.encrypt(id)+ "' and timestamp>=" + beginning+" and timestamp<"+ending;
+            query = "SELECT ecg1,timestamp FROM allPoints where ID='" +  Decrypter.encrypt(id)+ "' and timestamp>" + beginning+" and timestamp<"+ending;
         } catch (Exception e) {
             e.printStackTrace();
         }

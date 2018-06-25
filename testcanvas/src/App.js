@@ -2,18 +2,20 @@ import React, { Component } from 'react';
 import $ from 'jquery';
 import CanvasJS from './CanvasJS';
 //var CanvasJS = require('./CanvasJS')
+ 
 class App extends Component {
 	
 	componentDidMount() {
-		let dataPoints = [];
-		let dpsLength = 0;
+		let start = new Date();
 		let date = new Date();
 		let d2 = new Date();
-		let par=0;
-		let milli= date.getTime()-1000;
-		let linkurl="http://localhost:8888/data/getECG1?id=8866skUXvbbhSJZo1qctm9o6Kej1";
-		                              
-		let tmplink=linkurl;
+	    let milli= date.getTime()-5000;
+		let dataPoints = [];
+		let dpsLength = 0;
+		let linkurl="http://localhost:8888/data/getECG1PastMilli?id=8866skUXvbbhSJZo1qctm9o6Kej1&beginning=";
+		let linkurlmiddle="&ending=";
+		                                 
+		let tmplink=linkurl+milli+linkurlmiddle+(milli+1000);
 		let chart = new CanvasJS.Chart("chartContainer",{
  		        exportEnabled: true,
 			title:{
@@ -22,6 +24,7 @@ class App extends Component {
 			data: [{
 				type: "spline",
 				dataPoints : dataPoints,
+				markerSize: 0,
 			}],
 			axisY: {
 				includeZero: false,
@@ -34,9 +37,9 @@ class App extends Component {
 			axisX: {
 				//valueFormatString: "ss:ff",
 				//interval:0.5,
-				labelFormatter: function ( e ) {
+				/*labelFormatter: function ( e ) {
 					return "";  
-				} , 
+				} , */
 				includeZero: false,
 			//	intervalType: "month",
 			},
@@ -48,33 +51,25 @@ class App extends Component {
  
 		});
 		
-		$.getJSON(linkurl+"&time=1000", function(data) {  
-			$.each(data, function(key, value){
-				let date =new Date(parseInt(value.longtime));
-				dataPoints.push({x:  parseInt(value.longtime), y: parseFloat(value.ecg1)});
-				
-			});
-			dpsLength++;
-			chart.render();
+		
 			updateChart();
-			
-		});
+		
 		function updateChart() {	
-		date=new Date();
-		$.getJSON(linkurl+"&time="+(date.getTime()-d2.getTime()), function(data) {
-			
-			d2 = date;
+		date = new Date();
+		$.getJSON(linkurl+(d2.getTime()-3000)+linkurlmiddle+(date.getTime()-3000), function(data) {
+			d2=date;
 			$.each(data, function(key, value) {
 				let date =new Date(parseInt(value.longtime));
-				dataPoints.push({x: parseInt(value.longtime), y: parseFloat(value.ecg1)});
+				dataPoints.push({x: parseInt(value.longtime)- start.getTime(), y: parseFloat(value.ecg1)});
 				});
 			
 			
-			while (dataPoints.length >  2500 ) {
+			while (dataPoints.length >  3300 ) {
 				dataPoints.shift();				
 			}
 			chart.render();
-			setTimeout(function(){updateChart()}, 100);
+			milli+=1000;
+			updateChart();
 		});
 	}
 }
