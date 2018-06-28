@@ -3,9 +3,9 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import firebase from "firebase";
 import * as Colors from 'material-ui/styles/colors';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import firebase from './FirebaseConfig';
 
 const muiTheme = getMuiTheme({
     palette: {
@@ -27,17 +27,6 @@ const muiTheme = getMuiTheme({
 });
 
 
-// Initialize Firebase
-var config = {
-    apiKey: "AIzaSyAanpOteKt6sJER051WlLtlf3oYHduwpTM",
-    authDomain: "data-for-life.firebaseapp.com",
-    databaseURL: "https://data-for-life.firebaseio.com",
-    projectId: "data-for-life",
-    storageBucket: "data-for-life.appspot.com",
-    messagingSenderId: "1065890119840"
-};
-firebase.initializeApp(config);
-
 class Login extends Component{
 
     constructor(props){
@@ -51,6 +40,7 @@ class Login extends Component{
         this.handleChangePassword = this.handleChangePassword.bind(this);
     }
 
+
     handleClick(event){
         firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
             // Handle Errors here.
@@ -59,6 +49,10 @@ class Login extends Component{
             console.error(errorMessage);
             console.error(this.state.email);
         });
+
+        var database = firebase.database();
+
+
         //connecté
     }
 
