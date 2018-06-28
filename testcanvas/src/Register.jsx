@@ -51,11 +51,13 @@ class Register extends Component {
             var errorCode = error.code;
             var errorMessage = error.message;
             console.error(errorMessage);
-            console.error(this.state.email);
         });
         //connecté
-        var userId = firebase.auth().currentUser.uid;
-        this.writeUserData(userId,this.state.email, this.state.first_name,this.state.last_name);
+        var user = firebase.auth().currentUser
+        if(user){
+            var userId = user.uid;
+            this.writeUserData(userId, this.state.first_name,this.state.last_name,this.state.email);
+        }
     }
 
     writeUserData(userId, firstName, lastName ,email) {
