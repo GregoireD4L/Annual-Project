@@ -37,18 +37,25 @@ const styles = {
         float: "none",
         margin: "0 auto",
         marginTop: '100px',
-        maxWidth: 400,
-        maxHeight: 400,
+        maxWidth: 600,
+        maxHeight: 600,
     },
     buttons: {
         backgroundColor: theme.palette.primary.main,
         margin: "0 35px",
         marginTop: 50,
+        color: theme.palette.primary.text,
     },
     textFields: {
         marginTop: 10,
         display: "block",
         width: 200,
+    },
+    typography: {
+        color: theme.palette.primary.text,
+    },
+    typo: {
+        textAlign: "center",
     },
 };
 
@@ -199,7 +206,7 @@ class LoginScreen extends Component {
         if(this.state.welcome){
             cardRender = <Card className={classes.card}>
                 <CardContent>
-                    <Typography variant="title" color="inherit">Welcome, sign in or sign up</Typography>
+                    <Typography className={classes.typo} variant="title" color="inherit">Welcome, sign in or sign up</Typography>
                     <CardActions className={classes.actions}>
                         <Button className={classes.buttons} onClick={(event) => this.handleLoginState(event)}>Login</Button>
                         <Button className={classes.buttons} onClick={(event) => this.handleRegisterState(event)}>Register</Button>
@@ -210,12 +217,13 @@ class LoginScreen extends Component {
             const isEnabled = this.state.email.length > 0 && this.state.password.length > 0;
             cardRender = <Card className={classes.cardLogin}>
                 <CardContent>
-                    <Typography variant="title" color="inherit">Sign in</Typography>
+                    <Typography className={classes.typo} variant="title" color="inherit">Sign in</Typography>
                     <TextField
                         className={classes.textFields}
                         label="Enter your email"
                         id="email"
                         error={!this.state.emailValidation}
+                        helperText={(!this.state.emailValidation) ? "validation error" : "email"}
                         onChange={(event, value) => this.handleChangeEmail(event, value)}/>
                     <TextField
                         className={classes.textFields}
@@ -223,6 +231,7 @@ class LoginScreen extends Component {
                         type="password"
                         id="password"
                         error={!this.state.passwordValidation}
+                        helperText={(!this.state.passwordValidation) ? "validation error" : "password"}
                         onChange={(event, value) => this.handleChangePassword(event, value)}/>
                     <CardActions className={classes.actions}>
                         <Button className={classes.buttons} disabled={!isEnabled} onClick={(event) => this.handleLogin(event)}>Login</Button>
@@ -234,27 +243,31 @@ class LoginScreen extends Component {
             const isEnabled = this.state.email.length > 0 && this.state.password.length > 0;
             cardRender = <Card className={classes.cardRegister}>
                 <CardContent>
-                    <Typography variant="title" color="inherit">Sign up</Typography>
+                    <Typography className={classes.typo} variant="title" color="inherit">Sign up</Typography>
                     <TextField
                         className={classes.textFields}
                         label="Enter your First Name"
                         error={!this.state.firstNameValidation}
+                        helperText={(!this.state.firstNameValidation) ? "validation error" : "first name"}
                         onChange = {(event) => this.handleChangeFirstName(event)}/>
                     <TextField
                         className={classes.textFields}
                         label="Enter your Last Name"
                         error={!this.state.lastNameValidation}
+                        helperText={(!this.state.lastNameValidation) ? "validation error" : "last name"}
                         onChange = {(event) => this.handleChangeLastName(event)}/>
                     <TextField
                         className={classes.textFields}
                         label="Enter your Email"
                         type="email"
                         error={!this.state.emailValidation}
+                        helperText={(!this.state.emailValidation) ? "validation error" : "email"}
                         onChange = {(event) => this.handleChangeEmail(event)}/>
                     <TextField
                         className={classes.textFields}
                         type = "password"
                         label="Enter your Password"
+                        helperText={(!this.state.passwordValidation) ? "validation error" : "password"}
                         error={!this.state.passwordValidation}
                         onChange = {(event) => this.handleChangePassword(event)}/>
                     <CardActions className={classes.actions}>
@@ -268,7 +281,7 @@ class LoginScreen extends Component {
             <MuiThemeProvider theme={theme}>
                 <Layout appBarStyle={this.state.appBarStyle} footer="Data for life copyright 2018" appBar={
                     <Toolbar>
-                        <Typography variant="title" color="inherit">
+                        <Typography className={classes.typography} variant="title" color="inherit">
                             Welcome
                         </Typography>
                     </Toolbar>}>
