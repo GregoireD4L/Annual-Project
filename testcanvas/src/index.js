@@ -1,10 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Login from './Login';
 import registerServiceWorker from './registerServiceWorker';
-import Register from "./Register";
-import Loginscreen from "./LoginScreen";
+import {LoginScreen} from "./LoginScreen";
 
-ReactDOM.render(<Loginscreen />, document.getElementById('root'));
+ReactDOM.render(<LoginScreen />, document.getElementById('root'));
 registerServiceWorker();
