@@ -27,13 +27,9 @@ class LoggedPage extends Component{
         if(user) {
             var firstname='';
             var lastname='';
-            firebase.database().ref('/users/' + user.uid).child("firstName").on('value', function(snapshot){
-               firstname = snapshot.val();
-               console.log(firstname);
-            });
-            firebase.database().ref('/users/' + user.uid).child("lastName").on('value', function(snapshot){
-                lastname = snapshot.val();
-                console.log(lastname);
+            firebase.database().ref('/users/' + user.uid).on('value', function(snapshot) {
+                firstname = snapshot.val().firstName;
+                lastname = snapshot.val().lastName;
             });
             this.setState({
                 firstName: firstname,
@@ -42,7 +38,7 @@ class LoggedPage extends Component{
         }
     }
 
-    componentWillMount(){
+    componentDidMount(){
         this.getUserInfos();
     }
 
