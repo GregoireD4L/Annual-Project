@@ -49,7 +49,7 @@ const styles = {
     textFields: {
         marginTop: 10,
         display: "block",
-        width: 200,
+        width: 350,
     },
     typography: {
         color: theme.palette.primary.text,
@@ -219,6 +219,7 @@ class LoginScreen extends Component {
                 <CardContent>
                     <Typography className={classes.typo} variant="title" color="inherit">Sign in</Typography>
                     <TextField
+                        fullWidth
                         className={classes.textFields}
                         label="Enter your email"
                         id="email"
@@ -226,6 +227,7 @@ class LoginScreen extends Component {
                         helperText={(!this.state.emailValidation) ? "validation error" : "email"}
                         onChange={(event, value) => this.handleChangeEmail(event, value)}/>
                     <TextField
+                        fullWidth
                         className={classes.textFields}
                         label="Enter your password"
                         type="password"
@@ -245,18 +247,21 @@ class LoginScreen extends Component {
                 <CardContent>
                     <Typography className={classes.typo} variant="title" color="inherit">Sign up</Typography>
                     <TextField
+                        fullWidth
                         className={classes.textFields}
                         label="Enter your First Name"
                         error={!this.state.firstNameValidation}
                         helperText={(!this.state.firstNameValidation) ? "validation error" : "first name"}
                         onChange = {(event) => this.handleChangeFirstName(event)}/>
                     <TextField
+                        fullWidth
                         className={classes.textFields}
                         label="Enter your Last Name"
                         error={!this.state.lastNameValidation}
                         helperText={(!this.state.lastNameValidation) ? "validation error" : "last name"}
                         onChange = {(event) => this.handleChangeLastName(event)}/>
                     <TextField
+                        fullWidth
                         className={classes.textFields}
                         label="Enter your Email"
                         type="email"
@@ -264,6 +269,7 @@ class LoginScreen extends Component {
                         helperText={(!this.state.emailValidation) ? "validation error" : "email"}
                         onChange = {(event) => this.handleChangeEmail(event)}/>
                     <TextField
+                        fullWidth
                         className={classes.textFields}
                         type = "password"
                         label="Enter your Password"
