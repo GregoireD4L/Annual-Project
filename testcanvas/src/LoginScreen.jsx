@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {Toolbar, Typography,
     Card, Button, withStyles,
-    CardContent, CardActions, TextField} from '@material-ui/core';
+    CardContent, CardActions, TextField, Snackbar, IconButton} from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import {MuiThemeProvider} from '@material-ui/core/styles';
 import {Layout} from "./Layout";
 import {theme} from "./theme";
@@ -75,6 +76,8 @@ class LoginScreen extends Component {
             passwordValidation: true,
             firstNameValidation: true,
             lastNameValidation: true,
+            registerSnackBar: false,
+            snackBarMessage:'',
         };
 
         this.handleLoginState = this.handleLoginState.bind(this);
@@ -83,6 +86,8 @@ class LoginScreen extends Component {
         this.handleRegisterState = this.handleRegisterState.bind(this);
         this.handleChangeFirstName = this.handleChangeFirstName.bind(this);
         this.handleChangeLastName = this.handleChangeLastName.bind(this);
+        this.handleRegister = this.handleRegister.bind(this);
+        this.handleClose = this.handleClose.bind(this);
     }
 
     handleLoginState(event){
@@ -91,6 +96,11 @@ class LoginScreen extends Component {
             loginState: true,
             registerState: false,
         });
+    }
+    handleClose(){
+        this.setState({
+            registerSnackBar:false,
+        })
     }
     handleRegisterState(event){
         this.setState({
@@ -176,7 +186,18 @@ class LoginScreen extends Component {
             if (user) {
                 var userId = user.uid;
                 this.writeUserData(userId, this.state.firstName, this.state.lastName, this.state.email);
+                this.setState({
+                    welcome: true,
+                    loginState: false,
+                    registerState: false,
+                    registerSnackBar: true,
+                    snackBarMessage: 'Verification Email sent ! please verify your account'
+                });
             }
+            //email verification
+            firebase.auth().onAuthStateChanged(function(user) {
+                user.sendEmailVerification();
+            });
         }
     }
 
@@ -292,6 +313,16 @@ class LoginScreen extends Component {
                         </Typography>
                     </Toolbar>}>
                     {cardRender}
+                    <Snackbar anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',}} message={this.state.snackBarMessage}
+                              open={this.state.registerSnackBar} autoHideDuration={2000} action={<IconButton
+                        key="close"
+                        aria-label="Close"
+                        color="inherit"
+                        onClick={this.handleClose}>
+                        <CloseIcon />
+                    </IconButton>}/>
                 </Layout>
             </MuiThemeProvider>
         );
