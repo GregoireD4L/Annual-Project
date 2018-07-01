@@ -2,7 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
-import {LoginScreen} from "./LoginScreen";
+import {ApplicationRoutes} from "./ApplicationRoutes";
 
-ReactDOM.render(<LoginScreen />, document.getElementById('root'));
+//localhost:3000/login to go to login page
+
+ReactDOM.render(<ApplicationRoutes />, document.getElementById('root'));
 registerServiceWorker();

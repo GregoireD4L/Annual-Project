@@ -306,7 +306,7 @@ class LoginScreen extends Component {
         }
         return (
             <MuiThemeProvider theme={theme}>
-                <Layout appBarStyle={this.state.appBarStyle} footer="Data for life copyright 2018" appBar={
+                <Layout footer="Data for life copyright 2018" appBar={
                     <Toolbar>
                         <Typography className={classes.typography} variant="title" color="inherit">
                             Welcome
