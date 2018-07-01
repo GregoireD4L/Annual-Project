@@ -6,18 +6,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import {MuiThemeProvider} from '@material-ui/core/styles';
 import {Layout} from "./Layout";
 import {theme} from "./theme";
-import firebase from "firebase";
-
-// Initialize Firebase
-var config = {
-    apiKey: "AIzaSyAanpOteKt6sJER051WlLtlf3oYHduwpTM",
-    authDomain: "data-for-life.firebaseapp.com",
-    databaseURL: "https://data-for-life.firebaseio.com",
-    projectId: "data-for-life",
-    storageBucket: "data-for-life.appspot.com",
-    messagingSenderId: "1065890119840"
-};
-firebase.initializeApp(config);
+import firebase from './FirebaseConfig';
 
 const styles = {
     card: {
@@ -62,6 +51,7 @@ const styles = {
 
 
 class LoginScreen extends Component {
+
     constructor(props){
         super(props);
         this.state = {
@@ -184,8 +174,7 @@ class LoginScreen extends Component {
             //connecté
             var user = firebase.auth().currentUser;
             if (user) {
-                var userId = user.uid;
-                this.writeUserData(userId, this.state.firstName, this.state.lastName, this.state.email);
+                this.writeUserData(user.uid, this.state.firstName, this.state.lastName, this.state.email);
                 this.setState({
                     welcome: true,
                     loginState: false,
@@ -193,11 +182,10 @@ class LoginScreen extends Component {
                     registerSnackBar: true,
                     snackBarMessage: 'Verification Email sent ! please verify your account'
                 });
+                //email verification
+                    user.sendEmailVerification();
+
             }
-            //email verification
-            firebase.auth().onAuthStateChanged(function(user) {
-                user.sendEmailVerification();
-            });
         }
     }
 
@@ -219,6 +207,7 @@ class LoginScreen extends Component {
 
         //var database = firebase.database();
         //connecté
+        this.props.history.push('/home');
     }
 
     render() {
@@ -306,7 +295,7 @@ class LoginScreen extends Component {
         }
         return (
             <MuiThemeProvider theme={theme}>
-                <Layout appBarStyle={this.state.appBarStyle} footer="Data for life copyright 2018" appBar={
+                <Layout footer="Data for life copyright 2018" appBar={
                     <Toolbar>
                         <Typography className={classes.typography} variant="title" color="inherit">
                             Welcome
