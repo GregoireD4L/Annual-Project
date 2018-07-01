@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Route} from 'react-router';
 import {LoginScreen} from "./LoginScreen";
 import {BrowserRouter} from 'react-router-dom';
-
+import {LoggedPage} from "./LoggedPage";
 
 class ApplicationRoutes extends Component{
 
@@ -27,7 +27,10 @@ class ApplicationRoutes extends Component{
     render(){
         return (
             <BrowserRouter ref={this.setRouter.bind(this)}>
-                <Route path='/login' component={LoginScreen}/>
+                <div>
+                    <Route path='/login' component={LoginScreen}/>
+                    <Route path='/home' component={LoggedPage}/>
+                </div>
             </BrowserRouter>
         )
     }
