@@ -3,21 +3,22 @@ package com.example.annualproject.influxApi;
 import org.influxdb.annotation.Column;
 import org.influxdb.annotation.Measurement;
 
-import java.time.Instant;
-
 @Measurement(name = "allPoints")
-public class Ecg1Point {
+public class AcceleroPoint {
 
     @Column(name = "ID")
     private String idUser;
-    @Column(name = "ecg1")
-    private double ecg1;
+    @Column(name = "acceleroX1")
+    private double acceleroX;
+    @Column(name = "acceleroY1")
+    private double acceleroY;
+    @Column(name = "acceleroZ1")
+    private double acceleroZ;
     @Column(name = "timestamp")
     private long time;
 
 
     private Long longtime;
-
 
 
     public Long getLongtime() {
@@ -36,19 +37,35 @@ public class Ecg1Point {
         this.idUser = idUser;
     }
 
-    public double getEcg1() {
-        return ecg1;
-    }
-
-    public void setEcg1(double ecg1) {
-        this.ecg1 = ecg1;
-    }
-
     public long getTime() {
         return time;
     }
 
     public void setTime(long time) {
         this.time = time;
+    }
+
+    public double getAcceleroX() {
+        return acceleroX;
+    }
+
+    public void setAcceleroX(double acceleroX) {
+        this.acceleroX = acceleroX;
+    }
+
+    public double getAcceleroY() {
+        return acceleroY;
+    }
+
+    public void setAcceleroY(double acceleroY) {
+        this.acceleroY = acceleroY;
+    }
+
+    public double getAcceleroZ() {
+        return acceleroZ;
+    }
+
+    public void setAcceleroZ(double acceleroZ) {
+        this.acceleroZ = acceleroZ;
     }
 }

@@ -12,14 +12,14 @@ class App extends Component {
 	    let milli= date.getTime()-5000;
 		let dataPoints = [];
 		let dpsLength = 0;
-		let linkurl="http://localhost:8888/data/getECG1PastMilli?id=8866skUXvbbhSJZo1qctm9o6Kej1&beginning=";
+		let linkurl="http://localhost:8888/data/getAccelero2PastMilli?id=8866skUXvbbhSJZo1qctm9o6Kej1&beginning=";
 		let linkurlmiddle="&ending=";
 		                                 
 		let tmplink=linkurl+milli+linkurlmiddle+(milli+1000);
 		let chart = new CanvasJS.Chart("chartContainer",{
  		        exportEnabled: true,
 			title:{
-				text:"ECG1 Points"
+				text:"Accelero Points"
 			},
 			data: [{
 				type: "spline",
@@ -28,7 +28,6 @@ class App extends Component {
 			}],
 			axisY: {
 				includeZero: false,
-				interval : 0.1,
 			},
 				legend: {
         horizontalAlign: "right",
@@ -60,11 +59,11 @@ class App extends Component {
 			d2=date;
 			$.each(data, function(key, value) {
 				let date =new Date(parseInt(value.longtime));
-				dataPoints.push({x: parseInt(value.longtime)- start.getTime(), y: parseFloat(value.ecg1)});
+				dataPoints.push({x: parseInt(value.longtime)- start.getTime(), y: parseFloat(value.acceleroX)});
 				});
 			
 			
-			while (dataPoints.length >  3300 ) {
+			while (dataPoints.length >  330 ) {
 				dataPoints.shift();				
 			}
 			chart.render();

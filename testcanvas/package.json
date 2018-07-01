@@ -10,6 +10,8 @@
     "chartjs-plugin-streaming": "^1.5.0",
     "firebase": "^5.1.0",
     "jquery": "^3.3.1",
+    "material-ui": "^0.20.1",
+    "nol": "^0.10.0",
     "npm": "^6.1.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
