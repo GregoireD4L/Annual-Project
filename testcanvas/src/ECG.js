@@ -56,7 +56,7 @@ class App extends Component {
 		
 		function updateChart() {	
 		date = new Date();
-		$.getJSON(linkurl+(d2.getTime()-3000)+linkurlmiddle+(date.getTime()-3000), function(data) {
+		$.getJSON(linkurl+(d2.getTime()-1000)+linkurlmiddle+(date.getTime()-1000), function(data) {
 			d2=date;
 			$.each(data, function(key, value) {
 				let date =new Date(parseInt(value.longtime));

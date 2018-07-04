@@ -8,11 +8,11 @@ public class AcceleroPoint {
 
     @Column(name = "ID")
     private String idUser;
-    @Column(name = "acceleroX1")
+    @Column(name = "acceleroX")
     private double acceleroX;
-    @Column(name = "acceleroY1")
+    @Column(name = "acceleroY")
     private double acceleroY;
-    @Column(name = "acceleroZ1")
+    @Column(name = "acceleroZ")
     private double acceleroZ;
     @Column(name = "timestamp")
     private long time;

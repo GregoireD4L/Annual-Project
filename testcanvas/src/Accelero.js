@@ -28,9 +28,9 @@ class App extends Component {
 			}],
 			axisY: {
 				includeZero: false,
-				interval : 0.1,
-				maximum: 0.2,
-				minimum: -0.2,
+				interval : 0.2,
+				/*maximum: 0.2,
+				minimum: -0.2,*/
 			},
 				legend: {
         horizontalAlign: "right",
@@ -58,7 +58,7 @@ class App extends Component {
 		
 		function updateChart() {	
 		date = new Date();
-		$.getJSON(linkurl+(d2.getTime()-3000)+linkurlmiddle+(date.getTime()-3000), function(data) {
+		$.getJSON(linkurl+(d2.getTime()-1000)+linkurlmiddle+(date.getTime()-1000), function(data) {
 			d2=date;
 			$.each(data, function(key, value) {
 				let date =new Date(parseInt(value.longtime));

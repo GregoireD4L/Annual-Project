@@ -152,7 +152,7 @@ public class InfluxDBReader {
         String query = null;
         try {
             //    query = "SELECT * FROM allPoints where ID='" +  Decrypter.decrypt(id.getBytes())+ "' and time>=" + beginning+" and time<"+ending;
-            query = "SELECT acceleroX1,acceleroY1,AcceleroZ1,timestamp FROM allPoints where ID='" +  Decrypter.encrypt(id)+ "' and timestamp>" + beginning+" and timestamp<"+ending;
+            query = "SELECT acceleroX,acceleroY,acceleroZ,timestamp FROM allPoints where ID='" +  Decrypter.encrypt(id)+ "' and timestamp>" + beginning+" and timestamp<"+ending;
         } catch (Exception e) {
             e.printStackTrace();
         }
