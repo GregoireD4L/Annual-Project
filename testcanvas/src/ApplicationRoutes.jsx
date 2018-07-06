@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Route, Redirect} from 'react-router';
+import {Route, Redirect, withRouter} from 'react-router';
 import {LoginScreen} from "./LoginScreen";
 import {BrowserRouter} from 'react-router-dom';
 import {LoggedPage} from "./LoggedPage";
@@ -9,9 +9,6 @@ class ApplicationRoutes extends Component{
 
     constructor(props){
         super(props);
-        this.state = {
-            isLogged: false,
-        };
     }
 
     setRouter(router) {

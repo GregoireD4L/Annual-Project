@@ -7,6 +7,7 @@ import {Toolbar, Typography, withStyles, IconButton, Button,
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import {Redirect} from 'react-router-dom';
 import {Favorite} from '@material-ui/icons';
 import ECG from './ECG';
 import firebase from './FirebaseConfig';
@@ -47,10 +48,12 @@ class LoggedPage extends Component{
             openDrawer: false,
             toolbarTitle: 'Welcome',
             choiceMenu: '',
+            isLogged: true,
         };
         this.getUserInfos = this.getUserInfos.bind(this);
         this.handleCloseDrawer = this.handleCloseDrawer.bind(this);
         this.handleOpenDrawer = this.handleOpenDrawer.bind(this);
+        this.handleLogOut = this.handleLogOut.bind(this);
     }
 
     getUserInfos(){
@@ -81,69 +84,83 @@ class LoggedPage extends Component{
         });
     }
 
+    handleLogOut(){
+        firebase.auth().signOut();
+        this.setState({
+            isLogged: false,
+        });
+    }
+
     render(){
         let {classes} = this.props;
-        return (
-            <MuiThemeProvider theme={theme}>
-                <Layout footer="Data for life copyright 2018" appBar={
-                    <Toolbar>
-                        <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={this.handleOpenDrawer}>
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography className={classes.typography} variant="title" color="inherit">
-                            {this.state.toolbarTitle} {this.state.firstName} {this.state.lastName}
-                        </Typography>
-                        <Button className={classes.logout} color="inherit">Log out</Button>
-                    </Toolbar>}>
+        if(this.state.isLogged) {
+            return (
+                <MuiThemeProvider theme={theme}>
+                    <Layout footer="Data for life copyright 2018" appBar={
+                        <Toolbar>
+                            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu"
+                                        onClick={this.handleOpenDrawer}>
+                                <MenuIcon/>
+                            </IconButton>
+                            <Typography className={classes.typography} variant="title" color="inherit">
+                                {this.state.toolbarTitle} {this.state.firstName} {this.state.lastName}
+                            </Typography>
+                            <Button className={classes.logout} color="inherit" onClick={this.handleLogOut}>Log
+                                out</Button>
+                        </Toolbar>}>
 
-                    <Drawer open={this.state.openDrawer} onClose={this.handleCloseDrawer}>
-                        <div tabIndex={0} role="button" onClick={this.handleCloseDrawer} onKeyDown={this.handleCloseDrawer}>
-                            <div className={classes.drawerHeader}>
-                                <IconButton onClick={this.handleCloseDrawer}>
-                                    {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                                </IconButton>
+                        <Drawer open={this.state.openDrawer} onClose={this.handleCloseDrawer}>
+                            <div tabIndex={0} role="button" onClick={this.handleCloseDrawer}
+                                 onKeyDown={this.handleCloseDrawer}>
+                                <div className={classes.drawerHeader}>
+                                    <IconButton onClick={this.handleCloseDrawer}>
+                                        {theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/>}
+                                    </IconButton>
+                                </div>
+                                <Divider/>
+                                <div className={classes.list}>
+                                    <List>
+                                        <ListItem button>
+                                            <ListItemIcon>
+                                                <Favorite/>
+                                            </ListItemIcon>
+                                            <ListItemText primary="ECG"/>
+                                        </ListItem>
+                                        <ListItem button>
+                                            <ListItemIcon>
+                                                <Favorite/>
+                                            </ListItemIcon>
+                                            <ListItemText primary="Accelero"/>
+                                        </ListItem>
+                                        <ListItem button>
+                                            <ListItemIcon>
+                                                <Favorite/>
+                                            </ListItemIcon>
+                                            <ListItemText primary="Breathing"/>
+                                        </ListItem>
+                                        <ListItem button>
+                                            <ListItemIcon>
+                                                <Favorite/>
+                                            </ListItemIcon>
+                                            <ListItemText primary="SpO2"/>
+                                        </ListItem>
+                                        <ListItem button>
+                                            <ListItemIcon>
+                                                <Favorite/>
+                                            </ListItemIcon>
+                                            <ListItemText primary="Temperature"/>
+                                        </ListItem>
+                                    </List>
+                                </div>
                             </div>
-                            <Divider />
-                            <div className={classes.list}>
-                                <List>
-                                    <ListItem button>
-                                        <ListItemIcon>
-                                            <Favorite />
-                                        </ListItemIcon>
-                                        <ListItemText primary="ECG" />
-                                    </ListItem>
-                                    <ListItem button >
-                                        <ListItemIcon>
-                                            <Favorite />
-                                        </ListItemIcon>
-                                        <ListItemText primary="Accelero" />
-                                    </ListItem>
-                                    <ListItem button >
-                                        <ListItemIcon>
-                                            <Favorite />
-                                        </ListItemIcon>
-                                        <ListItemText primary="Breathing" />
-                                    </ListItem>
-                                    <ListItem button>
-                                        <ListItemIcon>
-                                            <Favorite />
-                                        </ListItemIcon>
-                                        <ListItemText primary="SpO2" />
-                                    </ListItem>
-                                    <ListItem button>
-                                        <ListItemIcon>
-                                            <Favorite />
-                                        </ListItemIcon>
-                                        <ListItemText primary="Temperature" />
-                                    </ListItem>
-                                </List>
-                            </div>
-                        </div>
-                    </Drawer>
+                        </Drawer>
 
-                </Layout>
-            </MuiThemeProvider>
-        );
+                    </Layout>
+                </MuiThemeProvider>
+            );
+        }else{
+            return (<Redirect to='/login'/>);
+        }
     }
 }
 
