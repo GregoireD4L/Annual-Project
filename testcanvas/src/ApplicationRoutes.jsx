@@ -12,24 +12,6 @@ class ApplicationRoutes extends Component{
         this.state = {
             isLogged: false,
         };
-        this.checkAuth = this.checkAuth.bind(this);
-    }
-
-    checkAuth(){
-        var user = firebase.auth().currentUser;
-        if(user){
-            this.setState({
-                isLogged: true,
-            });
-        }else{
-            this.setState({
-                isLogged: false,
-            });
-        }
-    }
-
-    componentDidMount(){
-        this.checkAuth();
     }
 
     setRouter(router) {
@@ -50,7 +32,9 @@ class ApplicationRoutes extends Component{
             <BrowserRouter ref={this.setRouter.bind(this)}>
                 <div>
                     <Route path='/login' component={LoginScreen}/>
-                    <Route path='/home' component={LoggedPage}/>
+                    <Route path='/home' render={() => {
+                        return (firebase.auth().currentUser ? <LoggedPage/> : <Redirect to='/login'/>);
+                    }}/>
                 </div>
             </BrowserRouter>
         )

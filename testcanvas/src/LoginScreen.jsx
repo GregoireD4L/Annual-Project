@@ -68,6 +68,7 @@ class LoginScreen extends Component {
             lastNameValidation: true,
             registerSnackBar: false,
             snackBarMessage:'',
+            isLogged: false,
         };
 
         this.handleLoginState = this.handleLoginState.bind(this);
@@ -217,6 +218,9 @@ class LoginScreen extends Component {
             this.displaySnackBarWithErrors(errorMessage);
         }).then(() => {
            if(isSuccessful){
+               this.setState({
+                   isLogged: true,
+               });
                this.props.history.push('/home');
            }
         });
