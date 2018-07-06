@@ -23,7 +23,7 @@ const styles = {
     logout: {
         color: theme.palette.primary.text,
         marginRight: -12,
-        marginLeft: '80%',
+        marginLeft: '70%',
     },
     list: {
         width: 250,
@@ -56,15 +56,11 @@ class LoggedPage extends Component{
     getUserInfos(){
         let user = firebase.auth().currentUser;
         if(user) {
-            var firstname='';
-            var lastname='';
-            firebase.database().ref('/users/' + user.uid).on('value', function(snapshot) {
-                firstname = snapshot.val().firstName;
-                lastname = snapshot.val().lastName;
-            });
-            this.setState({
-                firstName: firstname,
-                lastName: lastname,
+            firebase.database().ref('/users/' + user.uid).on('value', snapshot => {
+                this.setState({
+                    firstName: snapshot.val().firstName,
+                    lastName: snapshot.val().lastName,
+                });
             });
         }
     }
