@@ -134,6 +134,12 @@ class LoggedPage extends Component{
                                         </ListItemIcon>
                                         <ListItemText primary="SpO2" />
                                     </ListItem>
+                                    <ListItem button>
+                                        <ListItemIcon>
+                                            <Favorite />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Temperature" />
+                                    </ListItem>
                                 </List>
                             </div>
                         </div>
