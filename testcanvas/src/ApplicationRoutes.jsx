@@ -1,17 +1,38 @@
 import React, { Component } from 'react';
-import {Route} from 'react-router';
+import {Route, Redirect} from 'react-router';
 import {LoginScreen} from "./LoginScreen";
 import {BrowserRouter} from 'react-router-dom';
 import {LoggedPage} from "./LoggedPage";
+import firebase from './FirebaseConfig';
 
 class ApplicationRoutes extends Component{
 
     constructor(props){
         super(props);
+        this.state = {
+            isLogged: false,
+        };
+        this.checkAuth = this.checkAuth.bind(this);
+    }
+
+    checkAuth(){
+        var user = firebase.auth().currentUser;
+        if(user){
+            this.setState({
+                isLogged: true,
+            });
+        }else{
+            this.setState({
+                isLogged: false,
+            });
+        }
+    }
+
+    componentDidMount(){
+        this.checkAuth();
     }
 
     setRouter(router) {
-        let {classes} = this.props;
         if (router) {
             router.history.listen((location, action) => {
                 console.log(`The current URL is ${location.pathname}${location.search}${location.hash}`);

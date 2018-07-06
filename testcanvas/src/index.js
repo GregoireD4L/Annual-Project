@@ -19,5 +19,5 @@ import Accelero from './Accelero';
 
 //localhost:3000/login to go to login page
 
-ReactDOM.render(<Accelero />, document.getElementById('root'));
+ReactDOM.render(<ApplicationRoutes />, document.getElementById('root'));
 registerServiceWorker();
