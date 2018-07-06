@@ -78,6 +78,7 @@ class LoginScreen extends Component {
         this.handleChangeLastName = this.handleChangeLastName.bind(this);
         this.handleRegister = this.handleRegister.bind(this);
         this.handleClose = this.handleClose.bind(this);
+        this.displaySnackBarWithErrors = this.displaySnackBarWithErrors.bind(this);
     }
 
     handleLoginState(event){
@@ -163,29 +164,31 @@ class LoginScreen extends Component {
     }
 
     handleRegister(event){
+        var isSuccessful = true;
         if(this.state.emailValidation === true && this.state.passwordValidation === true
             && this.state.firstNameValidation === true && this.state.lastNameValidation === true) {
-            firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(function (error) {
+            firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(error => {
                 // Handle Errors here.
-                var errorCode = error.code;
+                isSuccessful = false;
                 var errorMessage = error.message;
-                console.error(errorMessage);
+                this.displaySnackBarWithErrors(errorMessage);
+            }).then(() => {
+                if(isSuccessful) {
+                    var user = firebase.auth().currentUser;
+                    if (user) {
+                        this.writeUserData(user.uid, this.state.firstName, this.state.lastName, this.state.email);
+                        this.setState({
+                            welcome: true,
+                            loginState: false,
+                            registerState: false,
+                            registerSnackBar: true,
+                            snackBarMessage: 'Verification Email sent ! please verify your account'
+                        });
+                        //email verification
+                        user.sendEmailVerification();
+                    }
+                }
             });
-            //connecté
-            var user = firebase.auth().currentUser;
-            if (user) {
-                this.writeUserData(user.uid, this.state.firstName, this.state.lastName, this.state.email);
-                this.setState({
-                    welcome: true,
-                    loginState: false,
-                    registerState: false,
-                    registerSnackBar: true,
-                    snackBarMessage: 'Verification Email sent ! please verify your account'
-                });
-                //email verification
-                    user.sendEmailVerification();
-
-            }
         }
     }
 
@@ -196,18 +199,27 @@ class LoginScreen extends Component {
             lastName : lastName
         });
     }
-    handleLogin(event){
-        firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            console.error(errorMessage);
-            console.error(this.state.email);
-        });
 
-        //var database = firebase.database();
-        //connecté
-        this.props.history.push('/home');
+    displaySnackBarWithErrors(errorMessage){
+        if(errorMessage !== ''){
+            this.setState({
+                registerSnackBar: true,
+                snackBarMessage: errorMessage,
+            });
+        }
+    }
+    handleLogin(event){
+        var isSuccessful = true;
+        firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).catch(error => {
+            // Handle Errors here.
+            isSuccessful = false;
+            var errorMessage = error.message;
+            this.displaySnackBarWithErrors(errorMessage);
+        }).then(() => {
+           if(isSuccessful){
+               this.props.history.push('/home');
+           }
+        });
     }
 
     render() {

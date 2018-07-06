@@ -12,7 +12,7 @@ class App extends Component {
 	    let milli= date.getTime()-5000;
 		let dataPoints = [];
 		let dpsLength = 0;
-		let linkurl="http://localhost:8888/data/getAcceleroPastMilli?id=8866skUXvbbhSJZo1qctm9o6Kej1&beginning=";
+		let linkurl="http://localhost:8888/data/getAcceleroPastMilli?id=y8F7Bd0LzJNeGMjbTrmV78NC4h33&beginning=";
 		let linkurlmiddle="&ending=";
 		                                 
 		let tmplink=linkurl+milli+linkurlmiddle+(milli+1000);
@@ -58,7 +58,7 @@ class App extends Component {
 		
 		function updateChart() {	
 		date = new Date();
-		$.getJSON(linkurl+(d2.getTime()-1000)+linkurlmiddle+(date.getTime()-1000), function(data) {
+		$.getJSON(linkurl+(d2.getTime()-1500)+linkurlmiddle+(date.getTime()-1500), function(data) {
 			d2=date;
 			$.each(data, function(key, value) {
 				let date =new Date(parseInt(value.longtime));
