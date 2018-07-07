@@ -3,14 +3,16 @@ import {Layout} from "./Layout";
 import {MuiThemeProvider} from '@material-ui/core/styles';
 import {theme} from "./theme";
 import {Toolbar, Typography, withStyles, IconButton, Button,
-    Drawer, List, ListItem, ListItemIcon, ListItemText, Divider} from '@material-ui/core';
+    Drawer, List, ListItem, ListItemIcon, ListItemText, Divider,
+    Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText,
+    Card, CardContent, CardActions, TextField} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import {Redirect} from 'react-router-dom';
 import {Favorite} from '@material-ui/icons';
-import ECG from './ECG';
 import firebase from './FirebaseConfig';
+import admin from './AdminConfig';
 
 const styles = {
     typography: {
@@ -24,7 +26,7 @@ const styles = {
     logout: {
         color: theme.palette.primary.text,
         marginRight: -12,
-        marginLeft: '70%',
+        marginLeft: 10,
     },
     list: {
         width: 250,
@@ -36,6 +38,21 @@ const styles = {
         padding: '0 8px',
         ...theme.mixins.toolbar,
     },
+    addPatient: {
+        color: theme.palette.primary.text,
+        marginLeft: '60%',
+    },
+    typo: {
+        textAlign: "center",
+    },
+    textFields: {
+        marginTop: 10,
+        display: "block",
+        width: 350,
+    },
+    dialogPatient: {
+        minHeight: 600,
+    }
 };
 
 class LoggedPage extends Component{
@@ -43,17 +60,32 @@ class LoggedPage extends Component{
     constructor(props){
         super(props);
         this.state = {
+            firstNameUser: '',
+            lastNameUser: '',
+            email:'',
+            password:'',
             firstName: '',
             lastName: '',
             openDrawer: false,
             toolbarTitle: 'Welcome',
             choiceMenu: '',
             isLogged: true,
+            openDialog: false,
+            emailValidation: true,
+            passwordValidation: true,
+            firstNameValidation: true,
+            lastNameValidation: true,
         };
         this.getUserInfos = this.getUserInfos.bind(this);
         this.handleCloseDrawer = this.handleCloseDrawer.bind(this);
         this.handleOpenDrawer = this.handleOpenDrawer.bind(this);
         this.handleLogOut = this.handleLogOut.bind(this);
+        this.handleAddPatient = this.handleAddPatient.bind(this);
+        this.handleCloseDialog = this.handleCloseDialog.bind(this);
+        this.handleChangeEmail = this.handleChangeEmail.bind(this);
+        this.handleChangeFirstName = this.handleChangeFirstName.bind(this);
+        this.handleChangeLastName = this.handleChangeLastName.bind(this);
+        this.handleChangePassword = this.handleChangePassword.bind(this);
     }
 
     getUserInfos(){
@@ -61,8 +93,8 @@ class LoggedPage extends Component{
         if(user) {
             firebase.database().ref('/users/' + user.uid).on('value', snapshot => {
                 this.setState({
-                    firstName: snapshot.val().firstName,
-                    lastName: snapshot.val().lastName,
+                    firstNameUser: snapshot.val().firstName,
+                    lastNameUser: snapshot.val().lastName,
                 });
             });
         }
@@ -91,8 +123,85 @@ class LoggedPage extends Component{
         });
     }
 
+    handleAddPatient(){
+        this.setState({
+            openDialog: true,
+        });
+    }
+
+    handleCloseDialog(){
+        this.setState({
+            openDialog: false,
+        });
+    }
+    handleChangeEmail(event){
+        var regExpEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if(regExpEmail.test(String(event.target.value).toLowerCase())){
+            this.setState({
+                email: event.target.value,
+                emailValidation: true,
+            });
+        }else{
+            this.setState({
+                email: event.target.value,
+                emailValidation: false,
+            });
+        }
+    }
+    handleChangePassword(event){
+        if(event.target.value.length < 8 || event.target.value.length > 20){
+            this.setState({
+                password: event.target.value,
+                passwordValidation: false,
+            });
+        }else{
+            this.setState({
+                password: event.target.value,
+                passwordValidation: true,
+            });
+        }
+
+    }
+    handleChangeFirstName(event){
+        if(event.target.value.length !== 0){
+            this.setState({
+                firstName: event.target.value,
+                firstNameValidation: true,
+            });
+        }else{
+            this.setState({
+                firstName: event.target.value,
+                firstNameValidation: false,
+            });
+        }
+
+    }
+    handleChangeLastName(event){
+        if(event.target.value.length !== 0){
+            this.setState({
+                lastName: event.target.value,
+                lastNameValidation: true,
+            });
+        }else{
+            this.setState({
+                lastName: event.target.value,
+                lastNameValidation: false,
+            });
+        }
+    }
+    handleRegisterPatient(){
+        var newUser = {
+            email: 'yous@yous.fr',
+            password: 'aaaaaaaaaaaa',
+            emailVerified: false,
+            disabled: false,
+        };
+        admin.auth().createUser(newUser);
+    }
+
     render(){
         let {classes} = this.props;
+        const isEnabled = this.state.email.length > 0 && this.state.password.length > 0;
         if(this.state.isLogged) {
             return (
                 <MuiThemeProvider theme={theme}>
@@ -103,8 +212,9 @@ class LoggedPage extends Component{
                                 <MenuIcon/>
                             </IconButton>
                             <Typography className={classes.typography} variant="title" color="inherit">
-                                {this.state.toolbarTitle} {this.state.firstName} {this.state.lastName}
+                                {this.state.toolbarTitle} {this.state.firstNameUser} {this.state.lastNameUser}
                             </Typography>
+                            <Button className={classes.addPatient} color="inherit" onClick={this.handleAddPatient}>Add patient</Button>
                             <Button className={classes.logout} color="inherit" onClick={this.handleLogOut}>Log
                                 out</Button>
                         </Toolbar>}>
@@ -154,6 +264,62 @@ class LoggedPage extends Component{
                                 </div>
                             </div>
                         </Drawer>
+
+                        <Dialog
+                            open={this.state.openDialog}
+                            onClose={this.handleCloseDialog}
+                            className={classes.dialogPatient}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description">
+                            <DialogTitle id="alert-dialog-title">{"Add patient to your patients list"}</DialogTitle>
+                            <DialogContent>
+                                <DialogContentText id="alert-dialog-description">
+                                    please provide patient informations :
+                                </DialogContentText>
+                                <Card className={classes.cardRegister}>
+                                    <CardContent>
+                                        <TextField
+                                            fullWidth
+                                            className={classes.textFields}
+                                            label="Enter your First Name"
+                                            error={!this.state.firstNameValidation}
+                                            helperText={(!this.state.firstNameValidation) ? "validation error" : "first name"}
+                                            onChange = {(event) => this.handleChangeFirstName(event)}/>
+                                        <TextField
+                                            fullWidth
+                                            className={classes.textFields}
+                                            label="Enter your Last Name"
+                                            error={!this.state.lastNameValidation}
+                                            helperText={(!this.state.lastNameValidation) ? "validation error" : "last name"}
+                                            onChange = {(event) => this.handleChangeLastName(event)}/>
+                                        <TextField
+                                            fullWidth
+                                            className={classes.textFields}
+                                            label="Enter your Email"
+                                            type="email"
+                                            error={!this.state.emailValidation}
+                                            helperText={(!this.state.emailValidation) ? "validation error" : "email"}
+                                            onChange = {(event) => this.handleChangeEmail(event)}/>
+                                        <TextField
+                                            fullWidth
+                                            className={classes.textFields}
+                                            type = "password"
+                                            label="Enter your Password"
+                                            helperText={(!this.state.passwordValidation) ? "validation error" : "password"}
+                                            error={!this.state.passwordValidation}
+                                            onChange = {(event) => this.handleChangePassword(event)}/>
+                                    </CardContent>
+                                </Card>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={this.handleCloseDialog} color="primary">
+                                    Cancel
+                                </Button>
+                                <Button onClick={this.handleRegisterPatient} color="primary" autoFocus disabled={!isEnabled}>
+                                    Register
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
 
                     </Layout>
                 </MuiThemeProvider>
