@@ -60,7 +60,7 @@ public class InfluxDBReader {
         for(Ecg1Point point : ecgChannelOnePoints) {
             point.setLongtime(point.getTime());
             try {
-                point.setIdUser(Decrypter.decrypt(point.getIdUser().getBytes()));
+                point.setIdUser(Decrypter.encrypt(point.getIdUser()));
             } catch (Exception e) {
                 e.printStackTrace();
             }

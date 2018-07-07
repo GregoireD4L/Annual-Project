@@ -4,15 +4,28 @@ import CanvasJS from './CanvasJS';
 //var CanvasJS = require('./CanvasJS')
  
 class App extends Component {
-	
 	componentDidMount() {
+		
+		var id = getQueryVariable("id");
+
+		function getQueryVariable(variable) {
+			var query = window.location.search.substring(1);
+			var vars = query.split("&");
+			for (var i=0;i<vars.length;i++) {
+				var pair = vars[i].split("=");
+				if (pair[0] == variable) {
+					return pair[1];
+				}
+			}
+		}
+		var id = getQueryVariable("id");
 		let start = new Date();
 		let date = new Date();
 		let d2 = new Date();
 	    let milli= date.getTime()-5000;
 		let dataPoints = [];
 		let dpsLength = 0;
-		let linkurl="http://localhost:8888/data/getECG1PastMilli?id=8866skUXvbbhSJZo1qctm9o6Kej1&beginning=";
+		let linkurl="http://localhost:8888/data/getECG1PastMilli?id="+id+"&beginning=";
 		let linkurlmiddle="&ending=";
 		                                 
 		let tmplink=linkurl+milli+linkurlmiddle+(milli+1000);
@@ -56,7 +69,7 @@ class App extends Component {
 		
 		function updateChart() {	
 		date = new Date();
-		$.getJSON(linkurl+(d2.getTime()-1000)+linkurlmiddle+(date.getTime()-1000), function(data) {
+		$.getJSON(linkurl+(d2.getTime()-1500)+linkurlmiddle+(date.getTime()-1500), function(data) {
 			d2=date;
 			$.each(data, function(key, value) {
 				let date =new Date(parseInt(value.longtime));

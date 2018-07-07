@@ -6,18 +6,29 @@ import CanvasJS from './CanvasJS';
 class App extends Component {
 	
 	componentDidMount() {
+		
+		var id = getQueryVariable("id");
+
+		function getQueryVariable(variable) {
+			var query = window.location.search.substring(1);
+			var vars = query.split("&");
+			for (var i=0;i<vars.length;i++) {
+				var pair = vars[i].split("=");
+				if (pair[0] == variable) {
+					return pair[1];
+				}
+			}
+		}
 		let start = new Date();
 		let date = new Date();
 		let d2 = new Date();
-	    let milli= date.getTime()-5000;
 		let dataPointsX = [];
 		let dataPointsY = [];
 		let dataPointsZ = [];
 		let dpsLength = 0;
-		let linkurl="http://localhost:8888/data/getAcceleroPastMilli?id=y8F7Bd0LzJNeGMjbTrmV78NC4h33&beginning=";
+		let linkurl="http://localhost:8888/data/getAcceleroPastMilli?id="+id+"&beginning=";
 		let linkurlmiddle="&ending=";
-		                                 
-		let tmplink=linkurl+milli+linkurlmiddle+(milli+1000);
+													
 		let chart = new CanvasJS.Chart("chartContainer",{
  		        exportEnabled: true,
 			title:{
@@ -88,7 +99,6 @@ class App extends Component {
 				dataPointsZ.shift();				
 			}
 			chart.render();
-			milli+=1000;
 			updateChart();
 		});
 	}

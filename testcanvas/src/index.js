@@ -17,8 +17,9 @@ import {ApplicationRoutes} from "./ApplicationRoutes";
 import ECG from './ECG';
 import Accelero from './Accelero';
 import Temp from './Temp';
+import Respi from './Respi';
 
 //localhost:3000/login to go to login page
 
-ReactDOM.render(<Accelero />, document.getElementById('root'));
+ReactDOM.render(<Respi/>, document.getElementById('root'));
 registerServiceWorker();
