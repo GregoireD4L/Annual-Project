@@ -32,9 +32,8 @@ public class Decrypter {
         return new String(decrypted);
     }
     public static String encrypt(String plainText) throws UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
-        /*MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = digest.digest(plainText.getBytes(StandardCharsets.UTF_8));
-        return new String(hash);*/
-        return plainText;
+        return new String(hash);
     }
 }

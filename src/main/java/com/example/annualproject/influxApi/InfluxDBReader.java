@@ -120,7 +120,7 @@ public class InfluxDBReader {
         return respiPoints;
     }
 
-    public List<Spo2Point> readSpo2BeetweenTime(String id, long beginning, long ending) {
+    public List<Spo2Point_1> readSpo2BeetweenTime(String id, long beginning, long ending) {
         InfluxDB influxDB = InfluxDBSingleton.getInstance();
         String dbName = "dataforlifeDB";
         String query = null;
@@ -134,8 +134,8 @@ public class InfluxDBReader {
         QueryResult queryResult = influxDB.query(new Query(query, dbName));
 
         InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
-        List<Spo2Point> spo2Points = resultMapper.toPOJO(queryResult, Spo2Point.class);
-        for(Spo2Point point : spo2Points) {
+        List<Spo2Point_1> spo2Points = resultMapper.toPOJO(queryResult, Spo2Point_1.class);
+        for(Spo2Point_1 point : spo2Points) {
             point.setLongtime(point.getTime());
             try {
                 point.setIdUser(Decrypter.encrypt(id));
@@ -164,24 +164,7 @@ public class InfluxDBReader {
         setUsers(id, acceleroPoints);
         return acceleroPoints;
     }
-    public List<Accelero2Point> readAcceleroChannel2(String id, long beginning, long ending) {
-        InfluxDB influxDB = InfluxDBSingleton.getInstance();
-        String dbName = "dataforlifeDB";
-        String query = null;
-        try {
-            //    query = "SELECT * FROM allPoints where ID='" +  Decrypter.decrypt(id.getBytes())+ "' and time>=" + beginning+" and time<"+ending;
-            query = "SELECT acceleroX2,acceleroY2,AcceleroZ2,timestamp FROM allPoints where ID='" +  Decrypter.encrypt(id)+ "' and timestamp>" + beginning+" and timestamp<"+ending;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println(query);
-        QueryResult queryResult = influxDB.query(new Query(query, dbName));
 
-        InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
-        List<Accelero2Point> accelero2Points = resultMapper.toPOJO(queryResult, Accelero2Point.class);
-        setUsers2(id, accelero2Points);
-        return accelero2Points;
-    }
 
     private void setUsers(String id, List<AcceleroPoint> acceleroPoints) {
         for(AcceleroPoint point : acceleroPoints) {
@@ -193,8 +176,10 @@ public class InfluxDBReader {
             }
         }
     }
-    private void setUsers2(String id, List<Accelero2Point> accelero2Points) {
-        for(Accelero2Point point : accelero2Points) {
+
+    public List<TempPoint> readTemp(String id, long beginning, long ending) {
+        List<TempPoint> tempPoints = getTempPoints(id, beginning, ending);
+        for(TempPoint point : tempPoints) {
             point.setLongtime(point.getTime());
             try {
                 point.setIdUser(Decrypter.encrypt(id));
@@ -202,5 +187,24 @@ public class InfluxDBReader {
                 e.printStackTrace();
             }
         }
+        return tempPoints;
+        
+    }
+
+    private List<TempPoint> getTempPoints(String id, long beginning, long ending) {
+        InfluxDB influxDB = InfluxDBSingleton.getInstance();
+        String dbName = "dataforlifeDB";
+        String query = null;
+        try {
+            //    query = "SELECT * FROM allPoints where ID='" +  Decrypter.decrypt(id.getBytes())+ "' and time>=" + beginning+" and time<"+ending;
+            query = "SELECT temp,timestamp FROM allPoints where ID='" +  Decrypter.encrypt(id)+ "' and timestamp>" + beginning+" and timestamp<"+ending;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(query);
+        QueryResult queryResult = influxDB.query(new Query(query, dbName));
+
+        InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
+        return resultMapper.toPOJO(queryResult, TempPoint.class);
     }
 }

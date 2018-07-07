@@ -4,7 +4,7 @@ import org.influxdb.annotation.Column;
 import org.influxdb.annotation.Measurement;
 
 @Measurement(name = "allPoints")
-public class Spo2Point {
+public class Spo2Point_1 {
 
     @Column(name = "ID")
     private String idUser;

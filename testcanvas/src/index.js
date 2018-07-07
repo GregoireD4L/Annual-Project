@@ -15,9 +15,10 @@ import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 import {ApplicationRoutes} from "./ApplicationRoutes";
 //import ECG from './ECG';
-import Accelero from './Accelero';
+//import Accelero from './Accelero';
+import Temp from './Temp';
 
 //localhost:3000/login to go to login page
 
-ReactDOM.render(<ApplicationRoutes />, document.getElementById('root'));
+ReactDOM.render(<Temp />, document.getElementById('root'));
 registerServiceWorker();

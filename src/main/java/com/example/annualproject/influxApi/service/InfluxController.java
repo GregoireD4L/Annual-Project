@@ -52,11 +52,11 @@ public class InfluxController {
         return toReturn;
     }
     @GetMapping(value = "/getSpo2PastMilli")
-    public List<Spo2Point> getSpo2BetweenTimeMilli(@RequestParam String id, @RequestParam long beginning, @RequestParam long ending ) throws Exception {
-        List<Spo2Point> spo2Points=influxDBReader.readSpo2BeetweenTime(id,beginning,ending);
-        List<Spo2Point> toReturn = new ArrayList<>();
+    public List<Spo2Point_1> getSpo2BetweenTimeMilli(@RequestParam String id, @RequestParam long beginning, @RequestParam long ending ) throws Exception {
+        List<Spo2Point_1> spo2Point1s =influxDBReader.readSpo2BeetweenTime(id,beginning,ending);
+        List<Spo2Point_1> toReturn = new ArrayList<>();
         int cpt=0;
-        for(Spo2Point ap:spo2Points){
+        for(Spo2Point_1 ap: spo2Point1s){
             if(cpt%10==0){
                 toReturn.add(ap);
             }
@@ -80,12 +80,12 @@ public class InfluxController {
         return toReturn;
 
     }
-    @GetMapping(value = "/getAccelero2PastMilli")
-    public List<Accelero2Point> getAccelero2PointsBetweenTime(@RequestParam String id, @RequestParam long beginning, @RequestParam long ending) throws Exception {
-        List<Accelero2Point> acceleroPoints=influxDBReader.readAcceleroChannel2(id,beginning,ending);
-        List<Accelero2Point> toReturn = new ArrayList<>();
+    @GetMapping(value = "/getTempPastMilli")
+    public List<TempPoint> getTempPointsBetweenTime(@RequestParam String id, @RequestParam long beginning, @RequestParam long ending) throws Exception {
+        List<TempPoint> tempPoints=influxDBReader.readTemp(id,beginning,ending);
+        List<TempPoint> toReturn = new ArrayList<>();
         int cpt=0;
-        for(Accelero2Point ap:acceleroPoints){
+        for(TempPoint ap:tempPoints){
             if(cpt%10==0){
                 toReturn.add(ap);
             }
@@ -94,6 +94,7 @@ public class InfluxController {
         return toReturn;
 
     }
+
 
 
 }
