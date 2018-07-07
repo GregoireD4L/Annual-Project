@@ -10,7 +10,9 @@ class App extends Component {
 		let date = new Date();
 		let d2 = new Date();
 	    let milli= date.getTime()-5000;
-		let dataPoints = [];
+		let dataPointsX = [];
+		let dataPointsY = [];
+		let dataPointsZ = [];
 		let dpsLength = 0;
 		let linkurl="http://localhost:8888/data/getAcceleroPastMilli?id=y8F7Bd0LzJNeGMjbTrmV78NC4h33&beginning=";
 		let linkurlmiddle="&ending=";
@@ -21,11 +23,23 @@ class App extends Component {
 			title:{
 				text:"Accelero Points"
 			},
-			data: [{
+			data: [
+			{
 				type: "spline",
-				dataPoints : dataPoints,
+				dataPoints : dataPointsY,
 				markerSize: 0,
-			}],
+			},
+			{
+				type: "spline",
+				dataPoints : dataPointsZ,
+				markerSize: 0,
+			},
+			{
+				type: "spline",
+				dataPoints : dataPointsX,
+				markerSize: 0,
+			},
+			],
 			axisY: {
 				includeZero: false,
 				interval : 0.2,
@@ -62,12 +76,16 @@ class App extends Component {
 			d2=date;
 			$.each(data, function(key, value) {
 				let date =new Date(parseInt(value.longtime));
-				dataPoints.push({x: parseInt(value.longtime)- start.getTime(), y: parseFloat(value.acceleroX)});
+				dataPointsX.push({x: parseInt(value.longtime)- start.getTime(), y: parseFloat(value.acceleroX)});
+				dataPointsY.push({x: parseInt(value.longtime)- start.getTime(), y: parseFloat(value.acceleroY)});
+				dataPointsZ.push({x: parseInt(value.longtime)- start.getTime(), y: parseFloat(value.acceleroZ)});
 				});
 			
 			
-			while (dataPoints.length >  330 ) {
-				dataPoints.shift();				
+			while (dataPointsX.length >  330 ) {
+				dataPointsX.shift();	
+				dataPointsY.shift();
+				dataPointsZ.shift();				
 			}
 			chart.render();
 			milli+=1000;

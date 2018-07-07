@@ -14,11 +14,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 import {ApplicationRoutes} from "./ApplicationRoutes";
-//import ECG from './ECG';
-//import Accelero from './Accelero';
+import ECG from './ECG';
+import Accelero from './Accelero';
 import Temp from './Temp';
 
 //localhost:3000/login to go to login page
 
-ReactDOM.render(<Temp />, document.getElementById('root'));
+ReactDOM.render(<Accelero />, document.getElementById('root'));
 registerServiceWorker();
