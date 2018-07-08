@@ -7,7 +7,8 @@ let theme = createMuiTheme({
         },
         primary: {
             main: '#11c1ff',
-            text: '#FFFFFF'
+            text: '#FFFFFF',
+            text2: '#000000',
         },
         error: {
             main: colors.red[400],

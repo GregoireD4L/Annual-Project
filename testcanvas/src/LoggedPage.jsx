@@ -5,7 +5,7 @@ import {theme} from "./theme";
 import {Toolbar, Typography, withStyles, IconButton, Button,
     Drawer, List, ListItem, ListItemIcon, ListItemText, Divider,
     Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText,
-    TextField, InputLabel, MenuItem, FormControl, Select, Snackbar, IconButton} from '@material-ui/core';
+    TextField, InputLabel, MenuItem, FormControl, Select, Snackbar} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -13,7 +13,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import {Redirect} from 'react-router-dom';
 import {Favorite} from '@material-ui/icons';
 import firebase from './FirebaseConfig';
-import ECG from './ECG';
+import {ECG} from './ECG';
 
 const styles = {
     root: {
@@ -95,6 +95,7 @@ class LoggedPage extends Component{
             },
             registerSnackBar: false,
             snackBarMessage: '',
+            openECG: false,
         };
         this.getUserInfos = this.getUserInfos.bind(this);
         this.handleCloseDrawer = this.handleCloseDrawer.bind(this);
@@ -108,6 +109,7 @@ class LoggedPage extends Component{
         this.handleChangePassword = this.handleChangePassword.bind(this);
         this.handleRegisterPatient = this.handleRegisterPatient.bind(this);
         this.handleSelection = this.handleSelection.bind(this);
+        this.openECG = this.openECG.bind(this);
     }
 
     getUserInfos(){
@@ -240,7 +242,7 @@ class LoggedPage extends Component{
                     this.setState({
                         openDialog: false,
                     });
-                    firebase.auth().signOut();
+                    //firebase.auth().signOut();
                 }
             }
         });
@@ -283,6 +285,12 @@ class LoggedPage extends Component{
         return patients;
     }
 
+    openECG(){
+        this.setState({
+            openECG: true,
+            openDrawer:false,
+        });
+    }
 
     render(){
         let {classes} = this.props;
@@ -310,7 +318,7 @@ class LoggedPage extends Component{
                         </Toolbar>}>
 
                         <Drawer open={this.state.openDrawer} onClose={this.handleCloseDrawer}>
-                            <div tabIndex={0} role="button" //onClick={this.handleCloseDrawer}
+                            <div tabIndex={0} role="button"
                                  onKeyDown={this.handleCloseDrawer}>
                                 <div className={classes.drawerHeader}>
                                     <IconButton onClick={this.handleCloseDrawer}>
@@ -332,7 +340,7 @@ class LoggedPage extends Component{
                                                 </FormControl>
                                             </form>
                                         </ListItem>
-                                        <ListItem button>
+                                        <ListItem button onClick={this.openECG}>
                                             <ListItemIcon>
                                                 <Favorite/>
                                             </ListItemIcon>
@@ -430,6 +438,7 @@ class LoggedPage extends Component{
                             <CloseIcon />
                         </IconButton>}/>
 
+                        <ECG idPatient={this.state.activePatient} openECG={this.state.openECG}/>
 
                     </Layout>
                 </MuiThemeProvider>
