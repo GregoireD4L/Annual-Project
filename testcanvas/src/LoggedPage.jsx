@@ -5,16 +5,26 @@ import {theme} from "./theme";
 import {Toolbar, Typography, withStyles, IconButton, Button,
     Drawer, List, ListItem, ListItemIcon, ListItemText, Divider,
     Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText,
-    Card, CardContent, TextField} from '@material-ui/core';
+    TextField, InputLabel, MenuItem, FormControl, Select} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import {Redirect} from 'react-router-dom';
 import {Favorite} from '@material-ui/icons';
 import firebase from './FirebaseConfig';
-import {PatientList} from "./PatientList";
 
 const styles = {
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+    formControl: {
+        margin: theme.spacing.unit,
+        minWidth: 120,
+    },
+    selectEmpty: {
+        marginTop: theme.spacing.unit * 2,
+    },
     typography: {
         color: theme.palette.primary.text,
     },
@@ -75,6 +85,12 @@ class LoggedPage extends Component{
             passwordValidation: true,
             firstNameValidation: true,
             lastNameValidation: true,
+            activePatient: '',
+            currentPatient: {
+                firstName: '',
+                lastName: '',
+                uid: '',
+            }
         };
         this.getUserInfos = this.getUserInfos.bind(this);
         this.handleCloseDrawer = this.handleCloseDrawer.bind(this);
@@ -87,6 +103,7 @@ class LoggedPage extends Component{
         this.handleChangeLastName = this.handleChangeLastName.bind(this);
         this.handleChangePassword = this.handleChangePassword.bind(this);
         this.handleRegisterPatient = this.handleRegisterPatient.bind(this);
+        this.handleSelection = this.handleSelection.bind(this);
     }
 
     getUserInfos(){
@@ -216,6 +233,9 @@ class LoggedPage extends Component{
                     });
                     //email verification
                     user.sendEmailVerification();
+                    this.setState({
+                        openDrawer: false,
+                    });
                     firebase.auth().signOut();
                 }
             }
@@ -230,9 +250,36 @@ class LoggedPage extends Component{
         });
     }
 
+    handleSelection = event => {
+        this.setState({
+            activePatient: event.target.value,
+            currentPatient: {
+                uid: event.target.value,
+            }
+        });
+    };
+
+    retrievePatientsList(doctorId){
+        var patients = [];
+        var i = 0;
+        firebase.database().ref('users/' + doctorId + '/patients').on('value', snapshot => {
+            snapshot.forEach(child => {
+                patients[i] = child;
+                i++;
+            });
+        });
+        return patients;
+    }
+
+
     render(){
         let {classes} = this.props;
         const isEnabled = this.state.email.length > 0 && this.state.password.length > 0;
+        var patients = this.retrievePatientsList(firebase.auth().currentUser.uid);
+        var items = '';
+        patients.forEach(patient => {
+            items = <MenuItem value={patient.key}/* + ' ' + patient.val().firstName + ' ' + patient.val().lastName}*/>{patient.val().firstName} {patient.val().lastName}</MenuItem>
+        });
         if(this.state.isLogged) {
             return (
                 <MuiThemeProvider theme={theme}>
@@ -262,7 +309,16 @@ class LoggedPage extends Component{
                                 <div className={classes.list}>
                                     <List>
                                         <ListItem>
-                                            <PatientList doctorId={firebase.auth().currentUser.uid}/>
+                                            <form className={classes.root} autoComplete="off">
+                                                <FormControl className={classes.formControl}>
+                                                    <InputLabel>Patient</InputLabel>
+                                                    <Select
+                                                        onChange={this.handleSelection}
+                                                        value={this.state.activePatient}>
+                                                        {items}
+                                                    </Select>
+                                                </FormControl>
+                                            </form>
                                         </ListItem>
                                         <ListItem button>
                                             <ListItemIcon>
