@@ -12,6 +12,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import {Redirect} from 'react-router-dom';
 import {Favorite} from '@material-ui/icons';
 import firebase from './FirebaseConfig';
+import {PatientList} from "./PatientList";
 
 const styles = {
     typography: {
@@ -250,7 +251,7 @@ class LoggedPage extends Component{
                         </Toolbar>}>
 
                         <Drawer open={this.state.openDrawer} onClose={this.handleCloseDrawer}>
-                            <div tabIndex={0} role="button" onClick={this.handleCloseDrawer}
+                            <div tabIndex={0} role="button" //onClick={this.handleCloseDrawer}
                                  onKeyDown={this.handleCloseDrawer}>
                                 <div className={classes.drawerHeader}>
                                     <IconButton onClick={this.handleCloseDrawer}>
@@ -260,6 +261,9 @@ class LoggedPage extends Component{
                                 <Divider/>
                                 <div className={classes.list}>
                                     <List>
+                                        <ListItem>
+                                            <PatientList doctorId={firebase.auth().currentUser.uid}/>
+                                        </ListItem>
                                         <ListItem button>
                                             <ListItemIcon>
                                                 <Favorite/>
