@@ -238,7 +238,7 @@ class LoggedPage extends Component{
                     //email verification
                     user.sendEmailVerification();
                     this.setState({
-                        openDrawer: false,
+                        openDialog: false,
                     });
                     firebase.auth().signOut();
                 }
