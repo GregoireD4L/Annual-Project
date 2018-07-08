@@ -21,5 +21,5 @@ import Respi from './Respi';
 
 //localhost:3000/login to go to login page
 
-ReactDOM.render(<Respi/>, document.getElementById('root'));
+ReactDOM.render(<ApplicationRoutes/>, document.getElementById('root'));
 registerServiceWorker();

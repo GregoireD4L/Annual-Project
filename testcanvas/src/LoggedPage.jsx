@@ -5,14 +5,13 @@ import {theme} from "./theme";
 import {Toolbar, Typography, withStyles, IconButton, Button,
     Drawer, List, ListItem, ListItemIcon, ListItemText, Divider,
     Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText,
-    Card, CardContent, CardActions, TextField} from '@material-ui/core';
+    Card, CardContent, TextField} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import {Redirect} from 'react-router-dom';
 import {Favorite} from '@material-ui/icons';
 import firebase from './FirebaseConfig';
-import admin from './AdminConfig';
 
 const styles = {
     typography: {
@@ -86,6 +85,7 @@ class LoggedPage extends Component{
         this.handleChangeFirstName = this.handleChangeFirstName.bind(this);
         this.handleChangeLastName = this.handleChangeLastName.bind(this);
         this.handleChangePassword = this.handleChangePassword.bind(this);
+        this.handleRegisterPatient = this.handleRegisterPatient.bind(this);
     }
 
     getUserInfos(){
@@ -190,13 +190,43 @@ class LoggedPage extends Component{
         }
     }
     handleRegisterPatient(){
-        var newUser = {
-            email: 'yous@yous.fr',
-            password: 'aaaaaaaaaaaa',
-            emailVerified: false,
-            disabled: false,
-        };
-        admin.auth().createUser(newUser);
+        var isSuccessful = true;
+        var user = firebase.auth().currentUser;
+        var doctorId = '';
+        if(user){
+            doctorId = user.uid;
+        }
+        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(error => {
+            // Handle Errors here.
+            isSuccessful = false;
+            var errorMessage = error.message;
+            this.displaySnackBarWithErrors(errorMessage);
+        }).then(() => {
+            if(isSuccessful) {
+                var user = firebase.auth().currentUser;
+                if (user) {
+                    this.writePatientData(doctorId, user.uid, this.state.firstName, this.state.lastName, this.state.email);
+                    this.setState({
+                        welcome: true,
+                        loginState: false,
+                        registerState: false,
+                        registerSnackBar: true,
+                        snackBarMessage: 'Verification Email sent ! please verify your account'
+                    });
+                    //email verification
+                    user.sendEmailVerification();
+                    firebase.auth().signOut();
+                }
+            }
+        });
+    }
+
+    writePatientData(doctorId, userId, firstName, lastName ,email) {
+        firebase.database().ref('users/' + doctorId + '/patients/' + userId).set({
+            email: email,
+            firstName: firstName,
+            lastName : lastName
+        });
     }
 
     render(){
@@ -276,40 +306,36 @@ class LoggedPage extends Component{
                                 <DialogContentText id="alert-dialog-description">
                                     please provide patient informations :
                                 </DialogContentText>
-                                <Card className={classes.cardRegister}>
-                                    <CardContent>
-                                        <TextField
-                                            fullWidth
-                                            className={classes.textFields}
-                                            label="Enter your First Name"
-                                            error={!this.state.firstNameValidation}
-                                            helperText={(!this.state.firstNameValidation) ? "validation error" : "first name"}
-                                            onChange = {(event) => this.handleChangeFirstName(event)}/>
-                                        <TextField
-                                            fullWidth
-                                            className={classes.textFields}
-                                            label="Enter your Last Name"
-                                            error={!this.state.lastNameValidation}
-                                            helperText={(!this.state.lastNameValidation) ? "validation error" : "last name"}
-                                            onChange = {(event) => this.handleChangeLastName(event)}/>
-                                        <TextField
-                                            fullWidth
-                                            className={classes.textFields}
-                                            label="Enter your Email"
-                                            type="email"
-                                            error={!this.state.emailValidation}
-                                            helperText={(!this.state.emailValidation) ? "validation error" : "email"}
-                                            onChange = {(event) => this.handleChangeEmail(event)}/>
-                                        <TextField
-                                            fullWidth
-                                            className={classes.textFields}
-                                            type = "password"
-                                            label="Enter your Password"
-                                            helperText={(!this.state.passwordValidation) ? "validation error" : "password"}
-                                            error={!this.state.passwordValidation}
-                                            onChange = {(event) => this.handleChangePassword(event)}/>
-                                    </CardContent>
-                                </Card>
+                                <TextField
+                                    fullWidth
+                                    className={classes.textFields}
+                                    label="Enter your First Name"
+                                    error={!this.state.firstNameValidation}
+                                    helperText={(!this.state.firstNameValidation) ? "validation error" : "first name"}
+                                    onChange = {(event) => this.handleChangeFirstName(event)}/>
+                                <TextField
+                                    fullWidth
+                                    className={classes.textFields}
+                                    label="Enter your Last Name"
+                                    error={!this.state.lastNameValidation}
+                                    helperText={(!this.state.lastNameValidation) ? "validation error" : "last name"}
+                                    onChange = {(event) => this.handleChangeLastName(event)}/>
+                                <TextField
+                                    fullWidth
+                                    className={classes.textFields}
+                                    label="Enter your Email"
+                                    type="email"
+                                    error={!this.state.emailValidation}
+                                    helperText={(!this.state.emailValidation) ? "validation error" : "email"}
+                                    onChange = {(event) => this.handleChangeEmail(event)}/>
+                                <TextField
+                                    fullWidth
+                                    className={classes.textFields}
+                                    type = "password"
+                                    label="Enter your Password"
+                                    helperText={(!this.state.passwordValidation) ? "validation error" : "password"}
+                                    error={!this.state.passwordValidation}
+                                    onChange = {(event) => this.handleChangePassword(event)}/>
                             </DialogContent>
                             <DialogActions>
                                 <Button onClick={this.handleCloseDialog} color="primary">
@@ -320,7 +346,6 @@ class LoggedPage extends Component{
                                 </Button>
                             </DialogActions>
                         </Dialog>
-
                     </Layout>
                 </MuiThemeProvider>
             );
