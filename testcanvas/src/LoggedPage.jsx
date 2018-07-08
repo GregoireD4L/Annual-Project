@@ -5,13 +5,15 @@ import {theme} from "./theme";
 import {Toolbar, Typography, withStyles, IconButton, Button,
     Drawer, List, ListItem, ListItemIcon, ListItemText, Divider,
     Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText,
-    TextField, InputLabel, MenuItem, FormControl, Select} from '@material-ui/core';
+    TextField, InputLabel, MenuItem, FormControl, Select, Snackbar, IconButton} from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import {Redirect} from 'react-router-dom';
 import {Favorite} from '@material-ui/icons';
 import firebase from './FirebaseConfig';
+import ECG from './ECG';
 
 const styles = {
     root: {
@@ -90,7 +92,9 @@ class LoggedPage extends Component{
                 firstName: '',
                 lastName: '',
                 uid: '',
-            }
+            },
+            registerSnackBar: false,
+            snackBarMessage: '',
         };
         this.getUserInfos = this.getUserInfos.bind(this);
         this.handleCloseDrawer = this.handleCloseDrawer.bind(this);
@@ -240,6 +244,14 @@ class LoggedPage extends Component{
                 }
             }
         });
+    }
+    displaySnackBarWithErrors(errorMessage){
+        if(errorMessage !== ''){
+            this.setState({
+                registerSnackBar: true,
+                snackBarMessage: errorMessage,
+            });
+        }
     }
 
     writePatientData(doctorId, userId, firstName, lastName ,email) {
@@ -406,6 +418,19 @@ class LoggedPage extends Component{
                                 </Button>
                             </DialogActions>
                         </Dialog>
+
+                        <Snackbar anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'left',}} message={this.state.snackBarMessage}
+                                  open={this.state.registerSnackBar} autoHideDuration={2000} action={<IconButton
+                            key="close"
+                            aria-label="Close"
+                            color="inherit"
+                            onClick={this.handleClose}>
+                            <CloseIcon />
+                        </IconButton>}/>
+
+
                     </Layout>
                 </MuiThemeProvider>
             );
