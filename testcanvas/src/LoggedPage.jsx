@@ -242,7 +242,7 @@ class LoggedPage extends Component{
                         snackBarMessage: 'Verification Email sent ! please verify your account'
                     });
                     //email verification
-                    user.sendEmailVerification();
+                    //user.sendEmailVerification();
                     this.setState({
                         openDialog: false,
                     });
@@ -282,7 +282,7 @@ class LoggedPage extends Component{
         var i = 0;
         firebase.database().ref('users/' + doctorId + '/patients').on('value', snapshot => {
             snapshot.forEach(child => {
-                patients[i] = child;
+                patients.push(child);
                 i++;
             });
         });
@@ -328,9 +328,9 @@ class LoggedPage extends Component{
         let {classes} = this.props;
         const isEnabled = this.state.email.length > 0 && this.state.password.length > 0;
         var patients = this.retrievePatientsList(firebase.auth().currentUser.uid);
-        var items = '';
+        var items = [];
         patients.forEach(patient => {
-            items = <MenuItem value={patient.key}/* + ' ' + patient.val().firstName + ' ' + patient.val().lastName}*/>{patient.val().firstName} {patient.val().lastName}</MenuItem>
+            items.push(<MenuItem value={patient.key}/* + ' ' + patient.val().firstName + ' ' + patient.val().lastName}*/>{patient.val().firstName} {patient.val().lastName}</MenuItem>);
         });
         var graph = '';
         if(this.state.openGraph !== '' && this.state.activePatient !== ''){
