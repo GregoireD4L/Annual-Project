@@ -3,10 +3,12 @@ import $ from 'jquery';
 import CanvasJS from './CanvasJS';
 //var CanvasJS = require('./CanvasJS')
  
-class App extends Component {
+class Temp extends Component {
 	componentDidMount() {
+
+        let {idPatient} = this.props;
 		
-		var id = getQueryVariable("id");
+		/*var id = getQueryVariable("id");
 
 		function getQueryVariable(variable) {
 			var query = window.location.search.substring(1);
@@ -17,14 +19,14 @@ class App extends Component {
 					return pair[1];
 				}
 			}
-		}
+		}*/
 		let start = new Date();
 		let date = new Date();
 		let d2 = new Date();
 	    let milli= date.getTime()-5000;
 		let dataPoints = [];
 		let dpsLength = 0;
-		let linkurl="http://localhost:8888/data/getTempPastMilli?id="+id+"&beginning=";
+		let linkurl="http://localhost:8888/data/getTempPastMilli?id="+idPatient+"&beginning=";
 		let linkurlmiddle="&ending=";
 		                                 
 		let tmplink=linkurl+milli+linkurlmiddle+(milli+1000);
@@ -95,4 +97,4 @@ class App extends Component {
   }
 }
  
-export default App;
+export {Temp}

@@ -42,12 +42,13 @@ public class InfluxController {
     public List<RespiPoint> getRespiPointsBetweenTime(@RequestParam String id,@RequestParam long beginning, @RequestParam long ending) throws Exception {
         List<RespiPoint> respiPoints=influxDBReader.readRespiBeetweenTime(id,beginning,ending);
         List<RespiPoint> toReturn = new ArrayList<>();
-        int cpt=0;
-        for(RespiPoint ap:respiPoints){
-            if(cpt%10==0){
-                toReturn.add(ap);
+        RespiPoint respiPoint=respiPoints.get(0);
+        toReturn.add(respiPoint);
+        for(RespiPoint rp:respiPoints){
+            if(!rp.equals(respiPoint)){
+                toReturn.add(rp);
             }
-            cpt++;
+            respiPoint=rp;
         }
         return toReturn;
     }

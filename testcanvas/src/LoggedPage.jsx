@@ -13,7 +13,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import {Redirect} from 'react-router-dom';
 import {Favorite} from '@material-ui/icons';
 import firebase from './FirebaseConfig';
-import {ECG} from './ECG';
+import {GraphFrame} from "./GraphFrame";
 
 const styles = {
     root: {
@@ -95,7 +95,7 @@ class LoggedPage extends Component{
             },
             registerSnackBar: false,
             snackBarMessage: '',
-            openECG: false,
+            openGraph: '',
         };
         this.getUserInfos = this.getUserInfos.bind(this);
         this.handleCloseDrawer = this.handleCloseDrawer.bind(this);
@@ -110,6 +110,10 @@ class LoggedPage extends Component{
         this.handleRegisterPatient = this.handleRegisterPatient.bind(this);
         this.handleSelection = this.handleSelection.bind(this);
         this.openECG = this.openECG.bind(this);
+        this.openACCELERO = this.openACCELERO.bind(this);
+        this.openBREATHING = this.openBREATHING.bind(this);
+        this.openSPO2 = this.openSPO2.bind(this);
+        this.openTEMPERATURE = this.openTEMPERATURE.bind(this);
     }
 
     getUserInfos(){
@@ -287,8 +291,36 @@ class LoggedPage extends Component{
 
     openECG(){
         this.setState({
-            openECG: true,
+            openGraph: 'ECG',
             openDrawer:false,
+        });
+    }
+
+    openACCELERO(){
+        this.setState({
+            openGraph: 'ACCELERO',
+            openDrawer: false,
+        });
+    }
+
+    openBREATHING(){
+        this.setState({
+            openGraph: 'BREATHING',
+            openDrawer: false,
+        });
+    }
+
+    openSPO2(){
+        this.setState({
+            openGraph: 'SPO2',
+            openDrawer: false,
+        });
+    }
+
+    openTEMPERATURE(){
+        this.setState({
+            openGraph: 'TEMPERATURE',
+            openDrawer: false,
         });
     }
 
@@ -300,6 +332,10 @@ class LoggedPage extends Component{
         patients.forEach(patient => {
             items = <MenuItem value={patient.key}/* + ' ' + patient.val().firstName + ' ' + patient.val().lastName}*/>{patient.val().firstName} {patient.val().lastName}</MenuItem>
         });
+        var graph = '';
+        if(this.state.openGraph !== '' && this.state.activePatient !== ''){
+            graph = <GraphFrame idPatient={this.state.activePatient} openGraph={this.state.openGraph}/>;
+        }
         if(this.state.isLogged) {
             return (
                 <MuiThemeProvider theme={theme}>
@@ -346,25 +382,25 @@ class LoggedPage extends Component{
                                             </ListItemIcon>
                                             <ListItemText primary="ECG"/>
                                         </ListItem>
-                                        <ListItem button>
+                                        <ListItem button onClick={this.openACCELERO}>
                                             <ListItemIcon>
                                                 <Favorite/>
                                             </ListItemIcon>
                                             <ListItemText primary="Accelero"/>
                                         </ListItem>
-                                        <ListItem button>
+                                        <ListItem button onClick={this.openBREATHING}>
                                             <ListItemIcon>
                                                 <Favorite/>
                                             </ListItemIcon>
                                             <ListItemText primary="Breathing"/>
                                         </ListItem>
-                                        <ListItem button>
+                                        <ListItem button onClick={this.openSPO2}>
                                             <ListItemIcon>
                                                 <Favorite/>
                                             </ListItemIcon>
                                             <ListItemText primary="SpO2"/>
                                         </ListItem>
-                                        <ListItem button>
+                                        <ListItem button onClick={this.openTEMPERATURE}>
                                             <ListItemIcon>
                                                 <Favorite/>
                                             </ListItemIcon>
@@ -437,9 +473,7 @@ class LoggedPage extends Component{
                             onClick={this.handleClose}>
                             <CloseIcon />
                         </IconButton>}/>
-
-                        <ECG idPatient={this.state.activePatient} openECG={this.state.openECG}/>
-
+                        {graph}
                     </Layout>
                 </MuiThemeProvider>
             );

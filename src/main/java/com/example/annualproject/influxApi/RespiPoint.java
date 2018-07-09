@@ -59,4 +59,16 @@ public class RespiPoint {
     public void setTime(long time) {
         this.time = time;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        RespiPoint respiPoint = (RespiPoint) obj;
+        if(respiPoint.respiAbdominal!=this.respiAbdominal){
+            return false;
+        }
+        if(respiPoint.respiThorax!=this.respiThorax){
+            return false;
+        }
+        return true;
+    }
 }

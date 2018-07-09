@@ -13,10 +13,10 @@ import java.security.*;
 public class Decrypter {
 
     public static String encrypt(String plainText) throws UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
-        System.out.println(plainText);
+       // System.out.println(plainText);
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = digest.digest(plainText.getBytes(StandardCharsets.UTF_8));
-        System.out.println(new String(hash));
+        //System.out.println(new String(hash));
         return new String(hash);
     }
 }

@@ -3,10 +3,11 @@ import $ from 'jquery';
 import CanvasJS from './CanvasJS';
 //var CanvasJS = require('./CanvasJS')
  
-class App extends Component {
+class Respi extends Component {
 	componentDidMount() {
-		
-		var id = getQueryVariable("id");
+
+        let {idPatient} = this.props;
+		/*var id = getQueryVariable("id");
 
 		function getQueryVariable(variable) {
 			var query = window.location.search.substring(1);
@@ -17,14 +18,14 @@ class App extends Component {
 					return pair[1];
 				}
 			}
-		}
+		}*/
 		let start = new Date();
 		let date = new Date();
 		let d2 = new Date();
 	    let milli= date.getTime()-5000;
 		let dataPoints = [];
 		let dpsLength = 0;
-		let linkurl="http://localhost:8888/data/getRespiPastMilli?id="+id+"&beginning=";
+		let linkurl="http://localhost:8888/data/getRespiPastMilli?id="+idPatient+"&beginning=";
 		let linkurlmiddle="&ending=";
 		                                 
 		let tmplink=linkurl+milli+linkurlmiddle+(milli+1000);
@@ -71,7 +72,7 @@ class App extends Component {
 			d2=date;
 			$.each(data, function(key, value) {
 				let date =new Date(parseInt(value.longtime));
-				dataPoints.push({x: parseInt(value.longtime)- start.getTime(), y: parseFloat(value.respiAbdominal)});
+				dataPoints.push({x: parseInt(value.longtime)- start.getTime(), y: parseFloat(value.respiThorax)});
 				});
 			
 			
@@ -93,4 +94,4 @@ class App extends Component {
   }
 }
  
-export default App;
+export {Respi}
