@@ -14,6 +14,7 @@ import {Redirect} from 'react-router-dom';
 import {Favorite} from '@material-ui/icons';
 import firebase from './FirebaseConfig';
 import {GraphFrame} from "./GraphFrame";
+import admin from './AdminConfig';
 
 const styles = {
     root: {
@@ -224,7 +225,13 @@ class LoggedPage extends Component{
         if(user){
             doctorId = user.uid;
         }
-        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(error => {
+        //firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(error => {
+          admin.auth().createUser({
+              email: this.state.email,
+              emailVerified: false,
+              password: this.state.password,
+              disabled: false
+          }).catch(error => {
             // Handle Errors here.
             isSuccessful = false;
             var errorMessage = error.message;
