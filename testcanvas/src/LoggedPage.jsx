@@ -13,6 +13,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import {Redirect} from 'react-router-dom';
 import {Favorite} from '@material-ui/icons';
 import firebase from './FirebaseConfig';
+import * as firebaseLib from "firebase";
 import {GraphFrame} from "./GraphFrame";
 
 const styles = {
@@ -68,8 +69,16 @@ const styles = {
 };
 
 class LoggedPage extends Component{
-
     constructor(props){
+		const config = {
+			apiKey: "AIzaSyAanpOteKt6sJER051WlLtlf3oYHduwpTM",
+			authDomain: "data-for-life.firebaseapp.com",
+			databaseURL: "https://data-for-life.firebaseio.com",
+			projectId: "data-for-life",
+			storageBucket: "data-for-life.appspot.com",
+			messagingSenderId: "1065890119840"
+		};
+		
         super(props);
         this.state = {
             firstNameUser: '',
@@ -96,7 +105,20 @@ class LoggedPage extends Component{
             registerSnackBar: false,
             snackBarMessage: '',
             openGraph: '',
+			config : {
+    apiKey: "AIzaSyAanpOteKt6sJER051WlLtlf3oYHduwpTM",
+    authDomain: "data-for-life.firebaseapp.com",
+    databaseURL: "https://data-for-life.firebaseio.com",
+    projectId: "data-for-life",
+    storageBucket: "data-for-life.appspot.com",
+    messagingSenderId: "1065890119840"
+},
+secondaryApp : firebaseLib.initializeApp(config, "Secondary"),
+	
+			
         };
+		
+		
         this.getUserInfos = this.getUserInfos.bind(this);
         this.handleCloseDrawer = this.handleCloseDrawer.bind(this);
         this.handleOpenDrawer = this.handleOpenDrawer.bind(this);
@@ -114,6 +136,7 @@ class LoggedPage extends Component{
         this.openBREATHING = this.openBREATHING.bind(this);
         this.openSPO2 = this.openSPO2.bind(this);
         this.openTEMPERATURE = this.openTEMPERATURE.bind(this);
+		
     }
 
     getUserInfos(){
@@ -219,19 +242,23 @@ class LoggedPage extends Component{
     }
     handleRegisterPatient(){
         var isSuccessful = true;
-        var user = firebase.auth().currentUser;
+        const doctor = firebase.auth().currentUser;
         var doctorId = '';
-        if(user){
-            doctorId = user.uid;
+        if(doctor){
+            doctorId = doctor.uid;
         }
-        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(error => {
+		
+		
+		
+		
+        this.state.secondaryApp.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(error => {
             // Handle Errors here.
             isSuccessful = false;
             var errorMessage = error.message;
             this.displaySnackBarWithErrors(errorMessage);
         }).then(() => {
             if(isSuccessful) {
-                var user = firebase.auth().currentUser;
+                var user = this.state.secondaryApp.auth().currentUser;
                 if (user) {
                     this.writePatientData(doctorId, user.uid, this.state.firstName, this.state.lastName, this.state.email);
                     this.setState({
@@ -246,7 +273,7 @@ class LoggedPage extends Component{
                     this.setState({
                         openDialog: false,
                     });
-                    //firebase.auth().signOut();
+                    this.state.secondaryApp.auth().signOut();
                 }
             }
         });

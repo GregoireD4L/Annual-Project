@@ -9,5 +9,13 @@ const config = {
     storageBucket: "data-for-life.appspot.com",
     messagingSenderId: "1065890119840"
 };
+var app ;
+if(!firebase.apps.length){
+app=firebase.initializeApp(config);
+app.auth().setPersistence('local');
 
-export default !firebase.apps.length ? firebase.initializeApp(config) : firebase.app();
+}
+else{
+app= firebase.app();
+}
+export default app;
