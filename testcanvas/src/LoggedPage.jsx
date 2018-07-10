@@ -14,7 +14,10 @@ import {Redirect} from 'react-router-dom';
 import {Favorite} from '@material-ui/icons';
 import firebase from './FirebaseConfig';
 import * as firebaseLib from "firebase";
-import {GraphFrame} from "./GraphFrame";
+import {ECG} from "./ECG";
+import {Accelero} from "./Accelero";
+import {Respi} from "./Respi";
+import {Temp} from "./Temp";
 
 const styles = {
     root: {
@@ -364,11 +367,25 @@ secondaryApp : firebaseLib.initializeApp(config, "Secondary"),
         var patients = this.retrievePatientsList(firebase.auth().currentUser.uid);
         var items = [];
         patients.forEach(patient => {
-            items.push(<MenuItem value={patient.key}/* + ' ' + patient.val().firstName + ' ' + patient.val().lastName}*/>{patient.val().firstName} {patient.val().lastName}</MenuItem>);
+            items.push(<MenuItem value={patient.key}>{patient.val().firstName} {patient.val().lastName}</MenuItem>);
         });
         var graph = '';
-        if(this.state.openGraph !== '' && this.state.activePatient !== ''){
-            graph = <GraphFrame idPatient={this.state.activePatient} openGraph={this.state.openGraph}/>;
+        if(this.state.activePatient !== ''){
+            if(this.state.openGraph === 'ECG') {
+                graph = <ECG idPatient={this.state.activePatient}/>;
+            }else if(this.state.openGraph === 'ACCELERO') {
+                graph = <Accelero idPatient={this.state.activePatient}/>;
+            }else if(this.state.openGraph === 'TEMPERATURE') {
+                graph = <Temp idPatient={this.state.activePatient}/>;
+            }else if(this.state.openGraph === 'SPO2') {
+                graph = '';
+            }else if(this.state.openGraph === 'BREATHING') {
+                graph = <Respi idPatient={this.state.activePatient}/>;
+            }else{
+                graph = '';
+            }
+        }else{
+            graph = '';
         }
         if(this.state.isLogged) {
             return (
