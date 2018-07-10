@@ -82,6 +82,12 @@ class LoginScreen extends Component {
         this.displaySnackBarWithErrors = this.displaySnackBarWithErrors.bind(this);
     }
 
+    setCookie(cname, cvalue) {
+        document.cookie = cname + "=" + cvalue + ";path=/";
+    }
+
+
+
     handleLoginState(event){
         this.setState({
             welcome: false,
@@ -218,6 +224,7 @@ class LoginScreen extends Component {
             this.displaySnackBarWithErrors(errorMessage);
         }).then(() => {
            if(isSuccessful){
+               this.setCookie("email", this.state.email);
                this.setState({
                    isLogged: true,
                });

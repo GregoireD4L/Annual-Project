@@ -24,13 +24,30 @@ class ApplicationRoutes extends Component{
         }
     }
 
+    getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
     render(){
+        var currentUser = this.getCookie("email");
         return (
             <BrowserRouter ref={this.setRouter.bind(this)}>
                 <div>
                     <Route path='/login' component={LoginScreen}/>
                     <Route path='/home' render={() => {
-                        return (firebase.auth().currentUser ? <LoggedPage/> : <Redirect to='/login'/>);
+                        return ((firebase.auth().currentUser || currentUser!=='') ? <LoggedPage/> : <Redirect to='/login'/>);
                     }}/>
                 </div>
             </BrowserRouter>

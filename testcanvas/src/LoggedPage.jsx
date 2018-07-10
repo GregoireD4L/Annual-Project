@@ -136,7 +136,7 @@ secondaryApp : firebaseLib.initializeApp(config, "Secondary"),
         this.openBREATHING = this.openBREATHING.bind(this);
         this.openSPO2 = this.openSPO2.bind(this);
         this.openTEMPERATURE = this.openTEMPERATURE.bind(this);
-		
+		this.handleCloseSnackbar = this.handleCloseSnackbar.bind(this);
     }
 
     getUserInfos(){
@@ -168,6 +168,7 @@ secondaryApp : firebaseLib.initializeApp(config, "Secondary"),
     }
 
     handleLogOut(){
+        document.cookie = "email=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         firebase.auth().signOut();
         this.setState({
             isLogged: false,
@@ -285,6 +286,12 @@ secondaryApp : firebaseLib.initializeApp(config, "Secondary"),
                 snackBarMessage: errorMessage,
             });
         }
+    }
+
+    handleCloseSnackbar(){
+        this.setState({
+            registerSnackBar: false,
+        });
     }
 
     writePatientData(doctorId, userId, firstName, lastName ,email) {
@@ -497,7 +504,7 @@ secondaryApp : firebaseLib.initializeApp(config, "Secondary"),
                             key="close"
                             aria-label="Close"
                             color="inherit"
-                            onClick={this.handleClose}>
+                            onClick={this.handleCloseSnackbar}>
                             <CloseIcon />
                         </IconButton>}/>
                         {graph}
