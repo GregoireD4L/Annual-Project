@@ -164,26 +164,8 @@ class LoggedPage extends Component{
         }
     }
 
-    getUserFirstName(){
-        let user = this.state.user;
-        let firstName = "";
-        if(user) {
-            firebase.database().ref('/users/' + user.uid).on('value', snapshot => {
-                firstName = snapshot.val().firstName;
-            });
-        }
-        return firstName;
-    }
-
-    getUserLastName(){
-        let user = this.state.user;
-        let lastName = "";
-        if(user) {
-            firebase.database().ref('/users/' + user.uid).on('value', snapshot => {
-                lastName = snapshot.val().lastName;
-            });
-        }
-        return lastName;
+    componentDidMount(){
+        this.getUserInfos();
     }
 
     handleCloseDrawer(){
