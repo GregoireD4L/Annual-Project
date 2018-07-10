@@ -73,6 +73,7 @@ const styles = {
 
 class LoggedPage extends Component{
     constructor(props){
+
         const config = {
             apiKey: "AIzaSyAanpOteKt6sJER051WlLtlf3oYHduwpTM",
             authDomain: "data-for-life.firebaseapp.com",
@@ -83,7 +84,15 @@ class LoggedPage extends Component{
         };
 
         super(props);
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                console.log(user);
+                this.setState({user:user,});
+            }
+        }).bind(this);
+
         this.state = {
+            user:firebase.auth().currentUser,
             firstNameUser: '',
             lastNameUser: '',
             email:'',
@@ -142,8 +151,9 @@ class LoggedPage extends Component{
         this.handleCloseSnackbar = this.handleCloseSnackbar.bind(this);
     }
 
+
     getUserInfos(){
-        let user = firebase.auth().currentUser;
+        let user = this.state.user;
         if(user) {
             firebase.database().ref('/users/' + user.uid).on('value', snapshot => {
                 this.setState({
@@ -154,8 +164,26 @@ class LoggedPage extends Component{
         }
     }
 
-    componentDidMount(){
-        this.getUserInfos();
+    getUserFirstName(){
+        let user = this.state.user;
+        let firstName = "";
+        if(user) {
+            firebase.database().ref('/users/' + user.uid).on('value', snapshot => {
+                firstName = snapshot.val().firstName;
+            });
+        }
+        return firstName;
+    }
+
+    getUserLastName(){
+        let user = this.state.user;
+        let lastName = "";
+        if(user) {
+            firebase.database().ref('/users/' + user.uid).on('value', snapshot => {
+                lastName = snapshot.val().lastName;
+            });
+        }
+        return lastName;
     }
 
     handleCloseDrawer(){
@@ -265,9 +293,9 @@ class LoggedPage extends Component{
         }).then(() => {
             if(isSuccessful) {
                 // var user = this.state.secondaryApp.auth().currentUser;
-                var user = firebaseLib.auth().currentUser;
-                if (user) {
-                    this.writePatientData(doctorId, user.uid, this.state.firstName, this.state.lastName, this.state.email);
+                //var user = firebaseLib.auth().currentUser;
+                if (this.state.user) {
+                    this.writePatientData(doctorId, this.state.user.uid, this.state.firstName, this.state.lastName, this.state.email);
                     this.setState({
                         welcome: true,
                         loginState: false,
@@ -366,31 +394,34 @@ class LoggedPage extends Component{
     }
 
     render(){
-        if(this.state.isLogged) {
+        if(this.state.isLogged){
             let {classes} = this.props;
-            const isEnabled = this.state.email.length > 0 && this.state.password.length > 0;
-            var patients = this.retrievePatientsList(firebase.auth().currentUser.uid);
-            var items = [];
-            patients.forEach(patient => {
-                items.push(<MenuItem value={patient.key}>{patient.val().firstName} {patient.val().lastName}</MenuItem>);
-            });
-            var graph = '';
-            if(this.state.activePatient !== ''){
-                if(this.state.openGraph === 'ECG') {
-                    graph = <ECG idPatient={this.state.activePatient}/>;
-                }else if(this.state.openGraph === 'ACCELERO') {
-                    graph = <Accelero idPatient={this.state.activePatient}/>;
-                }else if(this.state.openGraph === 'TEMPERATURE') {
-                    graph = <Temp idPatient={this.state.activePatient}/>;
-                }else if(this.state.openGraph === 'SPO2') {
-                    graph = '';
-                }else if(this.state.openGraph === 'BREATHING') {
-                    graph = <Respi idPatient={this.state.activePatient}/>;
-                }else{
+                const isEnabled = this.state.email.length > 0 && this.state.password.length > 0;
+            if(this.state.user) {
+                var patients = this.retrievePatientsList(this.state.user.uid);
+                var items = [];
+                patients.forEach(patient => {
+                    items.push(<MenuItem
+                        value={patient.key}>{patient.val().firstName} {patient.val().lastName}</MenuItem>);
+                });
+                var graph = '';
+                if (this.state.activePatient !== '') {
+                    if (this.state.openGraph === 'ECG') {
+                        graph = <ECG idPatient={this.state.activePatient}/>;
+                    } else if (this.state.openGraph === 'ACCELERO') {
+                        graph = <Accelero idPatient={this.state.activePatient}/>;
+                    } else if (this.state.openGraph === 'TEMPERATURE') {
+                        graph = <Temp idPatient={this.state.activePatient}/>;
+                    } else if (this.state.openGraph === 'SPO2') {
+                        graph = '';
+                    } else if (this.state.openGraph === 'BREATHING') {
+                        graph = <Respi idPatient={this.state.activePatient}/>;
+                    } else {
+                        graph = '';
+                    }
+                } else {
                     graph = '';
                 }
-            }else{
-                graph = '';
             }
             return (
                 <MuiThemeProvider theme={theme}>
