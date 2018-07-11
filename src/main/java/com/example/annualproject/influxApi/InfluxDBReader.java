@@ -108,11 +108,6 @@ public class InfluxDBReader {
     private void setUsers(String id, List<AcceleroPoint> acceleroPoints) {
         for(AcceleroPoint point : acceleroPoints) {
             point.setLongtime(point.getTime());
-            try {
-                point.setIdUser(Decrypter.encrypt(id));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -120,11 +115,6 @@ public class InfluxDBReader {
         List<TempPoint> tempPoints = getTempPoints(id, beginning, ending);
         for(TempPoint point : tempPoints) {
             point.setLongtime(point.getTime());
-            try {
-                point.setIdUser(Decrypter.encrypt(id));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
         return tempPoints;
         
@@ -140,7 +130,6 @@ public class InfluxDBReader {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(query);
         QueryResult queryResult = influxDB.query(new Query(query, dbName));
 
         InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();

@@ -20,7 +20,25 @@ public class Spo2Point_1 {
 
     private Long longtime;
 
+    public double getSpo2Chan1_1() {
+        return spo2Chan1_1;
+    }
 
+    public void setSpo2Chan1_1(double spo2Chan1_1) {
+        this.spo2Chan1_1 = spo2Chan1_1;
+    }
+
+    public double getSpo2Chan1_2() {
+        return spo2Chan1_2;
+    }
+
+    public void setSpo2Chan1_2(double spo2Chan1_2) {
+        this.spo2Chan1_2 = spo2Chan1_2;
+    }
+
+    public void setLongtime(Long longtime) {
+        this.longtime = longtime;
+    }
 
     public Long getLongtime() {
         return longtime;

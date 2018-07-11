@@ -68,7 +68,7 @@ class Respi extends Component {
 		
 		function updateChart() {	
 		date = new Date();
-		$.getJSON(linkurl+(d2.getTime()-1500)+linkurlmiddle+(date.getTime()-1500), function(data) {
+		$.getJSON(linkurl + (d2.getTime()*1000000 - 3000000000) + linkurlmiddle + (date.getTime()*1000000 - 3000000000), function (data) {
 			d2=date;
 			$.each(data, function(key, value) {
 				let date =new Date(parseInt(value.longtime));

@@ -49,7 +49,6 @@ class ECG extends Component {
             }],
             axisY: {
                 includeZero: false,
-                interval: 0.1,
             },
             legend: {
                 horizontalAlign: "right",

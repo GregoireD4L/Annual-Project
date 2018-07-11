@@ -31,6 +31,10 @@ public class AcceleroPoint {
         this.longtime = longtime;
     }
 
+    public Long getLongtime() {
+        return longtime;
+    }
+
     public String getIdUser() {
         return idUser;
     }

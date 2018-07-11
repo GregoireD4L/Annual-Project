@@ -40,7 +40,7 @@ public class InfluxController {
         return toReturn;
 
     }
-    
+
 
     @GetMapping(value = "/getRespiPastMilli")
     public List<RespiPoint> getRespiPointsBetweenTime(@RequestParam String id,@RequestParam long beginning, @RequestParam long ending) throws Exception {
