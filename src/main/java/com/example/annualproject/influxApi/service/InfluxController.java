@@ -28,8 +28,19 @@ public class InfluxController {
     }
     @GetMapping(value = "/getECG1PastMilli")
     public List<Ecg1Point> getPointsBetweenTimeMilli(@RequestParam String id, @RequestParam long beginning, @RequestParam long ending ) throws Exception {
-        return influxDBReader.readECGChannel1BeetweenTime(id, beginning,ending);
-
+        List<Ecg1Point> ecgPoints=influxDBReader.readECGChannel1BeetweenTime(id,beginning,ending);
+        List<Ecg1Point> toReturn = new ArrayList<>();
+        if(ecgPoints.size()>0) {
+            Ecg1Point ecgPoint = ecgPoints.get(0);
+            toReturn.add(ecgPoint);
+            for (Ecg1Point rp : ecgPoints) {
+                if (!rp.equals(ecgPoint)) {
+                    toReturn.add(rp);
+                }
+                ecgPoint = rp;
+            }
+        }
+        return toReturn;
 
     }
     @GetMapping(value = "/getECG1")
@@ -54,14 +65,15 @@ public class InfluxController {
     }
     @GetMapping(value = "/getSpo2PastMilli")
     public List<Spo2Point_1> getSpo2BetweenTimeMilli(@RequestParam String id, @RequestParam long beginning, @RequestParam long ending ) throws Exception {
-        List<Spo2Point_1> spo2Point1s =influxDBReader.readSpo2BeetweenTime(id,beginning,ending);
+        List<Spo2Point_1> spo2Points =influxDBReader.readSpo2BeetweenTime(id,beginning,ending);
         List<Spo2Point_1> toReturn = new ArrayList<>();
-        int cpt=0;
-        for(Spo2Point_1 ap: spo2Point1s){
-            if(cpt%10==0){
-                toReturn.add(ap);
+        Spo2Point_1 spo2Point_1= spo2Points.get(0);
+        toReturn.add(spo2Point_1);
+        for(Spo2Point_1 sp:spo2Points){
+            if(!sp.equals(spo2Point_1)){
+                toReturn.add(sp);
             }
-            cpt++;
+            spo2Point_1=sp;
         }
         return toReturn;
 

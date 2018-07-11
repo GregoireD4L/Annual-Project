@@ -3,6 +3,8 @@ package com.example.annualproject.influxApi;
 import org.influxdb.annotation.Column;
 import org.influxdb.annotation.Measurement;
 
+import java.time.Instant;
+
 @Measurement(name = "allPoints")
 public class TempPoint {
     @Column(name = "ID")
@@ -10,16 +12,16 @@ public class TempPoint {
     @Column(name = "temp")
     private double temp;
 
-    @Column(name = "timestamp")
-    private long time;
+    @Column(name = "time")
+    private Instant time;
 
 
     private Long longtime;
 
 
 
-    public Long getLongtime() {
-        return longtime;
+    public void setLongtime(Instant longtime) {
+        this.longtime = longtime.toEpochMilli();
     }
 
     public void setLongtime(Long longtime) {
@@ -44,13 +46,21 @@ public class TempPoint {
 
 
 
+    @Override
+    public boolean equals(Object obj) {
+        TempPoint tempPoint = (TempPoint) obj;
+        if(tempPoint.temp!=this.temp){
+            return false;
+        }
 
+        return true;
+    }
 
-    public long getTime() {
+    public Instant getTime() {
         return time;
     }
 
-    public void setTime(long time) {
+    public void setTime(Instant time) {
         this.time = time;
     }
 }

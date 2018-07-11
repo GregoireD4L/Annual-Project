@@ -12,8 +12,8 @@ public class Ecg1Point {
     private String idUser;
     @Column(name = "ecg1")
     private double ecg1;
-    @Column(name = "timestamp")
-    private long time;
+    @Column(name = "time")
+    private Instant time;
 
 
     private Long longtime;
@@ -24,8 +24,8 @@ public class Ecg1Point {
         return longtime;
     }
 
-    public void setLongtime(Long longtime) {
-        this.longtime = longtime;
+    public void setLongtime(Instant longtime) {
+        this.longtime = longtime.toEpochMilli();
     }
 
     public String getIdUser() {
@@ -44,11 +44,20 @@ public class Ecg1Point {
         this.ecg1 = ecg1;
     }
 
-    public long getTime() {
+    public Instant getTime() {
         return time;
     }
 
-    public void setTime(long time) {
+    public void setTime(Instant time) {
         this.time = time;
+    }
+    @Override
+    public boolean equals(Object obj) {
+        Ecg1Point ecg1Point = (Ecg1Point) obj;
+        if(ecg1Point.ecg1!=this.ecg1){
+            return false;
+        }
+        
+        return true;
     }
 }
