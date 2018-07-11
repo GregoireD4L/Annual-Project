@@ -46,13 +46,15 @@ public class InfluxController {
     public List<RespiPoint> getRespiPointsBetweenTime(@RequestParam String id,@RequestParam long beginning, @RequestParam long ending) throws Exception {
         List<RespiPoint> respiPoints=influxDBReader.readRespiBeetweenTime(id,beginning,ending);
         List<RespiPoint> toReturn = new ArrayList<>();
-        RespiPoint respiPoint=respiPoints.get(0);
-        toReturn.add(respiPoint);
-        for(RespiPoint rp:respiPoints){
-            if(!rp.equals(respiPoint)){
-                toReturn.add(rp);
+        if(respiPoints.size()>0) {
+            RespiPoint respiPoint = respiPoints.get(0);
+            toReturn.add(respiPoint);
+            for (RespiPoint rp : respiPoints) {
+                if (!rp.equals(respiPoint)) {
+                    toReturn.add(rp);
+                }
+                respiPoint = rp;
             }
-            respiPoint=rp;
         }
         return toReturn;
     }
@@ -60,13 +62,15 @@ public class InfluxController {
     public List<Spo2Point_1> getSpo2BetweenTimeMilli(@RequestParam String id, @RequestParam long beginning, @RequestParam long ending ) throws Exception {
         List<Spo2Point_1> spo2Points =influxDBReader.readSpo2BeetweenTime(id,beginning,ending);
         List<Spo2Point_1> toReturn = new ArrayList<>();
-        Spo2Point_1 spo2Point_1= spo2Points.get(0);
-        toReturn.add(spo2Point_1);
-        for(Spo2Point_1 sp:spo2Points){
-            if(!sp.equals(spo2Point_1)){
-                toReturn.add(sp);
+        if(spo2Points.size()>0) {
+            Spo2Point_1 spo2Point_1 = spo2Points.get(0);
+            toReturn.add(spo2Point_1);
+            for (Spo2Point_1 sp : spo2Points) {
+                if (!sp.equals(spo2Point_1)) {
+                    toReturn.add(sp);
+                }
+                spo2Point_1 = sp;
             }
-            spo2Point_1=sp;
         }
         return toReturn;
 
@@ -76,12 +80,15 @@ public class InfluxController {
     public List<AcceleroPoint> getAcceleroPointsBetweenTime(@RequestParam String id, @RequestParam long beginning, @RequestParam long ending) throws Exception {
         List<AcceleroPoint> acceleroPoints=influxDBReader.readAcceleroChannel1(id,beginning,ending);
         List<AcceleroPoint> toReturn = new ArrayList<>();
-        int cpt=0;
-        for(AcceleroPoint ap:acceleroPoints){
-            if(cpt%10==0){
-                toReturn.add(ap);
+        if(acceleroPoints.size()>0) {
+            AcceleroPoint acceleroPoint = acceleroPoints.get(0);
+            toReturn.add(acceleroPoint);
+            for (AcceleroPoint ap : acceleroPoints) {
+                if (!ap.equals(acceleroPoint)) {
+                    toReturn.add(ap);
+                }
+                acceleroPoint = ap;
             }
-            cpt++;
         }
         return toReturn;
 
@@ -90,12 +97,15 @@ public class InfluxController {
     public List<TempPoint> getTempPointsBetweenTime(@RequestParam String id, @RequestParam long beginning, @RequestParam long ending) throws Exception {
         List<TempPoint> tempPoints=influxDBReader.readTemp(id,beginning,ending);
         List<TempPoint> toReturn = new ArrayList<>();
-        int cpt=0;
-        for(TempPoint ap:tempPoints){
-            if(cpt%10==0){
-                toReturn.add(ap);
+        if(tempPoints.size()>0) {
+            TempPoint tempPoint = tempPoints.get(0);
+            toReturn.add(tempPoint);
+            for (TempPoint tp : tempPoints) {
+                if (!tp.equals(tempPoint)) {
+                    toReturn.add(tp);
+                }
+                tempPoint = tp;
             }
-            cpt++;
         }
         return toReturn;
 

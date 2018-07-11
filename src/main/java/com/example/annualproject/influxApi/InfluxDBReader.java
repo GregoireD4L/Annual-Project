@@ -130,6 +130,7 @@ public class InfluxDBReader {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println(query);
         QueryResult queryResult = influxDB.query(new Query(query, dbName));
 
         InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
