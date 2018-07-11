@@ -22,10 +22,7 @@ public class InfluxController {
         this.influxDBReader=influxDBReader;
     }
 
-    @GetMapping(value = "/getECG1Past")
-    public List<Ecg1Point> getPointsBetweenTime(@RequestParam String id, @RequestParam Instant beginning, @RequestParam Instant ending ) throws Exception {
-        return influxDBReader.readECGChannel1BeetweenTime(id, beginning,ending);
-    }
+
     @GetMapping(value = "/getECG1PastMilli")
     public List<Ecg1Point> getPointsBetweenTimeMilli(@RequestParam String id, @RequestParam long beginning, @RequestParam long ending ) throws Exception {
         List<Ecg1Point> ecgPoints=influxDBReader.readECGChannel1BeetweenTime(id,beginning,ending);
@@ -43,11 +40,7 @@ public class InfluxController {
         return toReturn;
 
     }
-    @GetMapping(value = "/getECG1")
-    public List<Ecg1Point> getPoints(@RequestParam String id, @RequestParam long time) throws Exception {
-        return influxDBReader.readECGChannel1(id,time);
-
-    }
+    
 
     @GetMapping(value = "/getRespiPastMilli")
     public List<RespiPoint> getRespiPointsBetweenTime(@RequestParam String id,@RequestParam long beginning, @RequestParam long ending) throws Exception {
