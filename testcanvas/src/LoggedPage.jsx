@@ -73,15 +73,15 @@ const styles = {
 
 class LoggedPage extends Component{
     constructor(props){
-		const config = {
-			apiKey: "AIzaSyAanpOteKt6sJER051WlLtlf3oYHduwpTM",
-			authDomain: "data-for-life.firebaseapp.com",
-			databaseURL: "https://data-for-life.firebaseio.com",
-			projectId: "data-for-life",
-			storageBucket: "data-for-life.appspot.com",
-			messagingSenderId: "1065890119840"
-		};
-		
+        const config = {
+            apiKey: "AIzaSyAanpOteKt6sJER051WlLtlf3oYHduwpTM",
+            authDomain: "data-for-life.firebaseapp.com",
+            databaseURL: "https://data-for-life.firebaseio.com",
+            projectId: "data-for-life",
+            storageBucket: "data-for-life.appspot.com",
+            messagingSenderId: "1065890119840"
+        };
+
         super(props);
         this.state = {
             firstNameUser: '',
@@ -108,20 +108,20 @@ class LoggedPage extends Component{
             registerSnackBar: false,
             snackBarMessage: '',
             openGraph: '',
-			config : {
-    apiKey: "AIzaSyAanpOteKt6sJER051WlLtlf3oYHduwpTM",
-    authDomain: "data-for-life.firebaseapp.com",
-    databaseURL: "https://data-for-life.firebaseio.com",
-    projectId: "data-for-life",
-    storageBucket: "data-for-life.appspot.com",
-    messagingSenderId: "1065890119840"
-},
-secondaryApp : firebaseLib.initializeApp(config, "Secondary"),
-	
-			
+            config : {
+                apiKey: "AIzaSyAanpOteKt6sJER051WlLtlf3oYHduwpTM",
+                authDomain: "data-for-life.firebaseapp.com",
+                databaseURL: "https://data-for-life.firebaseio.com",
+                projectId: "data-for-life",
+                storageBucket: "data-for-life.appspot.com",
+                messagingSenderId: "1065890119840"
+            },
+//secondaryApp : firebaseLib.initializeApp(config, "Secondary"),
+
+
         };
-		
-		
+
+
         this.getUserInfos = this.getUserInfos.bind(this);
         this.handleCloseDrawer = this.handleCloseDrawer.bind(this);
         this.handleOpenDrawer = this.handleOpenDrawer.bind(this);
@@ -139,7 +139,7 @@ secondaryApp : firebaseLib.initializeApp(config, "Secondary"),
         this.openBREATHING = this.openBREATHING.bind(this);
         this.openSPO2 = this.openSPO2.bind(this);
         this.openTEMPERATURE = this.openTEMPERATURE.bind(this);
-		this.handleCloseSnackbar = this.handleCloseSnackbar.bind(this);
+        this.handleCloseSnackbar = this.handleCloseSnackbar.bind(this);
     }
 
     getUserInfos(){
@@ -251,18 +251,21 @@ secondaryApp : firebaseLib.initializeApp(config, "Secondary"),
         if(doctor){
             doctorId = doctor.uid;
         }
-		
-		
-		
-		
-        this.state.secondaryApp.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(error => {
+
+
+
+
+        //this.state.secondaryApp.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(error => {
+        firebaseLib.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(error => {
+
             // Handle Errors here.
             isSuccessful = false;
             var errorMessage = error.message;
             this.displaySnackBarWithErrors(errorMessage);
         }).then(() => {
             if(isSuccessful) {
-                var user = this.state.secondaryApp.auth().currentUser;
+                // var user = this.state.secondaryApp.auth().currentUser;
+                var user = firebaseLib.auth().currentUser;
                 if (user) {
                     this.writePatientData(doctorId, user.uid, this.state.firstName, this.state.lastName, this.state.email);
                     this.setState({
@@ -277,7 +280,8 @@ secondaryApp : firebaseLib.initializeApp(config, "Secondary"),
                     this.setState({
                         openDialog: false,
                     });
-                    this.state.secondaryApp.auth().signOut();
+                    //this.state.secondaryApp.auth().signOut();
+                    firebaseLib.auth().signOut();
                 }
             }
         });
@@ -362,32 +366,32 @@ secondaryApp : firebaseLib.initializeApp(config, "Secondary"),
     }
 
     render(){
-        let {classes} = this.props;
-        const isEnabled = this.state.email.length > 0 && this.state.password.length > 0;
-        var patients = this.retrievePatientsList(firebase.auth().currentUser.uid);
-        var items = [];
-        patients.forEach(patient => {
-            items.push(<MenuItem value={patient.key}>{patient.val().firstName} {patient.val().lastName}</MenuItem>);
-        });
-        var graph = '';
-        if(this.state.activePatient !== ''){
-            if(this.state.openGraph === 'ECG') {
-                graph = <ECG idPatient={this.state.activePatient}/>;
-            }else if(this.state.openGraph === 'ACCELERO') {
-                graph = <Accelero idPatient={this.state.activePatient}/>;
-            }else if(this.state.openGraph === 'TEMPERATURE') {
-                graph = <Temp idPatient={this.state.activePatient}/>;
-            }else if(this.state.openGraph === 'SPO2') {
-                graph = '';
-            }else if(this.state.openGraph === 'BREATHING') {
-                graph = <Respi idPatient={this.state.activePatient}/>;
+        if(this.state.isLogged) {
+            let {classes} = this.props;
+            const isEnabled = this.state.email.length > 0 && this.state.password.length > 0;
+            var patients = this.retrievePatientsList(firebase.auth().currentUser.uid);
+            var items = [];
+            patients.forEach(patient => {
+                items.push(<MenuItem value={patient.key}>{patient.val().firstName} {patient.val().lastName}</MenuItem>);
+            });
+            var graph = '';
+            if(this.state.activePatient !== ''){
+                if(this.state.openGraph === 'ECG') {
+                    graph = <ECG idPatient={this.state.activePatient}/>;
+                }else if(this.state.openGraph === 'ACCELERO') {
+                    graph = <Accelero idPatient={this.state.activePatient}/>;
+                }else if(this.state.openGraph === 'TEMPERATURE') {
+                    graph = <Temp idPatient={this.state.activePatient}/>;
+                }else if(this.state.openGraph === 'SPO2') {
+                    graph = '';
+                }else if(this.state.openGraph === 'BREATHING') {
+                    graph = <Respi idPatient={this.state.activePatient}/>;
+                }else{
+                    graph = '';
+                }
             }else{
                 graph = '';
             }
-        }else{
-            graph = '';
-        }
-        if(this.state.isLogged) {
             return (
                 <MuiThemeProvider theme={theme}>
                     <Layout footer="Data for life copyright 2018" appBar={
