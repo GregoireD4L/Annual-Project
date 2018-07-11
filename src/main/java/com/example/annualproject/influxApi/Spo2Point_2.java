@@ -8,8 +8,6 @@ import java.time.Instant;
 @Measurement(name = "allPoints")
 public class Spo2Point_2 {
 
-    @Column(name = "ID")
-    private String idUser;
     @Column(name = "Spo2Chan2-1")
     private double spo2Chan2_1;
     @Column(name = "Spo2Chan2-2")
@@ -49,13 +47,7 @@ public class Spo2Point_2 {
         this.longtime = longtime.toEpochMilli();
     }
 
-    public String getIdUser() {
-        return idUser;
-    }
 
-    public void setIdUser(String idUser) {
-        this.idUser = idUser;
-    }
 
     public double getspo2Chan2_1() {
         return spo2Chan2_1;
