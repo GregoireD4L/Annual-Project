@@ -79,8 +79,8 @@ class ECG extends Component {
             $.getJSON(linkurl + (d2.getTime() - 3000) + linkurlmiddle + (date.getTime() - 3000), function (data) {
                 d2 = date;
                 $.each(data, function (key, value) {
-                    let date = new Date(parseInt(value.longtime));
-                    dataPoints.push({x: parseInt(value.longtime) - start.getTime(), y: parseFloat(value.ecg1)});
+                    let date = new Date(parseInt(value.time));
+                    dataPoints.push({x: parseInt(value.time) - start.getTime(), y: parseFloat(value.ecg1)});
                 });
 
 

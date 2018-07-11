@@ -83,7 +83,7 @@ public class InfluxController {
     }
     @GetMapping(value = "/getTempPastMilli")
     public List<TempPoint> getTempPointsBetweenTime(@RequestParam String id, @RequestParam long beginning, @RequestParam long ending) throws Exception {
-        List<TempPoint> tempPoints=influxDBReader.readTemp(id,beginning,ending);
+        List<TempPoint> tempPoints=influxDBReader.getTempPoints(id,beginning,ending);
         List<TempPoint> toReturn = new ArrayList<>();
         int cpt=0;
         for(TempPoint ap:tempPoints){

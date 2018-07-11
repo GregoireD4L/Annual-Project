@@ -31,14 +31,7 @@ public class InfluxDBReader {
 
         InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
         List<Ecg1Point> ecgChannelOnePoints = resultMapper.toPOJO(queryResult, Ecg1Point.class);
-        for(Ecg1Point point : ecgChannelOnePoints) {
-            point.setLongtime(point.getTime());
-            try {
-                point.setIdUser(Decrypter.encrypt(point.getIdUser()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+
         return ecgChannelOnePoints;
     }
 
@@ -57,14 +50,7 @@ public class InfluxDBReader {
 
         InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
         List<Ecg1Point> ecgChannelOnePoints = resultMapper.toPOJO(queryResult, Ecg1Point.class);
-        for(Ecg1Point point : ecgChannelOnePoints) {
-            point.setLongtime(point.getTime());
-            try {
-                point.setIdUser(Decrypter.encrypt(point.getIdUser()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+
         return ecgChannelOnePoints;
     }
 
@@ -83,14 +69,7 @@ public class InfluxDBReader {
 
         InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
         List<Ecg1Point> ecgChannelOnePoints = resultMapper.toPOJO(queryResult, Ecg1Point.class);
-        for(Ecg1Point point : ecgChannelOnePoints) {
-            point.setLongtime(point.getTime());
-            try {
-                point.setIdUser(Decrypter.encrypt(id));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+
         return ecgChannelOnePoints;
     }
 
@@ -109,14 +88,7 @@ public class InfluxDBReader {
 
         InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
         List<RespiPoint> respiPoints = resultMapper.toPOJO(queryResult, RespiPoint.class);
-        for(RespiPoint point : respiPoints) {
-            point.setLongtime(point.getTime());
-            try {
-                point.setIdUser(Decrypter.encrypt(id));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+
         return respiPoints;
     }
 
@@ -135,14 +107,7 @@ public class InfluxDBReader {
 
         InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
         List<Spo2Point_1> spo2Points = resultMapper.toPOJO(queryResult, Spo2Point_1.class);
-        for(Spo2Point_1 point : spo2Points) {
-            point.setLongtime(point.getTime());
-            try {
-                point.setIdUser(Decrypter.encrypt(id));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+
         return spo2Points;
     }
 
@@ -161,37 +126,16 @@ public class InfluxDBReader {
 
         InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
         List<AcceleroPoint> acceleroPoints = resultMapper.toPOJO(queryResult, AcceleroPoint.class);
-        setUsers(id, acceleroPoints);
+
         return acceleroPoints;
     }
 
 
-    private void setUsers(String id, List<AcceleroPoint> acceleroPoints) {
-        for(AcceleroPoint point : acceleroPoints) {
-            point.setLongtime(point.getTime());
-            try {
-                point.setIdUser(Decrypter.encrypt(id));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
-    public List<TempPoint> readTemp(String id, long beginning, long ending) {
-        List<TempPoint> tempPoints = getTempPoints(id, beginning, ending);
-        for(TempPoint point : tempPoints) {
-            point.setLongtime(point.getTime());
-            try {
-                point.setIdUser(Decrypter.encrypt(id));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return tempPoints;
-        
-    }
 
-    private List<TempPoint> getTempPoints(String id, long beginning, long ending) {
+
+
+    public List<TempPoint> getTempPoints(String id, long beginning, long ending) {
         InfluxDB influxDB = InfluxDBSingleton.getInstance();
         String dbName = "dataforlifeDB";
         String query = null;
