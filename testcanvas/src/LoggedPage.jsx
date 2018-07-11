@@ -125,7 +125,8 @@ class LoggedPage extends Component{
                 storageBucket: "data-for-life.appspot.com",
                 messagingSenderId: "1065890119840"
             },
-//secondaryApp : firebaseLib.initializeApp(config, "Secondary"),
+			
+			secondaryApp : firebaseLib.apps.length<2?firebaseLib.initializeApp(config, "Secondary"):firebase.apps[1],
 
 
         };
@@ -267,8 +268,8 @@ class LoggedPage extends Component{
 
 
 
-        //this.state.secondaryApp.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(error => {
-        firebaseLib.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(error => {
+        this.state.secondaryApp.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(error => {
+      //  firebaseLib.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(error => {
 
             // Handle Errors here.
             isSuccessful = false;
@@ -276,7 +277,7 @@ class LoggedPage extends Component{
             this.displaySnackBarWithErrors(errorMessage);
         }).then(() => {
             if(isSuccessful) {
-                // var user = this.state.secondaryApp.auth().currentUser;
+                 var user = this.state.secondaryApp.auth().currentUser;
                 //var user = firebaseLib.auth().currentUser;
                 if (this.state.user) {
                     this.writePatientData(doctorId, this.state.user.uid, this.state.firstName, this.state.lastName, this.state.email);
@@ -292,8 +293,8 @@ class LoggedPage extends Component{
                     this.setState({
                         openDialog: false,
                     });
-                    //this.state.secondaryApp.auth().signOut();
-                    firebaseLib.auth().signOut();
+                    this.state.secondaryApp.auth().signOut();
+                //    firebaseLib.auth().signOut();
                 }
             }
         });
