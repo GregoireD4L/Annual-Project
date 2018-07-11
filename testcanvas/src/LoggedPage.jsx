@@ -151,15 +151,17 @@ class LoggedPage extends Component{
         this.handleCloseSnackbar = this.handleCloseSnackbar.bind(this);
     }
 
+    setCookie(cname, cvalue) {
+        document.cookie = cname + "=" + cvalue + ";path=/";
+    }
 
     getUserInfos(){
         let user = this.state.user;
         if(user) {
             firebase.database().ref('/users/' + user.uid).on('value', snapshot => {
-                this.setState({
-                    firstNameUser: snapshot.val().firstName,
-                    lastNameUser: snapshot.val().lastName,
-                });
+                
+                    this.setCookie("name",snapshot.val().firstName);
+                    this.setCookie("lastname",snapshot.val().lastName);
             });
         }
     }
@@ -374,6 +376,21 @@ class LoggedPage extends Component{
             openDrawer: false,
         });
     }
+ getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
 
     render(){
         if(this.state.isLogged){
@@ -405,6 +422,7 @@ class LoggedPage extends Component{
                     graph = '';
                 }
             }
+			
             return (
                 <MuiThemeProvider theme={theme}>
                     <Layout footer="Data for life copyright 2018" appBar={
@@ -414,7 +432,7 @@ class LoggedPage extends Component{
                                 <MenuIcon/>
                             </IconButton>
                             <Typography className={classes.typography} variant="title" color="inherit">
-                                {this.state.toolbarTitle} {this.state.firstNameUser} {this.state.lastNameUser}
+                                {this.state.toolbarTitle} {this.getCookie("name")} {this.getCookie("lastname")}
                             </Typography>
                             <Button className={classes.addPatient} color="inherit" onClick={this.handleAddPatient}>Add patient</Button>
                             <Button className={classes.logout} color="inherit" onClick={this.handleLogOut}>Log
