@@ -16,6 +16,9 @@ import firebase from './FirebaseConfig';
 import * as firebaseLib from "firebase";
 import {ECG} from "./ECG";
 import {Accelero} from "./Accelero";
+import {Magneto} from "./Magneto";
+import {Gyro} from "./Gyro";
+import {Spo2} from "./SPO2";
 import {Respi} from "./Respi";
 import {Temp} from "./Temp";
 
@@ -146,6 +149,9 @@ class LoggedPage extends Component{
         this.handleSelection = this.handleSelection.bind(this);
         this.openECG = this.openECG.bind(this);
         this.openACCELERO = this.openACCELERO.bind(this);
+		this.openMAGNETO = this.openMAGNETO.bind(this);
+		this.openGYRO = this.openGYRO.bind(this);
+		
         this.openBREATHING = this.openBREATHING.bind(this);
         this.openSPO2 = this.openSPO2.bind(this);
         this.openTEMPERATURE = this.openTEMPERATURE.bind(this);
@@ -356,6 +362,18 @@ class LoggedPage extends Component{
             openDrawer: false,
         });
     }
+	openGYRO(){
+        this.setState({
+            openGraph: 'GYRO',
+            openDrawer: false,
+        });
+    }
+	openMAGNETO(){
+        this.setState({
+            openGraph: 'MAGNETO',
+            openDrawer: false,
+        });
+    }
 
     openBREATHING(){
         this.setState({
@@ -410,7 +428,14 @@ class LoggedPage extends Component{
                         graph = <ECG idPatient={this.state.activePatient}/>;
                     } else if (this.state.openGraph === 'ACCELERO') {
                         graph = <Accelero idPatient={this.state.activePatient}/>;
-                    } else if (this.state.openGraph === 'TEMPERATURE') {
+                    } else if (this.state.openGraph === 'MAGNETO') {
+                        graph = <Magneto idPatient={this.state.activePatient}/>;
+                    } else if (this.state.openGraph === 'SPO2') {
+                        graph = <Spo2 idPatient={this.state.activePatient}/>;
+                    } else if (this.state.openGraph === 'GYRO') {
+                        graph = <Gyro idPatient={this.state.activePatient}/>;
+                    } 
+					else if (this.state.openGraph === 'TEMPERATURE') {
                         graph = <Temp idPatient={this.state.activePatient}/>;
                     } else if (this.state.openGraph === 'SPO2') {
                         graph = '';
@@ -474,6 +499,18 @@ class LoggedPage extends Component{
                                                 <Favorite/>
                                             </ListItemIcon>
                                             <ListItemText primary="Accelero"/>
+                                        </ListItem>
+										<ListItem button onClick={this.openMAGNETO}>
+                                            <ListItemIcon>
+                                                <Favorite/>
+                                            </ListItemIcon>
+                                            <ListItemText primary="Magneto"/>
+                                        </ListItem>
+										<ListItem button onClick={this.openGYRO}>
+                                            <ListItemIcon>
+                                                <Favorite/>
+                                            </ListItemIcon>
+                                            <ListItemText primary="Gyro"/>
                                         </ListItem>
                                         <ListItem button onClick={this.openBREATHING}>
                                             <ListItemIcon>

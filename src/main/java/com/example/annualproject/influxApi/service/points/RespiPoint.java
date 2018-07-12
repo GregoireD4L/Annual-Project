@@ -1,12 +1,19 @@
-package com.example.annualproject.influxApi;
+package com.example.annualproject.influxApi.service.points;
 
 import org.influxdb.annotation.Column;
 import org.influxdb.annotation.Measurement;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 
 @Measurement(name = "allPoints")
-public class RespiPoint {
+public class RespiPoint implements Point{
 
     @Column(name = "ID")
     private String idUser;
@@ -18,11 +25,11 @@ public class RespiPoint {
     private Instant time;
 
 
-    private Long longtime;
+    private long longtime;
 
     
 
-    public Long getLongtime() {
+    public long getLongtime() {
         return longtime;
     }
 
@@ -73,4 +80,12 @@ public class RespiPoint {
         }
         return true;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 17 * hash +  Double.valueOf(this.respiThorax).hashCode();
+        return hash;
+    }
+
 }

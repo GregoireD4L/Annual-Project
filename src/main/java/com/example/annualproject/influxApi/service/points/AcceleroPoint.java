@@ -1,12 +1,20 @@
-package com.example.annualproject.influxApi;
+package com.example.annualproject.influxApi.service.points;
 
+import com.example.annualproject.security.Decrypter;
 import org.influxdb.annotation.Column;
 import org.influxdb.annotation.Measurement;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 
 @Measurement(name = "allPoints")
-public class AcceleroPoint {
+public class AcceleroPoint implements Point{
 
     @Column(name = "ID")
     private String idUser;
@@ -20,18 +28,18 @@ public class AcceleroPoint {
     private Instant time;
 
 
-    private Long longtime;
+    private long longtime;
 
 
     public void setLongtime(Instant longtime) {
         this.longtime = longtime.toEpochMilli();
     }
 
-    public void setLongtime(Long longtime) {
+    public void setLongtime(long longtime) {
         this.longtime = longtime;
     }
 
-    public Long getLongtime() {
+    public long getLongtime() {
         return longtime;
     }
 
@@ -88,4 +96,13 @@ public class AcceleroPoint {
         }
         return true;
     }
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 17 * hash +  Double.valueOf(this.acceleroZ).hashCode()+Double.valueOf(this.acceleroZ).hashCode()*20+Double.valueOf(this.acceleroY).hashCode()*300;
+        return hash;
+    }
+
+
+
 }
