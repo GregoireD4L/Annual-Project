@@ -15,7 +15,8 @@ class Spo2 extends Component {
     componentDidMount() {
         stopSPO = false;
         let {idPatient} = this.props;
-
+		let {firstName} = this.props;
+		let {lastName} = this.props;
         let start = new Date();
         let date = new Date();
         let d2 = new Date();
@@ -29,7 +30,7 @@ class Spo2 extends Component {
         let chart = new CanvasJS.Chart("chartContainer",{
             exportEnabled: true,
             title:{
-                text:"SPO2 Points"
+                text: "SPO2 from "+firstName+" "+lastName
             },
             data: [{
                 type: "spline",

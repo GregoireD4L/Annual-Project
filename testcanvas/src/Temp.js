@@ -16,6 +16,8 @@ class Temp extends Component {
     componentDidMount() {
         stopTEMP = false;
         let {idPatient} = this.props;
+		let {firstName} = this.props;
+		let {lastName} = this.props;
         let start = new Date();
         let date = new Date();
         let d2 = new Date();
@@ -29,7 +31,7 @@ class Temp extends Component {
         let chart = new CanvasJS.Chart("chartContainer",{
             exportEnabled: true,
             title:{
-                text:"Temp Points"
+                text: "Temperature from "+firstName+" "+lastName
             },
             data: [{
                 type: "spline",

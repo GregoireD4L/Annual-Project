@@ -15,6 +15,8 @@ class Accelero extends Component {
     componentDidMount() {
         stopACC = false;
         let {idPatient} = this.props;
+		let {firstName} = this.props;
+		let {lastName} = this.props;
         let start = new Date();
         let date = new Date();
         let d2 = new Date();
@@ -28,7 +30,7 @@ class Accelero extends Component {
         let chart = new CanvasJS.Chart("chartContainer",{
             exportEnabled: true,
             title:{
-                text:"Accelero Points"
+               text: "Accelero from "+firstName+" "+lastName
             },
             data: [
                 {

@@ -16,6 +16,8 @@ class Respi extends Component {
     componentDidMount() {
         stopRES = false;
         let {idPatient} = this.props;
+		let {firstName} = this.props;
+		let {lastName} = this.props;
         let start = new Date();
         let date = new Date();
         let d2 = new Date();
@@ -29,7 +31,7 @@ class Respi extends Component {
         let chart = new CanvasJS.Chart("chartContainer",{
             exportEnabled: true,
             title:{
-                text:"Respi Points"
+                text: "Respiration from "+firstName+" "+lastName
             },
             data: [{
                 type: "spline",

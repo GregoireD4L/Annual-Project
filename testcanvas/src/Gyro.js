@@ -19,7 +19,8 @@ class Gyro extends Component {
     componentDidMount() {
         stopGyro = false;
         let {idPatient} = this.props;
-
+		let {firstName} = this.props;
+		let {lastName} = this.props;
         let start = new Date();
         let date = new Date();
         let d2 = new Date();
@@ -33,7 +34,7 @@ class Gyro extends Component {
         let chart = new CanvasJS.Chart("chartContainer",{
             exportEnabled: true,
             title:{
-                text:"Gyro Points"
+                text: "Gyro from "+firstName+" "+lastName
             },
             data: [
                 {

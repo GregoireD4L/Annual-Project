@@ -18,6 +18,8 @@ class ECG extends Component {
     componentDidMount() {
         stopECG = false;
         let {idPatient} = this.props;
+		let {firstName} = this.props;
+		let {lastName} = this.props;
         let start = new Date();
         let date = new Date();
         let d2 = new Date();
@@ -31,7 +33,7 @@ class ECG extends Component {
         let chart = new CanvasJS.Chart("chartContainer", {
             exportEnabled: true,
             title: {
-                text: "ECG1 Points"
+                text: "ECG from "+firstName+" "+lastName
             },
             data: [{
                 type: "spline",

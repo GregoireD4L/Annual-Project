@@ -325,11 +325,15 @@ class LoggedPage extends Component{
     }
 
     handleSelection = event => {
+		var split = event.target.value.split(";");
         this.setState({
-            activePatient: event.target.value,
+            activePatient: split[0],
             currentPatient: {
-                uid: event.target.value,
+				uid: split[0],
+				firstName: split[1],
+                lastName: split[2],
             }
+			
         });
     };
 
@@ -415,28 +419,28 @@ class LoggedPage extends Component{
                 var patients = this.retrievePatientsList(this.state.user.uid);
                 var items = [];
                 patients.forEach(patient => {
+					
                     items.push(<MenuItem
-                        value={patient.key}>{patient.val().firstName} {patient.val().lastName}</MenuItem>);
+                      value={patient.key +";"+patient.val().firstName+";"+patient.val().lastName}>{patient.val().firstName} {patient.val().lastName}</MenuItem>);
+                
                 });
                 var graph = '';
                 if (this.state.activePatient !== '') {
                     if (this.state.openGraph === 'ECG') {
-                        graph = <ECG idPatient={this.state.activePatient} openGraph={this.state.openGraph}/>;
+                        graph = <ECG idPatient={this.state.activePatient} firstName={this.state.currentPatient.firstName} lastName={this.state.currentPatient.lastName} openGraph={this.state.openGraph}/>;
                     } else if (this.state.openGraph === 'ACCELERO') {
-                        graph = <Accelero idPatient={this.state.activePatient} openGraph={this.state.openGraph}/>;
+                        graph = <Accelero idPatient={this.state.activePatient} firstName={this.state.currentPatient.firstName} lastName={this.state.currentPatient.lastName}  openGraph={this.state.openGraph}/>;
                     } else if (this.state.openGraph === 'MAGNETO') {
-                        graph = <Magneto idPatient={this.state.activePatient} openGraph={this.state.openGraph}/>;
+                        graph = <Magneto idPatient={this.state.activePatient} firstName={this.state.currentPatient.firstName} lastName={this.state.currentPatient.lastName}  openGraph={this.state.openGraph}/>;
                     } else if (this.state.openGraph === 'SPO2') {
-                        graph = <Spo2 idPatient={this.state.activePatient} openGraph={this.state.openGraph}/>;
+                        graph = <Spo2 idPatient={this.state.activePatient} firstName={this.state.currentPatient.firstName} lastName={this.state.currentPatient.lastName}  openGraph={this.state.openGraph}/>;
                     } else if (this.state.openGraph === 'GYRO') {
-                        graph = <Gyro idPatient={this.state.activePatient} openGraph={this.state.openGraph}/>;
+                        graph = <Gyro idPatient={this.state.activePatient} firstName={this.state.currentPatient.firstName} lastName={this.state.currentPatient.lastName}  openGraph={this.state.openGraph}/>;
                     }
                     else if (this.state.openGraph === 'TEMPERATURE') {
-                        graph = <Temp idPatient={this.state.activePatient} openGraph={this.state.openGraph}/>;
-                    } else if (this.state.openGraph === 'SPO2') {
-                        graph = '';
+                        graph = <Temp idPatient={this.state.activePatient} firstName={this.state.currentPatient.firstName} lastName={this.state.currentPatient.lastName}  openGraph={this.state.openGraph}/>;
                     } else if (this.state.openGraph === 'BREATHING') {
-                        graph = <Respi idPatient={this.state.activePatient} openGraph={this.state.openGraph}/>;
+                        graph = <Respi idPatient={this.state.activePatient}  firstName={this.state.currentPatient.firstName} lastName={this.state.currentPatient.lastName} openGraph={this.state.openGraph}/>;
                     } else {
                         graph = '';
                     }
@@ -478,7 +482,7 @@ class LoggedPage extends Component{
                                                     <InputLabel>Patient</InputLabel>
                                                     <Select
                                                         onChange={this.handleSelection}
-                                                        value={this.state.activePatient}>
+                                                        value={this.state.activePatient+";"+this.state.currentPatient.firstName+";"+this.state.currentPatient.lastName}>
                                                         {items}
                                                     </Select>
                                                 </FormControl>
