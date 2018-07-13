@@ -12,7 +12,7 @@ const styles = {
 class ECG extends Component {
     componentDidMount() {
 
-        let {idPatient} = this.props;
+        let {idPatient, openGraph} = this.props;
         /*var id = getQueryVariable("id");
 
         function getQueryVariable(variable) {
@@ -75,6 +75,10 @@ class ECG extends Component {
 
 
         function updateChart() {
+            if(openGraph !== 'ECG'){
+                return;
+            }
+            console.log("ecg");
             date = new Date();
             $.getJSON(linkurl + (d2.getTime() - 3000) + linkurlmiddle + (date.getTime() - 3000), function (data) {
                 d2 = date;

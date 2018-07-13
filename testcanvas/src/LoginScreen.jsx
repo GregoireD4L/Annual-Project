@@ -97,7 +97,7 @@ class LoginScreen extends Component {
     }
     handleClose(){
         this.setState({
-            registerSnackBar:false,
+            registerSnackBar:!this.state.registerSnackBar,
         })
     }
     handleRegisterState(event){
