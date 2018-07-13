@@ -8,6 +8,7 @@ import {Layout} from "./Layout";
 import {theme} from "./theme";
 import firebase from './FirebaseConfig';
 
+
 const styles = {
     card: {
         float: "none",
@@ -224,7 +225,10 @@ class LoginScreen extends Component {
             this.displaySnackBarWithErrors(errorMessage);
         }).then(() => {
            if(isSuccessful){
+			  
+        
                this.setCookie("email", this.state.email);
+			  
                this.setState({
                    isLogged: true,
                });

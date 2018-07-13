@@ -16,6 +16,9 @@ import firebase from './FirebaseConfig';
 import * as firebaseLib from "firebase";
 import {ECG} from "./ECG";
 import {Accelero} from "./Accelero";
+import {Magneto} from "./Magneto";
+import {Gyro} from "./Gyro";
+import {Spo2} from "./SPO2";
 import {Respi} from "./Respi";
 import {Temp} from "./Temp";
 
@@ -73,6 +76,7 @@ const styles = {
 
 class LoggedPage extends Component{
     constructor(props){
+
         const config = {
             apiKey: "AIzaSyAanpOteKt6sJER051WlLtlf3oYHduwpTM",
             authDomain: "data-for-life.firebaseapp.com",
@@ -83,7 +87,15 @@ class LoggedPage extends Component{
         };
 
         super(props);
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                console.log(user);
+                this.setState({user:user,});
+            }
+        }).bind(this);
+
         this.state = {
+            user:firebase.auth().currentUser,
             firstNameUser: '',
             lastNameUser: '',
             email:'',
@@ -116,7 +128,8 @@ class LoggedPage extends Component{
                 storageBucket: "data-for-life.appspot.com",
                 messagingSenderId: "1065890119840"
             },
-//secondaryApp : firebaseLib.initializeApp(config, "Secondary"),
+			
+			secondaryApp : firebaseLib.apps.length<2?firebaseLib.initializeApp(config, "Secondary"):firebase.apps[1],
 
 
         };
@@ -136,20 +149,26 @@ class LoggedPage extends Component{
         this.handleSelection = this.handleSelection.bind(this);
         this.openECG = this.openECG.bind(this);
         this.openACCELERO = this.openACCELERO.bind(this);
+		this.openMAGNETO = this.openMAGNETO.bind(this);
+		this.openGYRO = this.openGYRO.bind(this);
+		
         this.openBREATHING = this.openBREATHING.bind(this);
         this.openSPO2 = this.openSPO2.bind(this);
         this.openTEMPERATURE = this.openTEMPERATURE.bind(this);
         this.handleCloseSnackbar = this.handleCloseSnackbar.bind(this);
     }
 
+    setCookie(cname, cvalue) {
+        document.cookie = cname + "=" + cvalue + ";path=/";
+    }
+
     getUserInfos(){
-        let user = firebase.auth().currentUser;
+        let user = this.state.user;
         if(user) {
             firebase.database().ref('/users/' + user.uid).on('value', snapshot => {
-                this.setState({
-                    firstNameUser: snapshot.val().firstName,
-                    lastNameUser: snapshot.val().lastName,
-                });
+                
+                    this.setCookie("name",snapshot.val().firstName);
+                    this.setCookie("lastname",snapshot.val().lastName);
             });
         }
     }
@@ -255,8 +274,8 @@ class LoggedPage extends Component{
 
 
 
-        //this.state.secondaryApp.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(error => {
-        firebaseLib.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(error => {
+        this.state.secondaryApp.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(error => {
+      //  firebaseLib.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(error => {
 
             // Handle Errors here.
             isSuccessful = false;
@@ -264,10 +283,10 @@ class LoggedPage extends Component{
             this.displaySnackBarWithErrors(errorMessage);
         }).then(() => {
             if(isSuccessful) {
-                // var user = this.state.secondaryApp.auth().currentUser;
-                var user = firebaseLib.auth().currentUser;
-                if (user) {
-                    this.writePatientData(doctorId, user.uid, this.state.firstName, this.state.lastName, this.state.email);
+                 var user = this.state.secondaryApp.auth().currentUser;
+                //var user = firebaseLib.auth().currentUser;
+                if (this.state.user) {
+                    this.writePatientData(doctorId, this.state.user.uid, this.state.firstName, this.state.lastName, this.state.email);
                     this.setState({
                         welcome: true,
                         loginState: false,
@@ -280,8 +299,8 @@ class LoggedPage extends Component{
                     this.setState({
                         openDialog: false,
                     });
-                    //this.state.secondaryApp.auth().signOut();
-                    firebaseLib.auth().signOut();
+                    this.state.secondaryApp.auth().signOut();
+                //    firebaseLib.auth().signOut();
                 }
             }
         });
@@ -343,6 +362,18 @@ class LoggedPage extends Component{
             openDrawer: false,
         });
     }
+	openGYRO(){
+        this.setState({
+            openGraph: 'GYRO',
+            openDrawer: false,
+        });
+    }
+	openMAGNETO(){
+        this.setState({
+            openGraph: 'MAGNETO',
+            openDrawer: false,
+        });
+    }
 
     openBREATHING(){
         this.setState({
@@ -364,34 +395,60 @@ class LoggedPage extends Component{
             openDrawer: false,
         });
     }
+ getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
 
     render(){
-        if(this.state.isLogged) {
+        if(this.state.isLogged){
             let {classes} = this.props;
-            const isEnabled = this.state.email.length > 0 && this.state.password.length > 0;
-            var patients = this.retrievePatientsList(firebase.auth().currentUser.uid);
-            var items = [];
-            patients.forEach(patient => {
-                items.push(<MenuItem value={patient.key}>{patient.val().firstName} {patient.val().lastName}</MenuItem>);
-            });
-            var graph = '';
-            if(this.state.activePatient !== ''){
-                if(this.state.openGraph === 'ECG') {
-                    graph = <ECG idPatient={this.state.activePatient} openGraph={this.state.openGraph}/>;
-                }else if(this.state.openGraph === 'ACCELERO') {
-                    graph = <Accelero idPatient={this.state.activePatient} openGraph={this.state.openGraph}/>;
-                }else if(this.state.openGraph === 'TEMPERATURE') {
-                    graph = <Temp idPatient={this.state.activePatient} openGraph={this.state.openGraph}/>;
-                }else if(this.state.openGraph === 'SPO2') {
-                    graph = '';
-                }else if(this.state.openGraph === 'BREATHING') {
-                    graph = <Respi idPatient={this.state.activePatient} openGraph={this.state.openGraph}/>;
-                }else{
+                const isEnabled = this.state.email.length > 0 && this.state.password.length > 0;
+            if(this.state.user) {
+                var patients = this.retrievePatientsList(this.state.user.uid);
+                var items = [];
+                patients.forEach(patient => {
+                    items.push(<MenuItem
+                        value={patient.key}>{patient.val().firstName} {patient.val().lastName}</MenuItem>);
+                });
+                var graph = '';
+                if (this.state.activePatient !== '') {
+                    if (this.state.openGraph === 'ECG') {
+                        graph = <ECG idPatient={this.state.activePatient}/>;
+                    } else if (this.state.openGraph === 'ACCELERO') {
+                        graph = <Accelero idPatient={this.state.activePatient}/>;
+                    } else if (this.state.openGraph === 'MAGNETO') {
+                        graph = <Magneto idPatient={this.state.activePatient}/>;
+                    } else if (this.state.openGraph === 'SPO2') {
+                        graph = <Spo2 idPatient={this.state.activePatient}/>;
+                    } else if (this.state.openGraph === 'GYRO') {
+                        graph = <Gyro idPatient={this.state.activePatient}/>;
+                    } 
+					else if (this.state.openGraph === 'TEMPERATURE') {
+                        graph = <Temp idPatient={this.state.activePatient}/>;
+                    } else if (this.state.openGraph === 'SPO2') {
+                        graph = '';
+                    } else if (this.state.openGraph === 'BREATHING') {
+                        graph = <Respi idPatient={this.state.activePatient}/>;
+                    } else {
+                        graph = '';
+                    }
+                } else {
                     graph = '';
                 }
-            }else{
-                graph = '';
             }
+			
             return (
                 <MuiThemeProvider theme={theme}>
                     <Layout footer="Data for life copyright 2018" appBar={
@@ -401,7 +458,7 @@ class LoggedPage extends Component{
                                 <MenuIcon/>
                             </IconButton>
                             <Typography className={classes.typography} variant="title" color="inherit">
-                                {this.state.toolbarTitle} {this.state.firstNameUser} {this.state.lastNameUser}
+                                {this.state.toolbarTitle} {this.getCookie("name")} {this.getCookie("lastname")}
                             </Typography>
                             <Button className={classes.addPatient} color="inherit" onClick={this.handleAddPatient}>Add patient</Button>
                             <Button className={classes.logout} color="inherit" onClick={this.handleLogOut}>Log
@@ -442,6 +499,18 @@ class LoggedPage extends Component{
                                                 <Favorite/>
                                             </ListItemIcon>
                                             <ListItemText primary="Accelero"/>
+                                        </ListItem>
+										<ListItem button onClick={this.openMAGNETO}>
+                                            <ListItemIcon>
+                                                <Favorite/>
+                                            </ListItemIcon>
+                                            <ListItemText primary="Magneto"/>
+                                        </ListItem>
+										<ListItem button onClick={this.openGYRO}>
+                                            <ListItemIcon>
+                                                <Favorite/>
+                                            </ListItemIcon>
+                                            <ListItemText primary="Gyro"/>
                                         </ListItem>
                                         <ListItem button onClick={this.openBREATHING}>
                                             <ListItemIcon>

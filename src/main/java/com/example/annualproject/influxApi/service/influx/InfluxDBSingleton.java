@@ -1,4 +1,4 @@
-package com.example.annualproject.influxApi;
+package com.example.annualproject.influxApi.service.influx;
 
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;

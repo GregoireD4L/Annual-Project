@@ -7,18 +7,6 @@ class Respi extends Component {
     componentDidMount() {
 
         let {idPatient, openGraph} = this.props;
-        /*var id = getQueryVariable("id");
-
-        function getQueryVariable(variable) {
-            var query = window.location.search.substring(1);
-            var vars = query.split("&");
-            for (var i=0;i<vars.length;i++) {
-                var pair = vars[i].split("=");
-                if (pair[0] == variable) {
-                    return pair[1];
-                }
-            }
-        }*/
         let start = new Date();
         let date = new Date();
         let d2 = new Date();
