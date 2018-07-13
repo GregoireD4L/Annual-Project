@@ -270,13 +270,13 @@ class LoggedPage extends Component{
         if(doctor){
             doctorId = doctor.uid;
         }
-
-
-
-
-        this.state.secondaryApp.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(error => {
-      //  firebaseLib.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(error => {
-
+        //firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(error => {
+          admin.auth().createUser({
+              email: this.state.email,
+              emailVerified: false,
+              password: this.state.password,
+              disabled: false
+          }).catch(error => {
             // Handle Errors here.
             isSuccessful = false;
             var errorMessage = error.message;
