@@ -128,8 +128,8 @@ class LoggedPage extends Component{
                 storageBucket: "data-for-life.appspot.com",
                 messagingSenderId: "1065890119840"
             },
-			
-			secondaryApp : firebaseLib.apps.length<2?firebaseLib.initializeApp(config, "Secondary"):firebase.apps[1],
+
+            secondaryApp : firebaseLib.apps.length<2?firebaseLib.initializeApp(config, "Secondary"):firebase.apps[1],
 
 
         };
@@ -149,9 +149,9 @@ class LoggedPage extends Component{
         this.handleSelection = this.handleSelection.bind(this);
         this.openECG = this.openECG.bind(this);
         this.openACCELERO = this.openACCELERO.bind(this);
-		this.openMAGNETO = this.openMAGNETO.bind(this);
-		this.openGYRO = this.openGYRO.bind(this);
-		
+        this.openMAGNETO = this.openMAGNETO.bind(this);
+        this.openGYRO = this.openGYRO.bind(this);
+
         this.openBREATHING = this.openBREATHING.bind(this);
         this.openSPO2 = this.openSPO2.bind(this);
         this.openTEMPERATURE = this.openTEMPERATURE.bind(this);
@@ -166,9 +166,9 @@ class LoggedPage extends Component{
         let user = this.state.user;
         if(user) {
             firebase.database().ref('/users/' + user.uid).on('value', snapshot => {
-                
-                    this.setCookie("name",snapshot.val().firstName);
-                    this.setCookie("lastname",snapshot.val().lastName);
+
+                this.setCookie("name",snapshot.val().firstName);
+                this.setCookie("lastname",snapshot.val().lastName);
             });
         }
     }
@@ -270,20 +270,16 @@ class LoggedPage extends Component{
         if(doctor){
             doctorId = doctor.uid;
         }
-        //firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(error => {
-          admin.auth().createUser({
-              email: this.state.email,
-              emailVerified: false,
-              password: this.state.password,
-              disabled: false
-          }).catch(error => {
+        this.state.secondaryApp.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(error => {
+            //  firebaseLib.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(error => {
+
             // Handle Errors here.
             isSuccessful = false;
             var errorMessage = error.message;
             this.displaySnackBarWithErrors(errorMessage);
         }).then(() => {
             if(isSuccessful) {
-                 var user = this.state.secondaryApp.auth().currentUser;
+                var user = this.state.secondaryApp.auth().currentUser;
                 //var user = firebaseLib.auth().currentUser;
                 if (this.state.user) {
                     this.writePatientData(doctorId, this.state.user.uid, this.state.firstName, this.state.lastName, this.state.email);
@@ -300,7 +296,7 @@ class LoggedPage extends Component{
                         openDialog: false,
                     });
                     this.state.secondaryApp.auth().signOut();
-                //    firebaseLib.auth().signOut();
+                    //    firebaseLib.auth().signOut();
                 }
             }
         });
@@ -362,13 +358,13 @@ class LoggedPage extends Component{
             openDrawer: false,
         });
     }
-	openGYRO(){
+    openGYRO(){
         this.setState({
             openGraph: 'GYRO',
             openDrawer: false,
         });
     }
-	openMAGNETO(){
+    openMAGNETO(){
         this.setState({
             openGraph: 'MAGNETO',
             openDrawer: false,
@@ -395,7 +391,7 @@ class LoggedPage extends Component{
             openDrawer: false,
         });
     }
- getCookie(cname) {
+    getCookie(cname) {
         var name = cname + "=";
         var decodedCookie = decodeURIComponent(document.cookie);
         var ca = decodedCookie.split(';');
@@ -414,7 +410,7 @@ class LoggedPage extends Component{
     render(){
         if(this.state.isLogged){
             let {classes} = this.props;
-                const isEnabled = this.state.email.length > 0 && this.state.password.length > 0;
+            const isEnabled = this.state.email.length > 0 && this.state.password.length > 0;
             if(this.state.user) {
                 var patients = this.retrievePatientsList(this.state.user.uid);
                 var items = [];
@@ -425,22 +421,22 @@ class LoggedPage extends Component{
                 var graph = '';
                 if (this.state.activePatient !== '') {
                     if (this.state.openGraph === 'ECG') {
-                        graph = <ECG idPatient={this.state.activePatient}/>;
+                        graph = <ECG idPatient={this.state.activePatient} openGraph={this.state.openGraph}/>;
                     } else if (this.state.openGraph === 'ACCELERO') {
-                        graph = <Accelero idPatient={this.state.activePatient}/>;
+                        graph = <Accelero idPatient={this.state.activePatient} openGraph={this.state.openGraph}/>;
                     } else if (this.state.openGraph === 'MAGNETO') {
-                        graph = <Magneto idPatient={this.state.activePatient}/>;
+                        graph = <Magneto idPatient={this.state.activePatient} openGraph={this.state.openGraph}/>;
                     } else if (this.state.openGraph === 'SPO2') {
-                        graph = <Spo2 idPatient={this.state.activePatient}/>;
+                        graph = <Spo2 idPatient={this.state.activePatient} openGraph={this.state.openGraph}/>;
                     } else if (this.state.openGraph === 'GYRO') {
-                        graph = <Gyro idPatient={this.state.activePatient}/>;
-                    } 
-					else if (this.state.openGraph === 'TEMPERATURE') {
-                        graph = <Temp idPatient={this.state.activePatient}/>;
+                        graph = <Gyro idPatient={this.state.activePatient} openGraph={this.state.openGraph}/>;
+                    }
+                    else if (this.state.openGraph === 'TEMPERATURE') {
+                        graph = <Temp idPatient={this.state.activePatient} openGraph={this.state.openGraph}/>;
                     } else if (this.state.openGraph === 'SPO2') {
                         graph = '';
                     } else if (this.state.openGraph === 'BREATHING') {
-                        graph = <Respi idPatient={this.state.activePatient}/>;
+                        graph = <Respi idPatient={this.state.activePatient} openGraph={this.state.openGraph}/>;
                     } else {
                         graph = '';
                     }
@@ -448,7 +444,7 @@ class LoggedPage extends Component{
                     graph = '';
                 }
             }
-			
+
             return (
                 <MuiThemeProvider theme={theme}>
                     <Layout footer="Data for life copyright 2018" appBar={
@@ -500,13 +496,13 @@ class LoggedPage extends Component{
                                             </ListItemIcon>
                                             <ListItemText primary="Accelero"/>
                                         </ListItem>
-										<ListItem button onClick={this.openMAGNETO}>
+                                        <ListItem button onClick={this.openMAGNETO}>
                                             <ListItemIcon>
                                                 <Favorite/>
                                             </ListItemIcon>
                                             <ListItemText primary="Magneto"/>
                                         </ListItem>
-										<ListItem button onClick={this.openGYRO}>
+                                        <ListItem button onClick={this.openGYRO}>
                                             <ListItemIcon>
                                                 <Favorite/>
                                             </ListItemIcon>

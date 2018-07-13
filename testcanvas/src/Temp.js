@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import CanvasJS from './CanvasJS';
+import {withStyles} from '@material-ui/core';
 //var CanvasJS = require('./CanvasJS')
 
-class Temp extends Component {
-    componentDidMount() {
+const styles = {
+    graph: {
+        marginTop: 50,
+    },
+};
+var stopTEMP = false;
 
-        let {idPatient, openGraph} = this.props;
+class Temp extends Component {
+
+    componentDidMount() {
+        stopTEMP = false;
+        let {idPatient} = this.props;
         let start = new Date();
         let date = new Date();
         let d2 = new Date();
@@ -57,9 +66,10 @@ class Temp extends Component {
         updateChart();
 
         function updateChart() {
-            if(openGraph !== 'TEMPERATURE'){
+            if(stopTEMP){
                 return;
             }
+
             date = new Date();
             $.getJSON(linkurl+(d2.getTime()-1500)+linkurlmiddle+(date.getTime()-1500), function(data) {
                 d2=date;
@@ -78,13 +88,20 @@ class Temp extends Component {
             });
         }
     }
+
+    componentWillUnmount(){
+        stopTEMP = true;
+    }
+
     render() {
+        let {classes} = this.props;
         return (
             <div className="App">
-                <div id="chartContainer"></div>
+                <div id="chartContainer" className={classes.graph}></div>
             </div>
         );
     }
 }
 
+Temp = withStyles(styles)(Temp);
 export {Temp}

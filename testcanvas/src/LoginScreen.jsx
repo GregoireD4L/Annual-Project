@@ -224,16 +224,16 @@ class LoginScreen extends Component {
             var errorMessage = error.message;
             this.displaySnackBarWithErrors(errorMessage);
         }).then(() => {
-           if(isSuccessful){
-			  
-        
-               this.setCookie("email", this.state.email);
-			  
-               this.setState({
-                   isLogged: true,
-               });
-               this.props.history.push('/home');
-           }
+            if(isSuccessful){
+
+
+                this.setCookie("email", this.state.email);
+
+                this.setState({
+                    isLogged: true,
+                });
+                this.props.history.push('/home');
+            }
         });
     }
 

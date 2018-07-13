@@ -1,12 +1,20 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import CanvasJS from './CanvasJS';
+import {withStyles} from '@material-ui/core';
 //var CanvasJS = require('./CanvasJS')
 
+const styles = {
+    graph: {
+        marginTop: 50,
+    },
+};
+var stopACC = false;
 class Accelero extends Component {
 
     componentDidMount() {
-        let {idPatient, openGraph} = this.props;
+        stopACC = false;
+        let {idPatient} = this.props;
         let start = new Date();
         let date = new Date();
         let d2 = new Date();
@@ -70,9 +78,10 @@ class Accelero extends Component {
         updateChart();
 
         function updateChart() {
-            if(openGraph !== 'ACCELERO'){
+            if(stopACC){
                 return;
             }
+
             date = new Date();
             $.getJSON(linkurl+(d2.getTime()-1500)+linkurlmiddle+(date.getTime()-1500), function(data) {
                 d2=date;
@@ -94,13 +103,20 @@ class Accelero extends Component {
             });
         }
     }
+
+    componentWillUnmount(){
+        stopACC = true;
+    }
+
     render() {
+        let {classes} = this.props;
         return (
             <div className="App">
-                <div id="chartContainer"></div>
+                <div id="chartContainer" className={classes.graph}></div>
             </div>
         );
     }
 }
+Accelero = withStyles(styles)(Accelero);
 
 export {Accelero}

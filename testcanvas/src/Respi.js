@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import CanvasJS from './CanvasJS';
+import {withStyles} from '@material-ui/core';
 //var CanvasJS = require('./CanvasJS')
 
-class Respi extends Component {
-    componentDidMount() {
+const styles = {
+    graph: {
+        marginTop: 50,
+    },
+};
+var stopRES = false;
 
-        let {idPatient, openGraph} = this.props;
+class Respi extends Component {
+
+    componentDidMount() {
+        stopRES = false;
+        let {idPatient} = this.props;
         let start = new Date();
         let date = new Date();
         let d2 = new Date();
@@ -55,9 +64,10 @@ class Respi extends Component {
         updateChart();
 
         function updateChart() {
-            if(openGraph !== 'BREATHING'){
+            if(stopRES){
                 return;
             }
+
             date = new Date();
             $.getJSON(linkurl+(d2.getTime()-1500)+linkurlmiddle+(date.getTime()-1500), function(data) {
                 d2=date;
@@ -76,13 +86,20 @@ class Respi extends Component {
             });
         }
     }
+
+    componentWillUnmount(){
+        stopRES = true;
+    }
+
     render() {
+        let {classes} = this.props;
         return (
             <div className="App">
-                <div id="chartContainer"></div>
+                <div id="chartContainer" className={classes.graph}></div>
             </div>
         );
     }
 }
 
+Respi = withStyles(styles)(Respi);
 export {Respi}

@@ -9,24 +9,15 @@ const styles = {
         marginTop: 50,
     },
 };
+var stopECG = false;
 class ECG extends Component {
+
+    constructor(props){
+        super(props);
+    }
     componentDidMount() {
-
-        let {idPatient, openGraph} = this.props;
-        /*var id = getQueryVariable("id");
-
-        function getQueryVariable(variable) {
-            var query = window.location.search.substring(1);
-            var vars = query.split("&");
-            for (var i = 0; i < vars.length; i++) {
-                var pair = vars[i].split("=");
-                if (pair[0] == variable) {
-                    return pair[1];
-                }
-            }
-        }
-
-        var id = getQueryVariable("id");*/
+        stopECG = false;
+        let {idPatient} = this.props;
         let start = new Date();
         let date = new Date();
         let d2 = new Date();
@@ -74,10 +65,10 @@ class ECG extends Component {
 
 
         function updateChart() {
-            if(openGraph !== 'ECG'){
+            if(stopECG){
                 return;
             }
-            console.log("ecg");
+
             date = new Date();
             $.getJSON(linkurl + (d2.getTime()*1000000 - 3000000000) + linkurlmiddle + (date.getTime()*1000000 - 3000000000), function (data) {
                 d2 = date;
@@ -97,6 +88,11 @@ class ECG extends Component {
 
         }
     }
+
+    componentWillUnmount(){
+        stopECG = true;
+    }
+
     render() {
         let {classes} = this.props;
         return (
