@@ -71,7 +71,11 @@ const styles = {
     },
     dialogPatient: {
         minHeight: 600,
-    }
+    },
+    graph: {
+        marginTop: 50,
+        marginLeft: '30%',
+    },
 };
 
 class LoggedPage extends Component{
@@ -427,25 +431,28 @@ class LoggedPage extends Component{
                 var graph = '';
                 if (this.state.activePatient !== '') {
                     if (this.state.openGraph === 'ECG') {
-                        graph = <ECG idPatient={this.state.activePatient} firstName={this.state.currentPatient.firstName} lastName={this.state.currentPatient.lastName} openGraph={this.state.openGraph}/>;
+                        graph = <ECG idPatient={this.state.activePatient} firstName={this.state.currentPatient.firstName} lastName={this.state.currentPatient.lastName} />;
                     } else if (this.state.openGraph === 'ACCELERO') {
-                        graph = <Accelero idPatient={this.state.activePatient} firstName={this.state.currentPatient.firstName} lastName={this.state.currentPatient.lastName}  openGraph={this.state.openGraph}/>;
+                        graph = <Accelero idPatient={this.state.activePatient} firstName={this.state.currentPatient.firstName} lastName={this.state.currentPatient.lastName} />;
                     } else if (this.state.openGraph === 'MAGNETO') {
-                        graph = <Magneto idPatient={this.state.activePatient} firstName={this.state.currentPatient.firstName} lastName={this.state.currentPatient.lastName}  openGraph={this.state.openGraph}/>;
+                        graph = <Magneto idPatient={this.state.activePatient} firstName={this.state.currentPatient.firstName} lastName={this.state.currentPatient.lastName} />;
                     } else if (this.state.openGraph === 'SPO2') {
-                        graph = <Spo2 idPatient={this.state.activePatient} firstName={this.state.currentPatient.firstName} lastName={this.state.currentPatient.lastName}  openGraph={this.state.openGraph}/>;
+                        graph = <Spo2 idPatient={this.state.activePatient} firstName={this.state.currentPatient.firstName} lastName={this.state.currentPatient.lastName} />;
                     } else if (this.state.openGraph === 'GYRO') {
-                        graph = <Gyro idPatient={this.state.activePatient} firstName={this.state.currentPatient.firstName} lastName={this.state.currentPatient.lastName}  openGraph={this.state.openGraph}/>;
+                        graph = <Gyro idPatient={this.state.activePatient} firstName={this.state.currentPatient.firstName} lastName={this.state.currentPatient.lastName} />;
                     }
                     else if (this.state.openGraph === 'TEMPERATURE') {
-                        graph = <Temp idPatient={this.state.activePatient} firstName={this.state.currentPatient.firstName} lastName={this.state.currentPatient.lastName}  openGraph={this.state.openGraph}/>;
+                        graph = <Temp idPatient={this.state.activePatient} firstName={this.state.currentPatient.firstName} lastName={this.state.currentPatient.lastName} />;
                     } else if (this.state.openGraph === 'BREATHING') {
-                        graph = <Respi idPatient={this.state.activePatient}  firstName={this.state.currentPatient.firstName} lastName={this.state.currentPatient.lastName} openGraph={this.state.openGraph}/>;
+                        graph = <Respi idPatient={this.state.activePatient}  firstName={this.state.currentPatient.firstName} lastName={this.state.currentPatient.lastName} />;
+
                     } else {
                         graph = '';
                     }
                 } else {
-                    graph = '';
+                    graph = <Typography className={classes.graph} variant="title" color="inherit">
+                        Please select a patient, then select a metric to display
+                    </Typography>;
                 }
             }
 
