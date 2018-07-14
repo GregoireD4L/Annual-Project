@@ -133,7 +133,7 @@ class LoggedPage extends Component{
                 messagingSenderId: "1065890119840"
             },
 
-            secondaryApp : firebaseLib.apps.length<2?firebaseLib.initializeApp(config, "Secondary"):firebase.apps[1],
+            secondaryApp : firebaseLib.apps.length<2?firebaseLib.initializeApp(config, "Secondary"):firebaseLib.apps[1],
 
 
         };
