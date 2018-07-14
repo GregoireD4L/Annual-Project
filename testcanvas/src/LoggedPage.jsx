@@ -107,6 +107,7 @@ class LoggedPage extends Component{
             firstName: '',
             lastName: '',
             openDrawer: false,
+			openAlert: false,
             toolbarTitle: 'Welcome',
             choiceMenu: '',
             isLogged: true,
@@ -184,6 +185,11 @@ class LoggedPage extends Component{
     handleCloseDrawer(){
         this.setState({
             openDrawer: false,
+        });
+    }
+	handleCloseAlert(){
+        this.setState({
+            openAlert: false,
         });
     }
 
@@ -355,7 +361,9 @@ class LoggedPage extends Component{
 
     openECG(){
 		if(!this.state.currentPatient.uid){
-			alert("Please select a patient, then select a metric to display");
+			this.setState({
+				openAlert:true,
+			});
 		}
         this.setState({
             openGraph: 'ECG',
@@ -365,7 +373,9 @@ class LoggedPage extends Component{
 
     openACCELERO(){
 		if(!this.state.currentPatient.uid){
-			alert("Please select a patient, then select a metric to display");
+		  this.setState({
+			openAlert:true,
+			});
 		}
         this.setState({
             openGraph: 'ACCELERO',
@@ -374,7 +384,9 @@ class LoggedPage extends Component{
     }
     openGYRO(){
 		if(!this.state.currentPatient.uid){
-			alert("Please select a patient, then select a metric to display");
+			this.setState({
+			openAlert:true,
+			});
 		}
         this.setState({
             openGraph: 'GYRO',
@@ -383,7 +395,10 @@ class LoggedPage extends Component{
     }
     openMAGNETO(){
 		if(!this.state.currentPatient.uid){
-			alert("Please select a patient, then select a metric to display");
+			openAlert:true,
+			this.setState({
+			openAlert:true,
+			});
 		}
         this.setState({
             openGraph: 'MAGNETO',
@@ -393,7 +408,9 @@ class LoggedPage extends Component{
 
     openBREATHING(){
 		if(!this.state.currentPatient.uid){
-			alert("Please select a patient, then select a metric to display");
+			this.setState({
+			openAlert:true,
+			});
 		}
         this.setState({
             openGraph: 'BREATHING',
@@ -403,7 +420,9 @@ class LoggedPage extends Component{
 
     openSPO2(){
 		if(!this.state.currentPatient.uid){
-			alert("Please select a patient, then select a metric to display");
+			this.setState({
+			openAlert:true,
+			});
 		}
         this.setState({
             openGraph: 'SPO2',
@@ -413,7 +432,9 @@ class LoggedPage extends Component{
 
     openTEMPERATURE(){
 		if(!this.state.currentPatient.uid){
-			alert("Please select a patient, then select a metric to display");
+			this.setState({
+			openAlert:true,
+			});
 		}
         this.setState({
             openGraph: 'TEMPERATURE',
@@ -563,6 +584,7 @@ class LoggedPage extends Component{
                                 </div>
                             </div>
                         </Drawer>
+						
 
                         <Dialog
                             open={this.state.openDialog}
@@ -613,6 +635,25 @@ class LoggedPage extends Component{
                                 <Button onClick={this.handleRegisterPatient} color="primary" autoFocus disabled={!isEnabled}>
                                     Register
                                 </Button>
+                            </DialogActions>
+                        </Dialog>
+						 <Dialog
+                            open={this.state.openAlert}
+                            onClose={this.handleCloseAlert}
+                            className={classes.alertPatient}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description">
+                            <DialogTitle id="alert-dialog-title">{"You had not choosen a patient"}</DialogTitle>
+                            <DialogContent>
+                                <DialogContentText id="alert-dialog-description">
+                                    Please choose a patient
+                                </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={this.handleCloseAlert} color="primary">
+                                    OK
+                                </Button>
+                                
                             </DialogActions>
                         </Dialog>
 
