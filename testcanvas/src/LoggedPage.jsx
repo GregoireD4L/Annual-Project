@@ -138,7 +138,7 @@ class LoggedPage extends Component{
 
 
         };
-
+ 
 
         this.getUserInfos = this.getUserInfos.bind(this);
         this.handleCloseDrawer = this.handleCloseDrawer.bind(this);
@@ -146,6 +146,7 @@ class LoggedPage extends Component{
         this.handleLogOut = this.handleLogOut.bind(this);
         this.handleAddPatient = this.handleAddPatient.bind(this);
         this.handleCloseDialog = this.handleCloseDialog.bind(this);
+		this.handleCloseAlert = this.handleCloseAlert.bind(this);
         this.handleChangeEmail = this.handleChangeEmail.bind(this);
         this.handleChangeFirstName = this.handleChangeFirstName.bind(this);
         this.handleChangeLastName = this.handleChangeLastName.bind(this);
