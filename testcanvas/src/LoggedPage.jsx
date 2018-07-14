@@ -90,10 +90,10 @@ class LoggedPage extends Component{
             messagingSenderId: "1065890119840"
         };
 
-        super(props);
+       
+		super(props);
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-                console.log(user);
                 this.setState({user:user,});
             }
         }).bind(this);

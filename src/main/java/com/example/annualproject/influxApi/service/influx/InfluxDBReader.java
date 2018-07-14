@@ -61,7 +61,6 @@ public class InfluxDBReader {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-
         QueryResult queryResult = influxDB.query(new Query(query, dbName));
 
         InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
