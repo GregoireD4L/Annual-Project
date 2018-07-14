@@ -96,9 +96,11 @@ class Gyro extends Component {
                 d2=date;
                 $.each(data, function(key, value) {
                     let date =new Date(parseInt(value.longtime));
+					if(dataPointsX.length==0||(dataPointsX.length>0&&parseInt(value.longtime)- start.getTime()-20>=dataPointsX.slice(-1)[0].x)){
                     dataPointsX.push({x: parseInt(value.longtime)- start.getTime(), y: parseFloat(value.gyroX)});
                     dataPointsY.push({x: parseInt(value.longtime)- start.getTime(), y: parseFloat(value.gyroY)});
                     dataPointsZ.push({x: parseInt(value.longtime)- start.getTime(), y: parseFloat(value.gyroZ)});
+					}
                 });
 
 

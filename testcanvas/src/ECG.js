@@ -83,6 +83,7 @@ class ECG extends Component {
 		       d2 = date;
                 $.each(data, function (key, value) {
                     let date = new Date(parseInt(value.longtime));
+					
                     dataPoints.push({x: parseInt(value.longtime) - start.getTime(), y: parseFloat(value.ecg1)});
                 });
 

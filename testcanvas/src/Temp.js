@@ -83,7 +83,9 @@ class Temp extends Component {
 		      d2=date;
                 $.each(data, function(key, value) {
                     let date =new Date(parseInt(value.longtime));
+					if(dataPoints.length==0||(dataPoints.length>0&&parseInt(value.longtime)- start.getTime()-20>=dataPoints.slice(-1)[0].x)){
                     dataPoints.push({x: parseInt(value.longtime)- start.getTime(), y: parseFloat(value.temp)});
+					}
                 });
 
 

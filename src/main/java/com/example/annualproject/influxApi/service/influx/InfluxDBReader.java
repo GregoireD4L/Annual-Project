@@ -65,24 +65,11 @@ public class InfluxDBReader {
 
         InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
         List<Point> points = resultMapper.toPOJO(queryResult, cl);
-        List<Point> toReturn = new ArrayList<>();
-        if(points.size()>0) {
-            Point tmpPoint = points.get(0);
-            tmpPoint.setLongtime(tmpPoint.getTime());
-            toReturn.add(tmpPoint);
             for (Point point : points) {
                 point.setLongtime(point.getTime());
-                if(field!=ECG){
-                    if(!toReturn.contains(point)){
-                        toReturn.add(point);
-                    }
-                }
-                else{
-                    toReturn.add(point);
-                }
-            }
+
         }
-        return toReturn;
+        return points;
 
         
     }
