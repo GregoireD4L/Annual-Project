@@ -354,6 +354,9 @@ class LoggedPage extends Component{
     }
 
     openECG(){
+		if(!this.state.currentPatient.uid){
+			alert("Please select a patient, then select a metric to display");
+		}
         this.setState({
             openGraph: 'ECG',
             openDrawer:false,
@@ -361,18 +364,27 @@ class LoggedPage extends Component{
     }
 
     openACCELERO(){
+		if(!this.state.currentPatient.uid){
+			alert("Please select a patient, then select a metric to display");
+		}
         this.setState({
             openGraph: 'ACCELERO',
             openDrawer: false,
         });
     }
     openGYRO(){
+		if(!this.state.currentPatient.uid){
+			alert("Please select a patient, then select a metric to display");
+		}
         this.setState({
             openGraph: 'GYRO',
             openDrawer: false,
         });
     }
     openMAGNETO(){
+		if(!this.state.currentPatient.uid){
+			alert("Please select a patient, then select a metric to display");
+		}
         this.setState({
             openGraph: 'MAGNETO',
             openDrawer: false,
@@ -380,6 +392,9 @@ class LoggedPage extends Component{
     }
 
     openBREATHING(){
+		if(!this.state.currentPatient.uid){
+			alert("Please select a patient, then select a metric to display");
+		}
         this.setState({
             openGraph: 'BREATHING',
             openDrawer: false,
@@ -387,6 +402,9 @@ class LoggedPage extends Component{
     }
 
     openSPO2(){
+		if(!this.state.currentPatient.uid){
+			alert("Please select a patient, then select a metric to display");
+		}
         this.setState({
             openGraph: 'SPO2',
             openDrawer: false,
@@ -394,6 +412,9 @@ class LoggedPage extends Component{
     }
 
     openTEMPERATURE(){
+		if(!this.state.currentPatient.uid){
+			alert("Please select a patient, then select a metric to display");
+		}
         this.setState({
             openGraph: 'TEMPERATURE',
             openDrawer: false,
@@ -450,6 +471,7 @@ class LoggedPage extends Component{
                         graph = '';
                     }
                 } else {
+					
                     graph = <Typography className={classes.graph} variant="title" color="inherit">
                         Please select a patient, then select a metric to display
                     </Typography>;
