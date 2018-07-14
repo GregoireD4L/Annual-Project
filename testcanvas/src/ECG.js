@@ -26,7 +26,7 @@ class ECG extends Component {
         let milli = date.getTime() - 5000;
         let dataPoints = [];
         let dpsLength = 0;
-        let linkurl = "http://localhost:8888/data/getECG1PastMilli?id=" + idPatient + "&beginning=";
+        let linkurl = "http://51.38.185.205:8888/data/getECG1PastMilli?id=" + idPatient + "&beginning=";
         let linkurlmiddle = "&ending=";
 
         let tmplink = linkurl + milli + linkurlmiddle + (milli + 1000);

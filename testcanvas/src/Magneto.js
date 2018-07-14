@@ -24,7 +24,7 @@ class Magneto extends Component {
         let dataPointsY = [];
         let dataPointsZ = [];
         let dpsLength = 0;
-        let linkurl="http://localhost:8888/data/getMagnetoPastMilli?id="+idPatient+"&beginning=";
+        let linkurl="http://51.38.185.205:8888/data/getMagnetoPastMilli?id="+idPatient+"&beginning=";
         let linkurlmiddle="&ending=";
 
         let chart = new CanvasJS.Chart("chartContainer",{
