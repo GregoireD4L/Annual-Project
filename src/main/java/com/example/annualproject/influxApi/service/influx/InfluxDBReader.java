@@ -8,8 +8,7 @@ import org.influxdb.dto.QueryResult;
 import org.influxdb.impl.InfluxDBResultMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import static com.example.annualproject.influxApi.service.points.InfluxField.*;
@@ -29,7 +28,9 @@ public class InfluxDBReader {
 
         try {
             if(field== ECG) {
-                query = "SELECT ecg1,time FROM allPoints where ID='" + Decrypter.encrypt(id) + "' and time>=" + beginning + " and time<" + ending;
+
+                    query = "SELECT ecg1,time FROM allPoints where ID='" + Decrypter.encrypt(id) + "' and time>=" + beginning + " and time<" + ending;
+
                 cl=Ecg1Point.class;
             }
             else if(field== SPO2){
@@ -57,10 +58,10 @@ public class InfluxDBReader {
 
                 cl=TempPoint.class;
             }
-        } catch (Exception e) {
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        System.out.println(query);
+
         QueryResult queryResult = influxDB.query(new Query(query, dbName));
 
         InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
