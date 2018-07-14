@@ -644,7 +644,7 @@ class LoggedPage extends Component{
                             className={classes.alertPatient}
                             aria-labelledby="alert-dialog-title"
                             aria-describedby="alert-dialog-description">
-                            <DialogTitle id="alert-dialog-title">{"You had not choosen a patient"}</DialogTitle>
+                            <DialogTitle id="alert-dialog-title">{"You had not chosen a patient"}</DialogTitle>
                             <DialogContent>
                                 <DialogContentText id="alert-dialog-description">
                                     Please choose a patient
