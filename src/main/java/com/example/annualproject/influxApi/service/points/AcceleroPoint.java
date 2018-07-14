@@ -85,21 +85,16 @@ public class AcceleroPoint implements Point{
     @Override
     public boolean equals(Object obj) {
         AcceleroPoint acceleroPoint = (AcceleroPoint) obj;
-        if(acceleroPoint.acceleroX!=this.acceleroX){
+        if(this.longtime/20!=acceleroPoint.longtime/20){
             return false;
         }
-        if(acceleroPoint.acceleroY!=this.acceleroY){
-            return false;
-        }
-        if(acceleroPoint.acceleroZ!=this.acceleroZ){
-            return false;
-        }
+
         return true;
     }
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 17 * hash +  Double.valueOf(this.acceleroZ).hashCode()+Double.valueOf(this.acceleroZ).hashCode()*20+Double.valueOf(this.acceleroY).hashCode()*300;
+        hash = 17 * hash +  Double.valueOf(this.acceleroZ).hashCode()+Double.valueOf(this.acceleroZ).hashCode()*20+Double.valueOf(this.acceleroY).hashCode()*300+Double.valueOf(this.longtime/20).hashCode();
         return hash;
     }
 

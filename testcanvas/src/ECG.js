@@ -59,6 +59,13 @@ class ECG extends Component {
 
             zoomEnabled: true,
 
+			rangeChanged: function(e){
+				stopECG=!stopECG
+				if(!stopECG){
+					updateChart();
+				}
+			
+			},
 
         });
 
@@ -72,11 +79,11 @@ class ECG extends Component {
             }
 
             date = new Date();
-            $.getJSON(linkurl + (d2.getTime()*1000000 - 3000000000) + linkurlmiddle + (date.getTime()*1000000 - 3000000000), function (data) {
-                d2 = date;
+          $.getJSON(linkurl + (d2.getTime()*1000000 - 3000000000) + linkurlmiddle + (date.getTime()*1000000 - 3000000000), function (data) {
+		       d2 = date;
                 $.each(data, function (key, value) {
-                    let date = new Date(parseInt(value.time));
-                    dataPoints.push({x: parseInt(value.time) - start.getTime(), y: parseFloat(value.ecg1)});
+                    let date = new Date(parseInt(value.longtime));
+                    dataPoints.push({x: parseInt(value.longtime) - start.getTime(), y: parseFloat(value.ecg1)});
                 });
 
 

@@ -73,6 +73,13 @@ class Gyro extends Component {
             zoomEnabled: true,
 
 
+			rangeChanged: function(e){
+				stopGyro=!stopGyro
+				if(!stopGyro){
+					updateChart();
+				}
+			
+			},
 
 
         });

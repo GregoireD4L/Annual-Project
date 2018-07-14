@@ -72,10 +72,7 @@ public class RespiPoint implements Point{
     @Override
     public boolean equals(Object obj) {
         RespiPoint respiPoint = (RespiPoint) obj;
-        if(respiPoint.respiAbdominal!=this.respiAbdominal){
-            return false;
-        }
-        if(respiPoint.respiThorax!=this.respiThorax){
+        if(this.longtime/20!=respiPoint.longtime/20){
             return false;
         }
         return true;
@@ -84,7 +81,7 @@ public class RespiPoint implements Point{
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 17 * hash +  Double.valueOf(this.respiThorax).hashCode();
+        hash = 17 * hash +  Double.valueOf(this.respiThorax).hashCode()+Double.valueOf(this.longtime/20).hashCode();
         return hash;
     }
 

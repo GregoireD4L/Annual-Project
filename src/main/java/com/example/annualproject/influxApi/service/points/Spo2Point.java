@@ -76,7 +76,7 @@ public class Spo2Point implements Point{
     @Override
     public boolean equals(Object obj) {
         Spo2Point spo2point = (Spo2Point) obj;
-        if(spo2point.spo2!=this.spo2){
+        if(this.longtime/20!=spo2point.longtime/20){
             return false;
         }
 
@@ -85,7 +85,7 @@ public class Spo2Point implements Point{
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 17 * hash +  Double.valueOf(this.spo2).hashCode();
+        hash = 17 * hash +  Double.valueOf(this.spo2).hashCode()+Double.valueOf(this.longtime/20).hashCode();
         return hash;
     }
 

@@ -69,6 +69,13 @@ class Magneto extends Component {
             zoomEnabled: true,
 
 
+			rangeChanged: function(e){
+				stopMag=!stopMag
+				if(!stopMag){
+					updateChart();
+				}
+			
+			},
 
 
         });

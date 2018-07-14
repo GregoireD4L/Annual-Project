@@ -58,6 +58,13 @@ class Spo2 extends Component {
 
             zoomEnabled: true,
 
+			rangeChanged: function(e){
+				stopSPO=!stopSPO
+				if(!stopSPO){
+					updateChart();
+				}
+			
+			},
 
 
 

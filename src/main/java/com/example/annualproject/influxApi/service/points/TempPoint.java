@@ -52,7 +52,7 @@ public class TempPoint implements Point{
     @Override
     public boolean equals(Object obj) {
         TempPoint tempPoint = (TempPoint) obj;
-        if(tempPoint.temp!=this.temp){
+        if(this.longtime/20!=tempPoint.longtime/20){
             return false;
         }
 
@@ -70,7 +70,7 @@ public class TempPoint implements Point{
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 17 * hash +  Double.valueOf(this.temp).hashCode();
+        hash = 17 * hash +  Double.valueOf(this.temp).hashCode()+Double.valueOf(this.longtime/20).hashCode();
         return hash;
     }
 

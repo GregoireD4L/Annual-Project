@@ -72,13 +72,7 @@ public class MagnetoPoint implements Point{
     @Override
     public boolean equals(Object obj) {
         MagnetoPoint magnetoPoint = (MagnetoPoint) obj;
-        if(magnetoPoint.magnetoX!=this.magnetoX){
-            return false;
-        }
-        if(magnetoPoint.magnetoY!=this.magnetoY){
-            return false;
-        }
-        if(magnetoPoint.magnetoZ!=this.magnetoZ){
+        if(this.longtime/20!=magnetoPoint.longtime/20){
             return false;
         }
         return true;
@@ -86,7 +80,7 @@ public class MagnetoPoint implements Point{
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 17 * hash +  Double.valueOf(this.magnetoZ).hashCode()+Double.valueOf(this.magnetoZ).hashCode()*20+Double.valueOf(this.magnetoY).hashCode()*300;
+        hash = 17 * hash +  Double.valueOf(this.magnetoZ).hashCode()+Double.valueOf(this.magnetoZ).hashCode()*20+Double.valueOf(this.magnetoY).hashCode()*300+Double.valueOf(this.longtime/20).hashCode();
         return hash;
     }
 

@@ -31,7 +31,7 @@ class Respi extends Component {
         let chart = new CanvasJS.Chart("chartContainer",{
             exportEnabled: true,
             title:{
-                text: "Respiration from "+firstName+" "+lastName
+                text: "Breathing from "+firstName+" "+lastName
             },
             data: [{
                 type: "spline",
@@ -57,6 +57,13 @@ class Respi extends Component {
 
             zoomEnabled: true,
 
+			rangeChanged: function(e){
+				stopRES=!stopRES
+				if(!stopRES){
+					updateChart();
+				}
+			
+			},
 
 
 
@@ -71,8 +78,8 @@ class Respi extends Component {
             }
 
             date = new Date();
-            $.getJSON(linkurl+(d2.getTime()-1500)+linkurlmiddle+(date.getTime()-1500), function(data) {
-                d2=date;
+         $.getJSON(linkurl + (d2.getTime()*1000000 - 3000000000) + linkurlmiddle + (date.getTime()*1000000 - 3000000000), function (data) {
+		       d2=date;
                 $.each(data, function(key, value) {
                     let date =new Date(parseInt(value.longtime));
                     dataPoints.push({x: parseInt(value.longtime)- start.getTime(), y: parseFloat(value.respiThorax)});

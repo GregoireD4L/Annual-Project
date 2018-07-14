@@ -71,13 +71,7 @@ public class GyroPoint implements Point{
     @Override
     public boolean equals(Object obj) {
         GyroPoint gyroPoint = (GyroPoint) obj;
-        if(gyroPoint.gyroX!=this.gyroX){
-            return false;
-        }
-        if(gyroPoint.gyroY!=this.gyroY){
-            return false;
-        }
-        if(gyroPoint.gyroZ!=this.gyroZ){
+        if(this.longtime/20!=gyroPoint.longtime/20){
             return false;
         }
         return true;
@@ -85,7 +79,7 @@ public class GyroPoint implements Point{
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 17 * hash +  Double.valueOf(this.gyroZ).hashCode()+Double.valueOf(this.gyroZ).hashCode()*20+Double.valueOf(this.gyroY).hashCode()*300;
+        hash = 17 * hash +  Double.valueOf(this.gyroZ).hashCode()+Double.valueOf(this.gyroZ).hashCode()*20+Double.valueOf(this.gyroY).hashCode()*300+Double.valueOf(this.longtime/20).hashCode();
         return hash;
     }
 }

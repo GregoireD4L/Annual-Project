@@ -62,7 +62,7 @@ public class Ecg1Point implements Point{
     @Override
     public boolean equals(Object obj) {
         Ecg1Point ecg1Point = (Ecg1Point) obj;
-        if(ecg1Point.ecg1!=this.ecg1){
+        if(ecg1Point.ecg1!=this.ecg1 ){
             return false;
         }
         
