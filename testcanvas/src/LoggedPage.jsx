@@ -298,8 +298,6 @@ class LoggedPage extends Component{
                         welcome: true,
                         loginState: false,
                         registerState: false,
-                        registerSnackBar: true,
-                        snackBarMessage: 'Verification Email sent ! please verify your account'
                     });
                     //email verification
                     //user.sendEmailVerification();
