@@ -293,7 +293,7 @@ class LoggedPage extends Component{
                 var user = this.state.secondaryApp.auth().currentUser;
                 //var user = firebaseLib.auth().currentUser;
                 if (this.state.user) {
-                    this.writePatientData(doctorId, this.state.user.uid, this.state.firstName, this.state.lastName, this.state.email);
+                    this.writePatientData(doctorId, user.uid, this.state.firstName, this.state.lastName, this.state.email);
                     this.setState({
                         welcome: true,
                         loginState: false,
