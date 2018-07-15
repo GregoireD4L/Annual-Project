@@ -76,6 +76,23 @@ const styles = {
         marginTop: 50,
         marginLeft: '30%',
     },
+    tshirt: {
+        marginLeft:'35%',
+        width: 150,
+        height:288,
+        marginTop: 10,
+    },
+    bluetooth: {
+        marginBottom: 100,
+    },
+    mobile: {
+        marginLeft: 25,
+        marginBottom: 70,
+    },
+    graph2: {
+        marginTop: 50,
+        marginLeft: '35%',
+    }
 };
 
 class LoggedPage extends Component{
@@ -492,9 +509,15 @@ class LoggedPage extends Component{
                     }
                 } else {
 					
-                    graph = <Typography className={classes.graph} variant="title" color="inherit">
-                        Please select a patient, then select a metric to display
-                    </Typography>;
+                    graph = <div><Typography className={classes.graph} variant="title" color="inherit">
+                        Please connect your t-shirt to your mobile application
+                    </Typography><img src={require('./files/t-shirt.png')} className={classes.tshirt}/>
+                        <img src={require('./files/bluetooth.png')} className={classes.bluetooth}/>
+                        <img src={require('./files/mobile.png')} className={classes.mobile}/>
+                        <Typography className={classes.graph2} variant="title" color="inherit">
+                            Then select a patient in the left menu
+                        </Typography>
+                    </div>;
                 }
             }
 
