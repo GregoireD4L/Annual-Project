@@ -21,13 +21,10 @@ class Respi extends Component {
         let start = new Date();
         let date = new Date();
         let d2 = new Date();
-        let milli= date.getTime()-5000;
         let dataPoints = [];
-        let dpsLength = 0;
         let linkurl="http://51.38.185.205:8888/data/getRespiPastMilli?id="+idPatient+"&beginning=";
         let linkurlmiddle="&ending=";
 
-        let tmplink=linkurl+milli+linkurlmiddle+(milli+1000);
         let chart = new CanvasJS.Chart("chartContainer",{
             exportEnabled: true,
             title:{
@@ -46,25 +43,22 @@ class Respi extends Component {
                 verticalAlign: "center"
             },
             axisX: {
-                //valueFormatString: "ss:ff",
-                //interval:0.5,
-                /*labelFormatter: function ( e ) {
-                    return "";
-                } , */
+                
                 includeZero: false,
-                //	intervalType: "month",
             },
 
             zoomEnabled: true,
 
 			rangeChanged: function(e){
-				stopRES=!stopRES
-				if(!stopRES){
+				if(e.trigger=="reset"){
+					stopRES=false;
 					updateChart();
 				}
-			
+				else{
+					stopRES=true;
+				}
+				
 			},
-
 
 
         });
@@ -82,8 +76,8 @@ class Respi extends Component {
 		       d2=date;
                 $.each(data, function(key, value) {
                     let date =new Date(parseInt(value.longtime));
-					if(dataPoints.length==0||(dataPoints.length>0&&parseInt(value.longtime)- start.getTime()-20>=dataPoints.slice(-1)[0].x)){
-                    dataPoints.push({x: parseInt(value.longtime)- start.getTime(), y: parseFloat(value.respiThorax)});
+					if(dataPoints.length==0||(dataPoints.length>0&&parseInt(value.longtime)- start.getTime()-20+3000>=dataPoints.slice(-1)[0].x)){
+                    dataPoints.push({x: parseInt(value.longtime)- start.getTime()+3000, y: parseFloat(value.respiThorax)});
 					}
                 });
 
@@ -92,7 +86,6 @@ class Respi extends Component {
                     dataPoints.shift();
                 }
                 chart.render();
-                milli+=1000;
                 updateChart();
             });
         }

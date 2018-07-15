@@ -23,7 +23,6 @@ class Magneto extends Component {
         let dataPointsX = [];
         let dataPointsY = [];
         let dataPointsZ = [];
-        let dpsLength = 0;
         let linkurl="http://51.38.185.205:8888/data/getMagnetoPastMilli?id="+idPatient+"&beginning=";
         let linkurlmiddle="&ending=";
 
@@ -57,24 +56,21 @@ class Magneto extends Component {
                 verticalAlign: "center"
             },
             axisX: {
-                //valueFormatString: "ss:ff",
-                //interval:0.5,
-                /*labelFormatter: function ( e ) {
-                    return "";
-                } , */
                 includeZero: false,
-                //	intervalType: "month",
             },
 
             zoomEnabled: true,
 
 
 			rangeChanged: function(e){
-				stopMag=!stopMag
-				if(!stopMag){
+				if(e.trigger=="reset"){
+					stopMag=false;
 					updateChart();
 				}
-			
+				else{
+					stopMag=true;
+				}
+				
 			},
 
 
@@ -92,10 +88,10 @@ class Magneto extends Component {
                 d2=date;
                 $.each(data, function(key, value) {
                     let date =new Date(parseInt(value.longtime));
-					if(dataPointsX.length==0||(dataPointsX.length>0&&parseInt(value.longtime)- start.getTime()-20>=dataPointsX.slice(-1)[0].x)){
-                    dataPointsX.push({x: parseInt(value.longtime)- start.getTime(), y: parseFloat(value.magnetoX)});
-                    dataPointsY.push({x: parseInt(value.longtime)- start.getTime(), y: parseFloat(value.magnetoY)});
-                    dataPointsZ.push({x: parseInt(value.longtime)- start.getTime(), y: parseFloat(value.magnetoZ)});
+					if(dataPointsX.length==0||(dataPointsX.length>0&&parseInt(value.longtime)- start.getTime()-20+3000>=dataPointsX.slice(-1)[0].x)){
+                    dataPointsX.push({x: parseInt(value.longtime)- start.getTime()+3000, y: parseFloat(value.magnetoX)});
+                    dataPointsY.push({x: parseInt(value.longtime)- start.getTime()+3000, y: parseFloat(value.magnetoY)});
+                    dataPointsZ.push({x: parseInt(value.longtime)- start.getTime()+3000, y: parseFloat(value.magnetoZ)});
 					}
                 });
 

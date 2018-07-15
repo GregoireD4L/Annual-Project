@@ -23,7 +23,6 @@ class Accelero extends Component {
         let dataPointsX = [];
         let dataPointsY = [];
         let dataPointsZ = [];
-        let dpsLength = 0;
         let linkurl="http://51.38.185.205:8888/data/getAcceleroPastMilli?id="+idPatient+"&beginning=";
         let linkurlmiddle="&ending=";
 
@@ -52,33 +51,27 @@ class Accelero extends Component {
             axisY: {
                 includeZero: false,
                 interval : 0.2,
-                /*maximum: 0.2,
-                minimum: -0.2,*/
             },
             legend: {
                 horizontalAlign: "right",
                 verticalAlign: "center"
             },
             axisX: {
-                //valueFormatString: "ss:ff",
-                //interval:0.5,
-                /*labelFormatter: function ( e ) {
-                    return "";
-                } , */
                 includeZero: false,
-                //	intervalType: "month",
             },
 
             zoomEnabled: true,
 
 			rangeChanged: function(e){
-				stopACC=!stopACC
-				if(!stopACC){
+				if(e.trigger=="reset"){
+					stopACC=false;
 					updateChart();
 				}
-			
+				else{
+					stopACC=true;
+				}
+				
 			},
-
 
         });
 
@@ -95,10 +88,10 @@ class Accelero extends Component {
 		          d2=date;
                 $.each(data, function(key, value) {
                     let date =new Date(parseInt(value.longtime));
-					if(dataPointsX.length==0||(dataPointsX.length>0&&parseInt(value.longtime)- start.getTime()-20>=dataPointsX.slice(-1)[0].x)){
-                    dataPointsX.push({x: parseInt(value.longtime)- start.getTime(), y: parseFloat(value.acceleroX)});
-                    dataPointsY.push({x: parseInt(value.longtime)- start.getTime(), y: parseFloat(value.acceleroY)});
-                    dataPointsZ.push({x: parseInt(value.longtime)- start.getTime(), y: parseFloat(value.acceleroZ)});
+					if(dataPointsX.length==0||(dataPointsX.length>0&&parseInt(value.longtime)- start.getTime()-20+3000>=dataPointsX.slice(-1)[0].x)){
+                    dataPointsX.push({x: parseInt(value.longtime)- start.getTime()+3000, y: parseFloat(value.acceleroX)});
+                    dataPointsY.push({x: parseInt(value.longtime)- start.getTime()+3000, y: parseFloat(value.acceleroY)});
+                    dataPointsZ.push({x: parseInt(value.longtime)- start.getTime()+3000, y: parseFloat(value.acceleroZ)});
 					}
                 });
 

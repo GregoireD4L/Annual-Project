@@ -22,11 +22,9 @@ class Spo2 extends Component {
         let d2 = new Date();
         let milli= date.getTime()-5000;
         let dataPoints = [];
-        let dpsLength = 0;
         let linkurl="http://51.38.185.205:8888/data/getSpo2PastMilli?id="+idPatient+"&beginning=";
         let linkurlmiddle="&ending=";
 
-        let tmplink=linkurl+milli+linkurlmiddle+(milli+1000);
         let chart = new CanvasJS.Chart("chartContainer",{
             exportEnabled: true,
             title:{
@@ -39,31 +37,26 @@ class Spo2 extends Component {
             }],
             axisY: {
                 includeZero: false,
-                /*maximum: 0.2,
-                minimum: -0.2,*/
             },
             legend: {
                 horizontalAlign: "right",
                 verticalAlign: "center"
             },
             axisX: {
-                //valueFormatString: "ss:ff",
-                //interval:0.5,
-                /*labelFormatter: function ( e ) {
-                    return "";
-                } , */
                 includeZero: false,
-                //	intervalType: "month",
             },
 
             zoomEnabled: true,
 
 			rangeChanged: function(e){
-				stopSPO=!stopSPO
-				if(!stopSPO){
+				if(e.trigger=="reset"){
+					stopSPO=false;
 					updateChart();
 				}
-			
+				else{
+					stopSPO=true;
+				}
+				
 			},
 
 
@@ -83,8 +76,8 @@ class Spo2 extends Component {
                 d2=date;
                 $.each(data, function(key, value) {
                     let date =new Date(parseInt(value.longtime));
-					if(dataPoints.length==0||(dataPoints.length>0&&parseInt(value.longtime)- start.getTime()-20>=dataPoints.slice(-1)[0].x)){
-                    dataPoints.push({x: parseInt(value.longtime)- start.getTime(), y: parseFloat(value.spo2Chan1_1)});
+					if(dataPoints.length==0||(dataPoints.length>0&&parseInt(value.longtime)- start.getTime()-20+3000>=dataPoints.slice(-1)[0].x)){
+                    dataPoints.push({x: parseInt(value.longtime)- start.getTime()+3000, y: parseFloat(value.spo2Chan1_1)});
 					}
                 });
 
@@ -93,7 +86,6 @@ class Spo2 extends Component {
                     dataPoints.shift();
                 }
                 chart.render();
-                milli+=1000;
                 updateChart();
             });
         }

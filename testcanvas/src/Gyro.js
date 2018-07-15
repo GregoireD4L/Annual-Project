@@ -27,7 +27,6 @@ class Gyro extends Component {
         let dataPointsX = [];
         let dataPointsY = [];
         let dataPointsZ = [];
-        let dpsLength = 0;
         let linkurl="http://51.38.185.205:8888/data/getGyroPastMilli?id="+idPatient+"&beginning=";
         let linkurlmiddle="&ending=";
 
@@ -61,24 +60,21 @@ class Gyro extends Component {
                 verticalAlign: "center"
             },
             axisX: {
-                //valueFormatString: "ss:ff",
-                //interval:0.5,
-                /*labelFormatter: function ( e ) {
-                    return "";
-                } , */
                 includeZero: false,
-                //	intervalType: "month",
             },
 
             zoomEnabled: true,
 
 
 			rangeChanged: function(e){
-				stopGyro=!stopGyro
-				if(!stopGyro){
+				if(e.trigger=="reset"){
+					stopGyro=false;
 					updateChart();
 				}
-			
+				else{
+					stopGyro=true;
+				}
+				
 			},
 
 
@@ -96,10 +92,10 @@ class Gyro extends Component {
                 d2=date;
                 $.each(data, function(key, value) {
                     let date =new Date(parseInt(value.longtime));
-					if(dataPointsX.length==0||(dataPointsX.length>0&&parseInt(value.longtime)- start.getTime()-20>=dataPointsX.slice(-1)[0].x)){
-                    dataPointsX.push({x: parseInt(value.longtime)- start.getTime(), y: parseFloat(value.gyroX)});
-                    dataPointsY.push({x: parseInt(value.longtime)- start.getTime(), y: parseFloat(value.gyroY)});
-                    dataPointsZ.push({x: parseInt(value.longtime)- start.getTime(), y: parseFloat(value.gyroZ)});
+					if(dataPointsX.length==0||(dataPointsX.length>0&&parseInt(value.longtime)- start.getTime()-20+3000>=dataPointsX.slice(-1)[0].x)){
+                    dataPointsX.push({x: parseInt(value.longtime)- start.getTime()+3000, y: parseFloat(value.gyroX)});
+                    dataPointsY.push({x: parseInt(value.longtime)- start.getTime()+3000, y: parseFloat(value.gyroY)});
+                    dataPointsZ.push({x: parseInt(value.longtime)- start.getTime()+3000, y: parseFloat(value.gyroZ)});
 					}
                 });
 
