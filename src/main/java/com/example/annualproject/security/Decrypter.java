@@ -8,6 +8,12 @@ import java.security.NoSuchAlgorithmException;
  ****/
 public class Decrypter {
 
+    /**Sha-256
+     *
+     * @param plainText
+     * @return
+     * @throws NoSuchAlgorithmException
+     */
     public static String encrypt(String plainText) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = digest.digest(plainText.getBytes(StandardCharsets.UTF_8));
