@@ -4,7 +4,9 @@ import org.influxdb.annotation.Column;
 import org.influxdb.annotation.Measurement;
 
 import java.time.Instant;
-
+/***
+ *  Created by Nicolas Sirac
+ ****/
 @Measurement(name = "allPoints")
 public class GyroPoint implements Point {
     private long longtime;

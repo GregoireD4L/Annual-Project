@@ -3,7 +3,9 @@ import $ from 'jquery';
 import CanvasJS from './CanvasJS';
 import {withStyles} from '@material-ui/core';
 //var CanvasJS = require('./CanvasJS')
-
+/***
+ *  Created by Nicolas Sirac
+ ****/
 const styles = {
     graph: {
         marginTop: 50,

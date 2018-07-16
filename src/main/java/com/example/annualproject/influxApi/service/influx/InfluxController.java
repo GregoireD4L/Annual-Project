@@ -1,5 +1,9 @@
 package com.example.annualproject.influxApi.service.influx;
 
+/***
+ *  Created by Nicolas Sirac
+ ****/
+
 import com.example.annualproject.influxApi.service.points.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

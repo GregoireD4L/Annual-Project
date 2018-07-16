@@ -3,7 +3,9 @@ package com.example.annualproject.security;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
+/***
+ *  Created by Nicolas Sirac
+ ****/
 public class Decrypter {
 
     public static String encrypt(String plainText) throws NoSuchAlgorithmException {

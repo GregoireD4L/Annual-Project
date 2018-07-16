@@ -12,7 +12,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import static com.example.annualproject.influxApi.service.points.InfluxField.*;
-
+/***
+ *  Created by Nicolas Sirac
+ ****/
 @Service
 public class InfluxDBReader {
 

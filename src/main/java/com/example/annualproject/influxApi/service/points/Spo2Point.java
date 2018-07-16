@@ -4,7 +4,9 @@ import org.influxdb.annotation.Column;
 import org.influxdb.annotation.Measurement;
 
 import java.time.Instant;
-
+/***
+ *  Created by Nicolas Sirac
+ ****/
 @Measurement(name = "allPoints")
 public class Spo2Point implements Point {
 
