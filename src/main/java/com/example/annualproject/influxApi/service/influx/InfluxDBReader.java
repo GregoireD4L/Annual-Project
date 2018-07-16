@@ -17,46 +17,37 @@ import static com.example.annualproject.influxApi.service.points.InfluxField.*;
 public class InfluxDBReader {
 
 
-
-
-
-    public List<Point> readPointBeetweenTime(String id, long beginning, long ending, InfluxField field){
+    public List<Point> readPointBeetweenTime(String id, long beginning, long ending, InfluxField field) {
         InfluxDB influxDB = InfluxDBSingleton.getInstance();
         String dbName = "dataforlifeDB";
         String query = null;
-        Class cl=Point.class;
+        Class cl = Point.class;
 
         try {
-            if(field== ECG) {
+            if (field == ECG) {
 
-                    query = "SELECT ecg1,time FROM allPoints where ID='" + Decrypter.encrypt(id) + "' and time>=" + beginning + " and time<" + ending;
+                query = "SELECT ecg1,time FROM allPoints where ID='" + Decrypter.encrypt(id) + "' and time>=" + beginning + " and time<" + ending;
 
-                cl=Ecg1Point.class;
-            }
-            else if(field== SPO2){
-                query = "SELECT \"Spo2Chan1-1\",time FROM allPoints where ID='" +  Decrypter.encrypt(id)+ "' and time>=" + beginning+" and time<"+ending;
-                cl=Spo2Point.class;
-            }
-            else if(field== ACCELERO){
-                query = "SELECT acceleroX,acceleroY,acceleroZ,time FROM allPoints where ID='" +  Decrypter.encrypt(id)+ "' and time>=" + beginning+" and time<"+ending;
-                cl=AcceleroPoint.class;
-            }
-            else if(field== GYRO){
-                query = "SELECT GyrosX,GyrosY,GyrozZ,time FROM allPoints where ID='" +  Decrypter.encrypt(id)+ "' and time>=" + beginning+" and time<"+ending;
-                cl=GyroPoint.class;
-            }
-            else if(field== MAGNETO){
-                query = "SELECT magnetoX,magnetoY,magnetoZ,time FROM allPoints where ID='" +  Decrypter.encrypt(id)+ "' and time>=" + beginning+" and time<"+ending;
-                cl=MagnetoPoint.class;
-            }
-            else if(field== RESPI){
-                query = "SELECT respiAbdominal,respiThorax,time FROM allPoints where ID='" +  Decrypter.encrypt(id)+ "' and time>=" + beginning+" and time<"+ending;
-                cl=RespiPoint.class;
-            }
-            else if(field== TEMP){
-                query = "SELECT temp,time FROM allPoints where ID='" +  Decrypter.encrypt(id)+ "' and time>=" + beginning+" and time<"+ending;
+                cl = Ecg1Point.class;
+            } else if (field == SPO2) {
+                query = "SELECT \"Spo2Chan1-1\",time FROM allPoints where ID='" + Decrypter.encrypt(id) + "' and time>=" + beginning + " and time<" + ending;
+                cl = Spo2Point.class;
+            } else if (field == ACCELERO) {
+                query = "SELECT acceleroX,acceleroY,acceleroZ,time FROM allPoints where ID='" + Decrypter.encrypt(id) + "' and time>=" + beginning + " and time<" + ending;
+                cl = AcceleroPoint.class;
+            } else if (field == GYRO) {
+                query = "SELECT GyrosX,GyrosY,GyrozZ,time FROM allPoints where ID='" + Decrypter.encrypt(id) + "' and time>=" + beginning + " and time<" + ending;
+                cl = GyroPoint.class;
+            } else if (field == MAGNETO) {
+                query = "SELECT magnetoX,magnetoY,magnetoZ,time FROM allPoints where ID='" + Decrypter.encrypt(id) + "' and time>=" + beginning + " and time<" + ending;
+                cl = MagnetoPoint.class;
+            } else if (field == RESPI) {
+                query = "SELECT respiAbdominal,respiThorax,time FROM allPoints where ID='" + Decrypter.encrypt(id) + "' and time>=" + beginning + " and time<" + ending;
+                cl = RespiPoint.class;
+            } else if (field == TEMP) {
+                query = "SELECT temp,time FROM allPoints where ID='" + Decrypter.encrypt(id) + "' and time>=" + beginning + " and time<" + ending;
 
-                cl=TempPoint.class;
+                cl = TempPoint.class;
             }
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -65,23 +56,14 @@ public class InfluxDBReader {
 
         InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
         List<Point> points = resultMapper.toPOJO(queryResult, cl);
-            for (Point point : points) {
-                point.setLongtime(point.getTime());
+        for (Point point : points) {
+            point.setLongtime(point.getTime());
 
         }
         return points;
 
-        
+
     }
-
-
-
-
-
-
-
-
-
 
 
 }

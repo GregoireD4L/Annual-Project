@@ -3,23 +3,16 @@ package com.example.annualproject.influxApi.service.points;
 import org.influxdb.annotation.Column;
 import org.influxdb.annotation.Measurement;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 
 @Measurement(name = "allPoints")
-public class Spo2Point implements Point{
+public class Spo2Point implements Point {
 
     @Column(name = "ID")
     private String idUser;
     @Column(name = "Spo2Chan1-1")
     private double spo2;
-   
+
     @Column(name = "time")
     private Instant time;
 
@@ -34,7 +27,6 @@ public class Spo2Point implements Point{
         this.spo2 = spo2;
     }
 
-   
 
     public void setLongtime(long longtime) {
         this.longtime = longtime;
@@ -65,7 +57,6 @@ public class Spo2Point implements Point{
     }
 
 
-
     public Instant getTime() {
         return time;
     }
@@ -73,22 +64,23 @@ public class Spo2Point implements Point{
     public void setTime(Instant time) {
         this.time = time;
     }
+
     @Override
     public boolean equals(Object obj) {
         Spo2Point spo2point = (Spo2Point) obj;
-        if(this.longtime/20!=spo2point.longtime/20){
+        if (this.longtime / 20 != spo2point.longtime / 20) {
             return false;
         }
 
         return true;
     }
+
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 17 * hash +  Double.valueOf(this.spo2).hashCode()+Double.valueOf(this.longtime/20).hashCode();
+        hash = 17 * hash + Double.valueOf(this.spo2).hashCode() + Double.valueOf(this.longtime / 20).hashCode();
         return hash;
     }
-
 
 
 }

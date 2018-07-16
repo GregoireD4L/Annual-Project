@@ -1,20 +1,12 @@
 package com.example.annualproject.influxApi.service.points;
 
-import com.example.annualproject.security.Decrypter;
 import org.influxdb.annotation.Column;
 import org.influxdb.annotation.Measurement;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 
 @Measurement(name = "allPoints")
-public class AcceleroPoint implements Point{
+public class AcceleroPoint implements Point {
 
     @Column(name = "ID")
     private String idUser;
@@ -35,12 +27,12 @@ public class AcceleroPoint implements Point{
         this.longtime = longtime.toEpochMilli();
     }
 
-    public void setLongtime(long longtime) {
-        this.longtime = longtime;
-    }
-
     public long getLongtime() {
         return longtime;
+    }
+
+    public void setLongtime(long longtime) {
+        this.longtime = longtime;
     }
 
     public String getIdUser() {
@@ -82,22 +74,23 @@ public class AcceleroPoint implements Point{
     public void setAcceleroZ(double acceleroZ) {
         this.acceleroZ = acceleroZ;
     }
+
     @Override
     public boolean equals(Object obj) {
         AcceleroPoint acceleroPoint = (AcceleroPoint) obj;
-        if(this.longtime/20!=acceleroPoint.longtime/20){
+        if (this.longtime / 20 != acceleroPoint.longtime / 20) {
             return false;
         }
 
         return true;
     }
+
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 17 * hash +  Double.valueOf(this.acceleroZ).hashCode()+Double.valueOf(this.acceleroZ).hashCode()*20+Double.valueOf(this.acceleroY).hashCode()*300+Double.valueOf(this.longtime/20).hashCode();
+        hash = 17 * hash + Double.valueOf(this.acceleroZ).hashCode() + Double.valueOf(this.acceleroZ).hashCode() * 20 + Double.valueOf(this.acceleroY).hashCode() * 300 + Double.valueOf(this.longtime / 20).hashCode();
         return hash;
     }
-
 
 
 }

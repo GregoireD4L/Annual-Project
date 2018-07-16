@@ -1,20 +1,12 @@
 package com.example.annualproject.influxApi.service.points;
 
-import com.example.annualproject.security.Decrypter;
 import org.influxdb.annotation.Column;
 import org.influxdb.annotation.Measurement;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 
 @Measurement(name = "allPoints")
-public class Ecg1Point implements Point{
+public class Ecg1Point implements Point {
 
     @Column(name = "ID")
     private String idUser;
@@ -25,7 +17,6 @@ public class Ecg1Point implements Point{
 
 
     private long longtime;
-
 
 
     public long getLongtime() {
@@ -59,19 +50,21 @@ public class Ecg1Point implements Point{
     public void setTime(Instant time) {
         this.time = time;
     }
+
     @Override
     public boolean equals(Object obj) {
         Ecg1Point ecg1Point = (Ecg1Point) obj;
-        if(ecg1Point.ecg1!=this.ecg1 ){
+        if (ecg1Point.ecg1 != this.ecg1) {
             return false;
         }
-        
+
         return true;
     }
+
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 17 * hash +  Double.valueOf(this.ecg1).hashCode();
+        hash = 17 * hash + Double.valueOf(this.ecg1).hashCode();
         return hash;
     }
 

@@ -3,17 +3,10 @@ package com.example.annualproject.influxApi.service.points;
 import org.influxdb.annotation.Column;
 import org.influxdb.annotation.Measurement;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 
 @Measurement(name = "allPoints")
-public class TempPoint implements Point{
+public class TempPoint implements Point {
     @Column(name = "temp")
     private double temp;
 
@@ -41,18 +34,10 @@ public class TempPoint implements Point{
     }
 
 
-
-
-
-
-
-
-
-
     @Override
     public boolean equals(Object obj) {
         TempPoint tempPoint = (TempPoint) obj;
-        if(this.longtime/20!=tempPoint.longtime/20){
+        if (this.longtime / 20 != tempPoint.longtime / 20) {
             return false;
         }
 
@@ -70,7 +55,7 @@ public class TempPoint implements Point{
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 17 * hash +  Double.valueOf(this.temp).hashCode()+Double.valueOf(this.longtime/20).hashCode();
+        hash = 17 * hash + Double.valueOf(this.temp).hashCode() + Double.valueOf(this.longtime / 20).hashCode();
         return hash;
     }
 
