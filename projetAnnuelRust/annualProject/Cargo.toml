@@ -1,7 +1,0 @@
-[package]
-name = "annualProject"
-version = "0.1.0"
-authors = ["ScNicolas <sirac.nicolas@gmail.com>"]
-
-[dependencies]
-reqwest = "0.8.5"
