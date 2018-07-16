@@ -44,7 +44,7 @@ public class InfluxDBReader {
     /** Inner Class that generate query
      *
      */
-    private class QueryGenerator {
+    public static class QueryGenerator {
         private String id;
         private long beginning;
         private long ending;
