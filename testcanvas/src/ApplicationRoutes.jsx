@@ -46,7 +46,7 @@ class ApplicationRoutes extends Component{
             <BrowserRouter ref={this.setRouter.bind(this)}>
                 <div>
 				<Route path='/' render={() => {
-                        return ((firebase.auth().currentUser || currentUser!=='') ? <LoggedPage/> : <Redirect to='/login'/>);
+                        return ((firebase.auth().currentUser || currentUser!=='') ? <Redirect to='/home'/> : <Redirect to='/login'/>);
                     }}/>
                     <Route path='/login' component={LoginScreen}/>
                     <Route path='/home' render={() => {

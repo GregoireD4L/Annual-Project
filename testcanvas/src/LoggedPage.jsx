@@ -508,8 +508,7 @@ class LoggedPage extends Component{
                         graph = '';
                     }
                 } else {
-					
-                    graph = <div><Typography className={classes.graph} variant="title" color="inherit">
+                    graph = (<div><Typography className={classes.graph} variant="title" color="inherit">
                         Please connect your t-shirt to your mobile application
                     </Typography><img src={require('./files/t-shirt.png')} className={classes.tshirt}/>
                         <img src={require('./files/bluetooth.png')} className={classes.bluetooth}/>
@@ -517,7 +516,7 @@ class LoggedPage extends Component{
                         <Typography className={classes.graph2} variant="title" color="inherit">
                             Then select a patient in the left menu
                         </Typography>
-                    </div>;
+                    </div>);
                 }
             }
 
